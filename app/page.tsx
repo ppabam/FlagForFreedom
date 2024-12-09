@@ -1,4 +1,5 @@
 import { getFlags, Flag } from '@/app/lib/getFlags';
+import Image from 'next/image'
 
 export default async function Home() {
   const flags: Flag[] = await getFlags();
@@ -16,9 +17,11 @@ export default async function Home() {
             {flags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-lg bg-gray-800">
-                  <img
+                  <Image
                     src={flag.imageUrl}
                     alt={flag.name}
+                    width={300}
+                    height={300}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </div>
