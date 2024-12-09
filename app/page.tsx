@@ -4,9 +4,9 @@ export default async function Home() {
   const flags: Flag[] = await getFlags();
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <header className="bg-blue-800 text-white py-4 w-full">
+      <header className="bg-blue-500 text-white py-4 w-full">
         <div className="w-full text-center">
-          <h1 className="text-3xl font-bold">123 Flag Gallery</h1>
+          <h1 className="text-2xl font-bold">123 Flag Gallery</h1>
           <p className="text-sm mt-2">계엄에 대응하는 유쾌 깃발들</p>
         </div>
       </header>
