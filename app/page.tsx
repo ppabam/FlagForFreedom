@@ -6,8 +6,8 @@ export default async function Home() {
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="bg-blue-800 text-white py-4 w-full">
         <div className="w-full text-center">
-          <h1 className="text-4xl font-bold">12.3 Flag Gallery</h1>
-          <p className="text-lg mt-2">Explore flags of various countries!</p>
+          <h1 className="text-3xl font-bold">123 Flag Gallery</h1>
+          <p className="text-sm mt-2">계엄에 대응하는 유쾌 깃발들</p>
         </div>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
