@@ -12,7 +12,7 @@ export default async function Home() {
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <section className="container mx-auto px-4 py-8">
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {flags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-lg bg-gray-800">
