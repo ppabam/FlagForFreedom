@@ -14,6 +14,22 @@ pnpm dev
 bun dev
 ```
 
+## Table
+```sql
+CREATE TABLE flags (
+    id SERIAL PRIMARY KEY,               -- 자동 증가 ID
+    name TEXT NOT NULL,                  -- 위치 이름
+    img BYTEA NOT NULL,                  -- 이미지 데이터 (바이너리 형태)
+    latitude DOUBLE PRECISION NOT NULL,  -- 위도
+    longitude DOUBLE PRECISION NOT NULL  -- 경도
+);
+
+\dt;
+```
+
+### Ref
+- https://medium.com/@alexandre.penombre/file-upload-with-next-js-14-app-router-6cb0e594e778
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
