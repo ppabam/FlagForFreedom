@@ -12,7 +12,7 @@ export const Form = () => {
             formData.append("file", file);
           });
 
-          const response = await fetch("http://localhost:3000/api/flags/upload", {
+          const response = await fetch("/api/flags/upload", {
             method: "POST",
             body: formData,
           });
