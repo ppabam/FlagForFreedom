@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleTagManager } from '@next/third-parties/google'
 import TriggerAnalytics from './TriggerAnalytics'
+import { Analytics } from "@vercel/analytics/react"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,6 +46,7 @@ export default function RootLayout({
       >
         {children}
         <TriggerAnalytics />
+        <Analytics />
       </body>
     </html>
   );
