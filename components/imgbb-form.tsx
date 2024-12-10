@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-
-// export const ImgbbForm = () => {
 export function ImgbbForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
