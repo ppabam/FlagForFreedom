@@ -15,7 +15,19 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "깃없총",
-  description: "나만 깃발 없어 총연합",
+  description: "나만 깃발 없엉 총연맹",
+  openGraph: {
+    title: "",
+    siteName: "나만 깃발 없엉",
+    description: "",
+    locale: 'ko_KR',
+    type: 'website',
+    url: "https://flag123.diginori.com",
+    images: {
+      url: "https://flag123.diginori.com/og.png",
+      alt: "",
+    }
+  }
 };
 
 export default function RootLayout({
