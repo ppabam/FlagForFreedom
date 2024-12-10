@@ -1,5 +1,4 @@
 import { getFlags, Flag } from '@/app/lib/getFlags';
-import { Form } from '@/components/form';
 import Image from 'next/image'
 
 export default async function Home() {
@@ -11,11 +10,10 @@ export default async function Home() {
           <h1 className="text-2xl font-bold">123 Flag Gallery</h1>
           <p className="text-sm mt-2">계엄에 대응하는 유쾌 깃발들</p>
         </div>
-        <Form />
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <section className="container mx-auto px-4 py-8">
-          <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {flags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-lg bg-gray-800">
