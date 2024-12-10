@@ -1,9 +1,16 @@
-import { Form } from "@/components/form";
+// import { Form } from "@/components/form";
+import { ImgbbForm } from "@/components/imgbb-form";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Form />
-    </div>
+    <>
+      {/* <div>
+        <Form />
+      </div> */}
+
+      <div>
+        <ImgbbForm />
+      </div>
+    </>
   );
 }

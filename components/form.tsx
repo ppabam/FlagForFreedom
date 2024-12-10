@@ -4,7 +4,7 @@ export const Form = () => {
   return (
     <input
       type="file"
-      name="file"
+      name="+"
       onChange={async (e) => {
         if (e.target.files) {
           const formData = new FormData();
