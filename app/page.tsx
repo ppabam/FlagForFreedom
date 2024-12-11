@@ -66,7 +66,7 @@ export default async function Home() {
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <p className="text-sm">
-          &copy; 12.3, <a href="/123" className="text-blue-500">flagless regiment.</a>
+          &copy; 12.3, <a href="/123" className="text-blue-500">포고령</a>
         </p>
       </footer>
     </div>
