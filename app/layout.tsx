@@ -4,6 +4,7 @@ import "./globals.css";
 import { GoogleTagManager } from '@next/third-parties/google'
 import TriggerAnalytics from './TriggerAnalytics'
 import { Analytics } from "@vercel/analytics/react"
+import { Toaster } from "@/components/ui/toaster"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,6 +46,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+
+        <Toaster />
+
         <TriggerAnalytics />
         <Analytics />
       </body>
