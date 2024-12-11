@@ -10,7 +10,7 @@ export default async function Home() {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src="/logo.png" alt="Logo" className="h-8 w-8 rounded-full" />
+            <img src="/sadness.webp" alt="Logo" className="h-11 w-11" />
             <h1 className="text-xl font-bold hidden md:flex">Flag 12.3</h1>
           </div>
 
