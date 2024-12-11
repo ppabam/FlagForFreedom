@@ -8,7 +8,7 @@ export default async function Home() {
       <header className="bg-blue-500 text-white py-4 w-full">
         <div className="w-full text-center">
           <h1 className="text-2xl font-bold">123 Flag Gallery</h1>
-          <p className="text-sm mt-2">계엄에 대응하는 유쾌 깃발들</p>
+          {/* <p className="text-sm mt-2">계엄에 대응하는 유쾌 깃발들</p> */}
         </div>
       </header>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
