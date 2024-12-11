@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link'
-import { Angry } from "lucide-react"
 
 export default function NotFound() {
   const handleCopy = () => {
