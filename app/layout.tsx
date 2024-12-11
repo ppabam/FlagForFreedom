@@ -20,15 +20,15 @@ export const metadata: Metadata = {
   title: "깃없총",
   description: "나만 깃발 없엉 총연맹",
   openGraph: {
-    title: "",
+    title: "깃없총",
     siteName: "나만 깃발 없엉",
-    description: "",
+    description: "나만 깃발 없엉 총연맹",
     locale: 'ko_KR',
     type: 'website',
     url: "https://flag123.diginori.com",
     images: {
       url: "https://flag123.diginori.com/og.png",
-      alt: "",
+      alt: "나만 깃발 없엉 총연맹",
     }
   }
 };

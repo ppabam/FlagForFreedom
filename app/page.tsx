@@ -18,7 +18,7 @@ export default async function Home() {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="끝내 움켜쥘 탄핵 깃발"
+              placeholder="🔍 : 끝내 움켜쥘 탄핵 깃발"
               className="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
@@ -26,7 +26,7 @@ export default async function Home() {
           {/* Buttons */}
           <div className="flex-shrink-0">
             <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 w-11 rounded-lg text-white text-sm shadow-md">
-              U
+              ⬆️
             </button>
           </div>
         </div>
