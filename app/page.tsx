@@ -1,5 +1,9 @@
 import { getFlags, Flag } from '@/app/lib/getFlags';
 import Image from 'next/image'
+import { ButtonUpload } from '@/components/my/button-upload'
+import { AvatarSadness } from '@/components/my/avatar-sadness'
+import { InputFlagSearch } from '@/components/my/input-flag-search'
+
 
 export default async function Home() {
   const flags: Flag[] = await getFlags();
@@ -10,24 +14,29 @@ export default async function Home() {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src="/sadness.webp" alt="Logo" className="h-11 w-11" />
-            <h1 className="text-xl font-bold hidden md:flex">Flag 12.3</h1>
+            {/* <img src="/sadness.webp" alt="Logo" className="h-11 w-11" /> */}
+            <AvatarSadness />
+            <h1 className="text-xl font-bold hidden md:flex">flag123</h1>
           </div>
+
 
           {/* Search Field */}
           <div className="flex-1">
-            <input
+            {/* <input
               type="text"
               placeholder="🔍 : 끝내 움켜쥘 탄핵 깃발"
               className="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
+            /> */}
+
+            <InputFlagSearch />
           </div>
 
           {/* Buttons */}
-          <div className="flex-shrink-0">
-            <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 w-11 rounded-lg text-white text-sm shadow-md">
+          <div className="flex-shrink-0 w-11">
+            {/* <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 w-11 rounded-lg text-white text-sm shadow-md">
               ⬆️
-            </button>
+            </button> */}
+            <ButtonUpload />
           </div>
         </div>
       </header>
