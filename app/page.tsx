@@ -16,7 +16,7 @@ export default async function Home() {
           <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {flags.map((flag) => (
               <li key={flag.id} className="text-center">
-                <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-lg bg-gray-800">
+                <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square">
                   <Image
                     src={flag.imageUrl}
                     alt={flag.name}
