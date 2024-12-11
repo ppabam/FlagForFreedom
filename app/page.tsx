@@ -10,7 +10,7 @@ export default async function Home() {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src="/logo.png" alt="Logo" className="h-8 w-8 rounded-full" />
+            <img src="/sadness.webp" alt="Logo" className="h-11 w-11" />
             <h1 className="text-xl font-bold hidden md:flex">Flag 12.3</h1>
           </div>
 
@@ -18,7 +18,7 @@ export default async function Home() {
           <div className="flex-1">
             <input
               type="text"
-              placeholder="끝내 움켜쥘 탄핵 깃발"
+              placeholder="🔍 : 끝내 움켜쥘 탄핵 깃발"
               className="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
@@ -26,7 +26,7 @@ export default async function Home() {
           {/* Buttons */}
           <div className="flex-shrink-0">
             <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 w-11 rounded-lg text-white text-sm shadow-md">
-              U
+              ⬆️
             </button>
           </div>
         </div>
