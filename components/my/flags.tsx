@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react';
-import { Flag } from '@/app/lib/getFlags'; // Flag 타입을 가져옵니다.
+import { Flag } from '@/app/lib/definitions'; // Flag 타입을 가져옵니다.
 import Image from 'next/image';
 import { InputFlagSearch } from '@/components/my/input-flag-search';
 import { ButtonUpload } from '@/components/my/button-upload';
@@ -56,7 +56,7 @@ export default function Flags({ initialFlags }: FlagsProps) {
               <li key={flag.id} className="text-center">
                 <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square">
                   <Image
-                    src={flag.imageUrl}
+                    src={flag.img_url}
                     alt={flag.name}
                     width={300}
                     height={300}
@@ -69,7 +69,6 @@ export default function Flags({ initialFlags }: FlagsProps) {
           </ul>
         </section>
       </main>
-
     </div>
   );
 }
