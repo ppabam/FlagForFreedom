@@ -69,7 +69,9 @@ SELECT id,name,img_url FROM flags ORDER BY id DESC;
 
 ### Ref
 - https://medium.com/@alexandre.penombre/file-upload-with-next-js-14-app-router-6cb0e594e778
+- https://nextjs.org/docs/14/app/api-reference/functions/unstable_cache
 
+---
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
