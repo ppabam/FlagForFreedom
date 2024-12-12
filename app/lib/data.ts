@@ -12,7 +12,7 @@ const getCachedFlags = unstable_cache(
   selectFlags,
   ["select_flags"],
   {
-    revalidate: Number(process.env.CACHE_TIMEOUT_SECONDS)
+    revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS)
   }
 );
 
@@ -37,5 +37,29 @@ async function selectFlags() {
   }
 }
 
+/**
+ * 깃발 데이터를 데이터베이스에 삽입하는 함수
+ * @param flag - 삽입할 깃발 데이터 (id 제외, 자동 생성)
+ * @returns 삽입된 깃발 데이터
+ */
+export async function insertFlag(flag: Omit<Flag, 'id'>): Promise<Flag> {
+  try {
+    const result = await sql<Flag>`
+      INSERT INTO flags (name, img_url, latitude, longitude)
+      VALUES (
+        ${flag.name}, 
+        ${flag.img_url},
+        37.525307 + (37.530139 - 37.525307) * RANDOM(), 
+        126.919467 + (126.922896 - 126.919467) * RANDOM()
+      )
+      RETURNING id, name, img_url
+    `;
+    console.log('✅ Data inserted successfully:', result.rows[0]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('🎅-Error Inserting Data:', error);
+    throw new Error('데이터 삽입에 실패했습니다.');
+  }
+}
 
 

@@ -46,9 +46,23 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
           throw new Error(result.error);
         }
 
+        // Insert the flag data into the database via the new API
+        const dbResponse = await fetch('/api/flags/insert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: searchTerm, img_url: result.imageUrl }),
+        });
+
+        if (!dbResponse.ok) {
+          const dbError = await dbResponse.json();
+          throw new Error(dbError.error || 'Failed to insert flag into the database.');
+        }
+
         toast({
           title: '까막 까치 울 때까지 올려라 탄핵 🚩 힘차게 ✊',
-          description: result.imageUrl,
+          description: `깃발 업로드가 성공하였습니다.탄핵 심의 과정을 거쳐 ${process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS}초 안에 갱신됩니다.`,
           duration: 5000,
         });
 
