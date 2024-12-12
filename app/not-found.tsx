@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link'
+import { FooterFlags } from '@/components/my/footer-flags';
 
 export default function NotFound() {
   const handleCopy = () => {
@@ -11,7 +12,9 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-5 flex flex-col items-center">
 
-      <div className="text-center text-red-600 hover:text-purple-700 text-4xl font-extrabold mb-6"><Link href={'/'}>404 not found</Link></div>
+      <div className="text-center text-red-600 hover:text-purple-700 text-4xl font-extrabold mb-6">
+        <Link href={'/'}>404 not found</Link>
+      </div>
 
       <div className="max-w-3xl bg-white shadow-md rounded-md p-6">
         <h1 className="text-2xl font-bold text-center mb-4" onClick={handleCopy}>계엄사령부 포고령(제1호)</h1>
@@ -53,6 +56,11 @@ export default function NotFound() {
           계엄사령관 육군대장 박안수
         </p>
       </div>
+
+
+      <FooterFlags />
     </div>
+
+
   )
 }
