@@ -44,7 +44,7 @@ export default function Flags({ initialFlags }: FlagsProps) {
 
           {/* Buttons */}
           <div className="flex-shrink-0 w-11">
-            <ButtonUpload />
+            <ButtonUpload searchTerm={searchTerm} />
           </div>
         </div>
       </header>

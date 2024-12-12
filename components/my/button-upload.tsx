@@ -6,13 +6,28 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 
+interface ButtonUploadProps {
+  searchTerm: string;
+}
 
-export function ButtonUpload() {
+export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
 
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!searchTerm) {
+      toast({
+        variant: "destructive",
+        title: '😚 need the name of the flag',
+        description: "깃발 이미지🖼️를 업로드하려면 먼저 사용할 이름을 검색창🔍에 입력해 주세요.🤣",
+        action: <ToastAction altText="OK">투쟁</ToastAction>,
+        duration: 10000,
+      });
+      return;
+    }
+
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setLoading(true);
@@ -74,7 +89,7 @@ export function ButtonUpload() {
       />
 
       {/* ShadCN Button을 클릭하면 파일 선택 창 열리게 하기 */}
-      <Button variant="ghost" disabled={loading} asChild >
+      <Button variant="ghost" disabled={loading} asChild>
         <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
           {loading ? <Loader2 className="animate-spin" /> : <ImageUp />}
         </label>
