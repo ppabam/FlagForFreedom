@@ -62,7 +62,7 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
 
         toast({
           title: '까막 까치 울 때까지 올려라 탄핵 🚩 힘차게 ✊',
-          description: `깃발 업로드가 성공하였습니다.탄핵 심의 과정을 거쳐 ${process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS}초 안에 갱신됩니다.`,
+          description: `깃발 업로드가 성공하였습니다.계엄 국무회의 심의 과정을 거쳐 ${process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS}초 안에 갱신됩니다.`,
           duration: 5000,
         });
 
