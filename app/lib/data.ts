@@ -1,22 +1,23 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from './definitions';
 import { getFlags } from '@/app/lib/getFlags';
-import { unstable_cache } from 'next/cache';
+// import { unstable_cache } from 'next/cache';
+
+// export async function fetchFlags() {
+//   const flags = await getCachedFlags();
+//   return flags;
+// }
+
+// const getCachedFlags = unstable_cache(
+//   selectFlags,
+//   ["select_flags"],
+//   {
+//     revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS)
+//   }
+// );
 
 export async function fetchFlags() {
-  const flags = await getCachedFlags();
-  return flags;
-}
-
-const getCachedFlags = unstable_cache(
-  selectFlags,
-  ["select_flags"],
-  {
-    revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS)
-  }
-);
-
-async function selectFlags() {
+// async function selectFlags() {
   try {
     const data = await sql<Flag>`SELECT id,name,img_url FROM flags ORDER BY id DESC`;
     // console.log('Data fetch completed');
