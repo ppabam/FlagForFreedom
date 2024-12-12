@@ -65,6 +65,9 @@ SELECT id,name,img_url FROM flags ORDER BY id DESC;
 );
 
 \dt;
+
+INSERT INTO flags (name, img_url, latitude, longitude)
+VALUES ('국제 연합우주 고양이 위원회','https://i.ibb.co/BKjNSRL/space-cat.jpg',37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM());
 ```
 
 ### Ref
