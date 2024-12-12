@@ -1,23 +1,23 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from './definitions';
 import { getFlags } from '@/app/lib/getFlags';
-import { unstable_cache } from 'next/cache';
-
-export async function fetchFlags() {
-  const flags = await getCachedFlags();
-  return flags;
-}
-
-const getCachedFlags = unstable_cache(
-  selectFlags,
-  ["select-flags-cache-key"],
-  {
-    revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS) || 60 // 기본값 60초 설정
-  }
-);
+// import { unstable_cache } from 'next/cache';
 
 // export async function fetchFlags() {
-async function selectFlags() {
+//   const flags = await getCachedFlags();
+//   return flags;
+// }
+
+// const getCachedFlags = unstable_cache(
+//   selectFlags,
+//   ["select-flags-cache-key"],
+//   {
+//     revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS) || 60 // 기본값 60초 설정
+//   }
+// );
+
+export async function fetchFlags() {
+// async function selectFlags() {
   try {
     const data = await sql<Flag>`SELECT id,name,img_url FROM flags ORDER BY id DESC`;
     // console.log('Data fetch completed');
