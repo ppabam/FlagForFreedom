@@ -30,6 +30,7 @@ const flags: Flag[] = [
   { id: 21, name: '전국드래곤보존협회', img_url: '/img/flags/f21.jpg' },
   { id: 22, name: '직장인 점심메뉴추천 조합', img_url: '/img/flags/f22.jpg' },
   { id: 23, name: '전국 집에누워있기 연합', img_url: '/img/flags/f23.jpg' },
+  { id: 24, name: '날아다니는 스파게티 괴물연맹', img_url: 'https://i.ibb.co/pLZNCHh/fsm.jpg' },
 
 ];
 
