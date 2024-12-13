@@ -9,9 +9,14 @@ export async function GET() {
   } catch (dbError) {
     console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
     const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
-    return NextResponse.json(fallbackFlags);
+    return NextResponse.json(combinedFallbackFlags);
   }
 }
+
+// export async function GET() {
+//   const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
+//   return NextResponse.json(combinedFallbackFlags);
+// }
 
 const fallbackErrHead: Flag[] = [
   {
