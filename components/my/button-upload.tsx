@@ -103,9 +103,20 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
       />
 
       {/* ShadCN Button을 클릭하면 파일 선택 창 열리게 하기 */}
-      <Button variant="ghost" disabled={loading} asChild>
+      <Button variant="ghost" disabled={loading} style={{ width: '30px', height: '30px' }} className="hover:text-blue-700">
         <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
-          {loading ? <Loader2 className="animate-spin" /> : <ImageUp />}
+          {loading ? (
+            <Loader2 className="animate-spin" style={{ width: '30px', height: '30px' }} />
+          ) : (
+            <ImageUp
+              size={33}
+              className="animate-pulse duration-1000"
+              style={{
+                width: '29px', // 이미지 크기
+                height: '29px',
+              }}
+            />
+          )}
         </label>
       </Button>
     </>
