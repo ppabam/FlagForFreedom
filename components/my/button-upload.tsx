@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import { getCacheTimeout } from '@/lib/utils';
 
 interface ButtonUploadProps {
   searchTerm: string;
@@ -62,7 +63,7 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
 
         toast({
           title: '까막 까치 울 때까지 올려라 탄핵 🚩 힘차게 ✊',
-          description: `깃발 업로드가 성공하였습니다.계엄 국무회의 심의 과정을 거쳐 ${process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS}초 안에 갱신됩니다.`,
+          description: `깃발 업로드가 성공하였습니다.계엄 국무회의 심의 과정을 거쳐 ${getCacheTimeout()}초 안에 갱신됩니다.`,
           duration: 5000,
         });
 
@@ -70,12 +71,12 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
         if (err instanceof Error) {
           toast({
             variant: "destructive",
-            title: "Uh oh! Something went wrong.",
-            description: "There was a problem with your request.",
+            title: "허접한 프로그램으로 불편을 드려 죄송합니다.",
+            description: "❄️ 추운 겨울 날씨에 집회 참여 감사드리며, 불편 드려 죄송합니다. 🙇‍♂️",
             action: <ToastAction altText="Try again">Try again</ToastAction>,
           })
         } else {
-          // setError('An unknown error occurred'); // Error 객체가 아닐 경우 처리
+          console.warn("[123] 내란 우두머리");
         }
       } finally {
         setLoading(false);

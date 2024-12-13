@@ -5,6 +5,13 @@ import { unstable_cache } from 'next/cache';
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
   async () => {
+
+    await sql`
+        UPDATE select_count
+        SET count = count + 1, last_updated = now()
+        WHERE id = 1;
+      `;
+
     const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
     return data.rows;
   },
