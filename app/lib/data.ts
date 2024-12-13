@@ -1,6 +1,8 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from '@/app/lib/definitions';
 
+export const fetchCache = 'force-no-store';
+
 export async function fetchFlags() {
   try {
     // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
