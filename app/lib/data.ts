@@ -3,7 +3,7 @@ import { Flag } from '@/app/lib/definitions';
 import { unstable_cache } from 'next/cache';
 import { getCacheTimeout } from '@/lib/utils';
 
-const CACHE_TIMEOUT = getCacheTimeout();
+// const CACHE_TIMEOUT = getCacheTimeout();
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
@@ -20,7 +20,7 @@ const getDbData = unstable_cache(
   },
   ['unstablecache'],
   {
-    revalidate: CACHE_TIMEOUT,
+    revalidate: 60,
     tags: ['unstablecache']
   }
 )
