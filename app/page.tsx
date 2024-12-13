@@ -1,15 +1,12 @@
-// import { getFlags } from '@/app/lib/getFlags';
-import { fetchFlags } from './lib/data';
+import { getFlags } from '@/app/lib/getFlags';
 import Flags from '@/components/my/flags';
 import { FooterFlags } from '@/components/my/footer-flags';
 
 export default async function Home() {
-  // const flags = await getFlags();
-  const flags = await fetchFlags();
-
+  const flags = await getFlags();
   return (
     <>
-      <Flags initialFlags={flags.data} />
+      <Flags initialFlags={flags} />
 
       <FooterFlags copyrightHref='/123' />
     </>

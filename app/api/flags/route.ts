@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Flag } from '@/app/lib/definitions';
+import { fetchFlags } from '@/app/lib/data';
 
 
 const flags: Flag[] = [
@@ -287,5 +288,11 @@ const flags: Flag[] = [
 ];
 
 export async function GET() {
-  return NextResponse.json(flags);
+  try {
+    const data = await fetchFlags();
+    return NextResponse.json(data);
+  } catch (dbError) {
+    console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
+    return NextResponse.json(flags);
+  }
 }

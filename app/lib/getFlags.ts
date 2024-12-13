@@ -7,7 +7,6 @@ export async function getFlags(): Promise<Flag[]> {
         revalidate: Number(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS)
       }
     });
-
   if (!response.ok) {
     throw new Error('Failed to fetch flags');
   }
