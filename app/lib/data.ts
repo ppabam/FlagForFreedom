@@ -1,7 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from '@/app/lib/definitions';
-
-export const fetchCache = 'force-no-store';
+import { revalidatePath } from 'next/cache'
 
 export async function fetchFlags() {
   try {
@@ -37,6 +36,10 @@ export async function insertFlag(flag: Omit<Flag, 'id'>): Promise<Flag> {
       RETURNING id, name, img_url
     `;
     console.log('✅ Data inserted successfully:', result.rows[0]);
+
+    console.log('revalidatePath allows you to purge cached data on-demand for a specific path.');
+    revalidatePath('/')
+
     return result.rows[0];
   } catch (error) {
     console.error('🎅-Error Inserting Data:', error);
