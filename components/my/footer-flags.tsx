@@ -1,4 +1,5 @@
 import { Toilet, Flag, Flame, Angry, Smartphone, GitPullRequestCreateArrow } from "lucide-react"
+import Link from 'next/link';
 
 export function FooterFlags({ copyrightHref = "/" }) {
   return (
@@ -6,9 +7,9 @@ export function FooterFlags({ copyrightHref = "/" }) {
       <div className="max-w-3xl p-6 mt-3">
         <div className="flex gap-4">
           {copyrightHref === "/" && (
-            <a href="/" target="_self" className="text-blue-500 hover:text-blue-800">
+            <Link href={"/"} className="text-blue-500 hover:text-blue-800">
               <Flag size={24} />
-            </a>
+            </Link>
           )}
           <a href="https://www.mapplerk3.com/minjumap" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-800">
             <Toilet size={24} />
@@ -28,7 +29,11 @@ export function FooterFlags({ copyrightHref = "/" }) {
         </div>
 
         <p className="text-sm text-gray-600 mt-3 text-center">
-          &copy; 12.3, <a href={copyrightHref} className="text-blue-500 hover:underline">어디서 도대체 무얼</a>
+          {/* &copy; 12.3, <a href={copyrightHref} className="text-blue-500 hover:underline">어디서 도대체 무얼</a> */}
+          &copy; 12.3,
+          <Link href={copyrightHref} className="text-blue-500 hover:underline">
+            어디서 도대체 무얼
+          </Link>
         </p>
       </div>
     </footer>

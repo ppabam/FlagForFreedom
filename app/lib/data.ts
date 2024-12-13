@@ -3,6 +3,7 @@ import { Flag } from './definitions';
 import { getFlags } from '@/app/lib/getFlags';
 import { unstable_cache } from 'next/cache';
 
+
 export async function fetchFlags() {
   const flags = await fetchCachedFlags();
   return flags;

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { InputFlagSearch } from '@/components/my/input-flag-search';
 import { ButtonUpload } from '@/components/my/button-upload';
 import { AvatarSadness } from '@/components/my/avatar-sadness';
+// import Link from 'next/link';
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -30,8 +31,12 @@ export default function Flags({ initialFlags }: FlagsProps) {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <AvatarSadness />
-            <h1 className="text-xl font-bold hidden md:flex">flag123</h1>
+            {/* <Link href="/" className="flex items-center space-x-2"> */}
+            <a href='/' className="flex items-center space-x-2">
+              <AvatarSadness />
+              <h1 className="text-xl font-bold hidden md:flex">flag123</h1>
+            </a>
+            {/* </Link> */}
           </div>
 
           {/* Search Field */}
