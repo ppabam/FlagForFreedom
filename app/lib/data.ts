@@ -25,10 +25,10 @@ export async function fetchFlags() {
   }
 }
 
-async function getFlagsFromDb() {
-  const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
-  return data.rows;
-}
+// async function getFlagsFromDb() {
+//   const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
+//   return data.rows;
+// }
 
 /**
  * 깃발 데이터를 데이터베이스에 삽입하는 함수
