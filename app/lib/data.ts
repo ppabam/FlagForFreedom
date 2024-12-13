@@ -1,11 +1,23 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from '@/app/lib/definitions';
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, unstable_cache } from 'next/cache';
+
+// https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
+const getDbData = unstable_cache(
+  async () => {
+    const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
+    return data.rows;
+  },
+  ['unstablecache'],
+  { revalidate: 60, tags: ['unstablecache'] }
+)
+
 
 export async function fetchFlags() {
   try {
     // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
-    const flags = await getFlagsFromDb();
+    // const flags = await getFlagsFromDb();
+    const flags = await getDbData();
     return flags;
   } catch (dbError) {
     console.error('🎅-dbError Try Fallback', dbError);
