@@ -1,22 +1,22 @@
 import { NextResponse } from 'next/server';
 import { Flag } from '@/app/lib/definitions';
-import { fetchFlags } from '@/app/lib/data';
-
-export async function GET() {
-  try {
-    const data = await fetchFlags();
-    return NextResponse.json(data);
-  } catch (dbError) {
-    console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
-    const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
-    return NextResponse.json(combinedFallbackFlags);
-  }
-}
+// import { fetchFlags } from '@/app/lib/data';
 
 // export async function GET() {
-//   const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
-//   return NextResponse.json(combinedFallbackFlags);
+//   try {
+//     const data = await fetchFlags();
+//     return NextResponse.json(data);
+//   } catch (dbError) {
+//     console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
+//     const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
+//     return NextResponse.json(combinedFallbackFlags);
+//   }
 // }
+
+export async function GET() {
+  const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
+  return NextResponse.json(combinedFallbackFlags);
+}
 
 const fallbackErrHead: Flag[] = [
   {

@@ -14,6 +14,10 @@ export const Form = () => {
 
           const response = await fetch("/api/flags/upload", {
             method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
+            },
             body: formData,
           });
 

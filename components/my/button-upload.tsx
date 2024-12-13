@@ -52,6 +52,7 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
           },
           body: JSON.stringify({ name: searchTerm, img_url: result.imageUrl }),
         });
@@ -85,9 +86,9 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
     } else {
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        title: "길을 열어라 청년이여",
+        description: "그 누구도 본 적 없는 미래 세상을 다시 건설할 청년의 시대를 향해 전진 앞으로 청년시대",
+        action: <ToastAction altText="Try again">전진</ToastAction>,
       })
     }
   };
