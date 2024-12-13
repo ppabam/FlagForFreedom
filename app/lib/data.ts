@@ -3,38 +3,43 @@ import { Flag } from './definitions';
 import { getFlags } from '@/app/lib/getFlags';
 import { unstable_cache } from 'next/cache';
 
-
-export async function fetchFlags() {
-  const flags = await fetchCachedFlags();
-  return flags;
-}
-
-const fetchCachedFlags = unstable_cache(
-  selectFlags,
-  ["flags-cache"],
-  {
-    revalidate: parseInt(process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS || '60', 10),
-  }
+const CACHE_TIMEOUT_SECONDS = parseInt(
+  process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS || '600',
+  10
 );
 
-// export async function fetchFlags() {
-async function selectFlags() {
+export async function fetchFlags() {
   try {
-    const data = await sql<Flag>`SELECT id,name,img_url FROM flags ORDER BY id DESC`;
-    // console.log('Data fetch completed');
-    return data.rows;
+    // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
+    const flags = await getFlagsWithRevalidate();
+    return flags;
   } catch (dbError) {
-    console.error('🎅-Error Database:', dbError);
+    console.warn('🎅-dbError Try Fallback', dbError);
+    const fallBackFlags = getFlagsFallbackApi();
+    return fallBackFlags;
+  }
+}
 
-    // Fallback API 호출 시도
-    try {
-      console.warn('🔥-Try Fallback API');
-      const flags = await getFlags();
-      return flags;
-    } catch (apiError) {
-      console.error('🎅-Error Fallback API:', apiError);
-      throw new Error('데이터를 가져오는데 실패했습니다.');
-    }
+// ISR을 활용한 깃발 데이터 조회 함수
+async function getFlagsWithRevalidate() {
+  const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
+
+  return {
+    data: data.rows,
+    revalidate: CACHE_TIMEOUT_SECONDS,
+  };
+}
+
+async function getFlagsFallbackApi() {
+  try {
+    const data = await getFlags();
+    return {
+      data: data,  // fallback 데이터
+      revalidate: CACHE_TIMEOUT_SECONDS, // ISR 재생성 주기 설정
+    };
+  } catch (apiError) {
+    console.error('🎅-Error Fallback API:', apiError);
+    throw new Error('데이터를 가져오는데 실패했습니다.');
   }
 }
 

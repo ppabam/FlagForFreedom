@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <>
-      <Flags initialFlags={flags} />
+      <Flags initialFlags={flags.data} />
 
       <FooterFlags copyrightHref='/123' />
     </>
