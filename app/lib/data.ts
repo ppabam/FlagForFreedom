@@ -1,7 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from './definitions';
 import { getFlags } from '@/app/lib/getFlags';
-import { unstable_cache } from 'next/cache';
 
 const CACHE_TIMEOUT_SECONDS = parseInt(
   process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS || '600',
