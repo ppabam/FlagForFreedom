@@ -2,8 +2,17 @@ import { NextResponse } from 'next/server';
 import { Flag } from '@/app/lib/definitions';
 import { fetchFlags } from '@/app/lib/data';
 
+export async function GET() {
+  try {
+    const data = await fetchFlags();
+    return NextResponse.json(data);
+  } catch (dbError) {
+    console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
+    return NextResponse.json(fallbackFlags);
+  }
+}
 
-const flags: Flag[] = [
+const fallbackFlags: Flag[] = [
   {
     "id": 1,
     "name": "불꽃남자 정대만 팬클럽",
@@ -286,13 +295,3 @@ const flags: Flag[] = [
   }
 
 ];
-
-export async function GET() {
-  try {
-    const data = await fetchFlags();
-    return NextResponse.json(data);
-  } catch (dbError) {
-    console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
-    return NextResponse.json(flags);
-  }
-}
