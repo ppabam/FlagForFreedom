@@ -8,11 +8,75 @@ export async function GET() {
     return NextResponse.json(data);
   } catch (dbError) {
     console.warn('🎅-dbError Try Fallback Read JSON, dbError:', dbError);
+    const combinedFallbackFlags = [...fallbackErrHead, ...fallbackFlags];
     return NextResponse.json(fallbackFlags);
   }
 }
 
+const fallbackErrHead: Flag[] = [
+  {
+    "id": 20241203,
+    "name": "수괴 Not Found 추진 선봉대",
+    "img_url": "https://i.ibb.co/xsR4z0f/40444.png"
+  },
+]
+
 const fallbackFlags: Flag[] = [
+  {
+    "id": 104,
+    "name": "진격의 묘다이",
+    "img_url": "https://i.ibb.co/jRndQrJ/1734062722477.png"
+  },
+  {
+    "id": 103,
+    "name": "하야하그라 한국 고산지 발기부전 연구회",
+    "img_url": "https://i.ibb.co/L8PLCz5/ba.jpg"
+  },
+  {
+    "id": 102,
+    "name": "전국 춘전 협회",
+    "img_url": "https://i.ibb.co/6tRV0Rt/gg.jpg"
+  },
+  {
+    "id": 101,
+    "name": "전국 얼죽아 협회 서울지부",
+    "img_url": "https://i.ibb.co/Wkh0K6n/ia.jpg"
+  },
+  {
+    "id": 100,
+    "name": "It's NOT X 트위터라 부르는 사람들",
+    "img_url": "https://i.ibb.co/tb0h7XW/nt.jpg"
+  },
+  {
+    "id": 99,
+    "name": "非 시네필 연합회 아진짜시네필아니라고",
+    "img_url": "https://i.ibb.co/8r678s1/cn.jpg"
+  },
+  {
+    "id": 98,
+    "name": "전국 웹소 읽기 연합회",
+    "img_url": "https://i.ibb.co/ns8Cs8W/wrr.jpg"
+  },
+  {
+    "id": 97,
+    "name": "웹소 작가 마감하기도 급한데",
+    "img_url": "https://i.ibb.co/16WJKcw/ma.webp"
+  },
+  {
+    "id": 96,
+    "name": "원고하다 뛰쳐나온 로판 작가 모임회",
+    "img_url": "https://i.ibb.co/c31LxW5/wr.jpg"
+  },
+  {
+    "id": 95,
+    "name": "전국 인공지능 순애 추진 위원회",
+    "img_url": "https://i.ibb.co/6sHFbm1/ai.jpg"
+  },
+  {
+    "id": 94,
+    "name": "구국의 서태웅 친위대 전국 연합",
+    "img_url": "https://i.ibb.co/hfYZGx9/ss.jpg"
+  },
   {
     "id": 93,
     "name": "국제 유니콘 보호협회 한국지부",

@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from '@/app/lib/definitions';
-import { revalidatePath, unstable_cache } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
@@ -50,7 +50,7 @@ export async function insertFlag(flag: Omit<Flag, 'id'>): Promise<Flag> {
     console.log('✅ Data inserted successfully:', result.rows[0]);
 
     console.log('revalidatePath allows you to purge cached data on-demand for a specific path.');
-    revalidatePath('/')
+    // revalidatePath('/')
 
     return result.rows[0];
   } catch (error) {
