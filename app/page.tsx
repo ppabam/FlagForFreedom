@@ -3,6 +3,8 @@ import { fetchFlags } from "@/app/lib/data";
 import Flags from "@/components/my/flags";
 import { FooterFlags } from "@/components/my/footer-flags";
 
+export const fetchCache = 'force-no-store';
+
 export default async function Home() {
   // let flags;
 
