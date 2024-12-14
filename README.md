@@ -73,6 +73,8 @@ VALUES ('국제 연합우주 고양이 위원회','https://i.ibb.co/BKjNSRL/spac
 ### Ref
 - https://medium.com/@alexandre.penombre/file-upload-with-next-js-14-app-router-6cb0e594e778
 - https://nextjs.org/docs/14/app/api-reference/functions/unstable_cache
+- https://nextjs.org/docs/app/api-reference/config/next-config-js/headers
+- https://medium.com/@aleksej.gudkov/how-to-disable-cache-in-next-js-a-comprehensive-guide-a1603559483e
 
 ---
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
