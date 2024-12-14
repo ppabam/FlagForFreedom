@@ -18,10 +18,10 @@ const getDbData = unstable_cache(
     const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
     return data.rows;
   },
-  ['unstablecache'],
+  ['msi'],
   {
     revalidate: 60,
-    tags: ['unstablecache']
+    tags: ['ism']
   }
 )
 
