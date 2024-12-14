@@ -12,7 +12,7 @@ interface FlagsProps {
   initialFlags: Flag[];
 }
 
-export default function Flags({ initialFlags }: FlagsProps) {
+export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFlags, setFilteredFlags] = useState<Flag[]>(initialFlags);
 

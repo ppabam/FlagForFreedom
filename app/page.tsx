@@ -1,6 +1,6 @@
 // import { getFlags } from "@/app/lib/getFlags";
 import { fetchFlags } from "@/app/lib/data";
-import Flags from "@/components/my/flags";
+import FlagsPage from "@/components/my/flags-page";
 import { FooterFlags } from "@/components/my/footer-flags";
 
 export const fetchCache = 'force-no-store';
@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <>
-      <Flags initialFlags={flags} />
+      <FlagsPage initialFlags={flags} />
 
       <FooterFlags copyrightHref="/123" />
     </>
