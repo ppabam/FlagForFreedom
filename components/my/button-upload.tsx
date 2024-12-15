@@ -31,16 +31,16 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
 
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setLoading(true);
-
       const formData = new FormData();
       formData.append('file', file);
 
+      setLoading(true);
+      const K123 = process.env.NEXT_PUBLIC_F123_API_KEY;
       try {
         const response = await fetch('/api/flags/imgbb', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
+            'Authorization': `Bearer ${K123}`, // 헤더에 API_KEY 추가
           },
           body: formData,
         });
@@ -51,18 +51,29 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
         }
 
         // Insert the flag data into the database via the new API
+        const bodyData = JSON.stringify({ name: searchTerm, img_url: result.imageUrl });
+        console.debug(`insert bodyData:${bodyData}`);
         const dbResponse = await fetch('/api/flags/insert', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
+            'Authorization': `Bearer ${K123}`, // 헤더에 API_KEY 추가
           },
-          body: JSON.stringify({ name: searchTerm, img_url: result.imageUrl }),
+          body: bodyData,
         });
 
         if (!dbResponse.ok) {
           const dbError = await dbResponse.json();
-          throw new Error(dbError.error || 'Failed to insert flag into the database.');
+          const dbErrMessage = dbError.error || 'Failed to insert flag into the database';
+
+          toast({
+            variant: "destructive",
+            title: "DB ERR MESSAGE",
+            description: dbErrMessage,
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
+
+          throw new Error(dbErrMessage);
         }
 
         toast({
@@ -77,7 +88,7 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
           toast({
             variant: "destructive",
             title: "불편을 드려 죄송합니다.",
-            description: "❄️ 추운 겨울 날씨에 집회 참여 감사드리며, 불편 드려 죄송합니다. 🙇‍♂️",
+            description: `❄️ 추운 겨울 날씨에 집회 참여 감사드리며, 불편 드려 죄송합니다. 🙇‍♂️:${err.message}`,
             action: <ToastAction altText="Try again">Try again</ToastAction>,
           });
         } else {
