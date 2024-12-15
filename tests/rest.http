@@ -1,0 +1,6 @@
+###
+GET http://localhost:3000/api/flags?k123=1234
+
+
+### 
+GET http://localhost:3000/api/flags/db?k123=1234
