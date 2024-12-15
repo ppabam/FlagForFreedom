@@ -21,5 +21,5 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next(); // 인증 성공
   }
 
-  return NextResponse.redirect('/403'); // 인증 실패
+  return NextResponse.redirect(`${process.env.BASE_URL}/403`); // 인증 실패
 }
