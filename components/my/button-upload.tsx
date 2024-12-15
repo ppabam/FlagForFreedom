@@ -39,6 +39,9 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
       try {
         const response = await fetch('/api/flags/imgbb', {
           method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
+          },
           body: formData,
         });
 
@@ -70,14 +73,15 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
 
       } catch (err: unknown) {
         if (err instanceof Error) {
+          console.error(`🙇‍♂️:${err}`);
           toast({
             variant: "destructive",
-            title: "허접한 프로그램으로 불편을 드려 죄송합니다.",
+            title: "불편을 드려 죄송합니다.",
             description: "❄️ 추운 겨울 날씨에 집회 참여 감사드리며, 불편 드려 죄송합니다. 🙇‍♂️",
             action: <ToastAction altText="Try again">Try again</ToastAction>,
-          })
+          });
         } else {
-          console.warn("[123] 내란 우두머리");
+          console.error(`🙇‍♂️:${err}`);
         }
       } finally {
         setLoading(false);
