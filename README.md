@@ -2,8 +2,18 @@
 - Martial law was declared in the Republic of Korea on Dec. 3, 2025, but lightly marched through the country, armed with cheerful energy. Awesome
 - [for her intense poetic prose that confronts historical traumas and exposes the fragility of human life](https://www.nobelprize.org/prizes/literature/2024/press-release/)
 - [I would like to share the meaning of this award, which is for literature, with you – standing here in opposition to violence together](https://www.nobelprize.org/prizes/literature/2024/han/speech/)
+  
+    <img src="https://github.com/user-attachments/assets/b3f29422-60b7-436d-b3eb-70035c1fdacb" width="777">
+    
+    <img src="https://github.com/user-attachments/assets/ef780ac4-a8d8-4bab-b426-48d4431f6540" width="777">
+
+
 
 ## Initial Dummy Data 
+
+
+
+
 - [use vercel-postgres](https://vercel.com/docs/storage/vercel-postgres)
 ```sql
 CREATE TABLE flags (
