@@ -10,6 +10,8 @@ const nextConfig = {
       },
     ],
   },
+  output: 'standalone', // docker
+
   // async headers() {
   //   return [
   //     {

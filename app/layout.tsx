@@ -46,7 +46,16 @@ export const metadata: Metadata = {
       url: "https://flag123.diginori.com/og.png",
       alt: "나만 깃발 없엉 총연맹",
     }
-  }
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '깃없총',
+    description: '2024 계엄 천하제일깃발대회 나만 깃발 없엉 총연맹',
+    siteId: 'samdulshop',
+    creator: '@나만깃발없엉',
+    creatorId: 'samdulshop',
+    images: ['https://flag123.diginori.com/twitter-image.png'], // Must be an absolute URL
+  },
 };
 
 // export const fetchCache = 'force-no-store';

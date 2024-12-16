@@ -80,6 +80,20 @@ const getDbData = unstable_cache(
 - https://vercel.com/docs/storage/vercel-postgres#vercel-postgres
 - https://vercel.com/docs/cli/env
 
+### ⚓ Dockerizing
+```bash
+$ docker build -t flag123:1.1.0 .
+
+$ docker images                  
+REPOSITORY                   TAG       IMAGE ID       CREATED         SIZE
+flag123                      1.1.0     09e5616462d9   2 minutes ago   179MB
+
+$ docker run --name f110 -p 3110:3000 -d --env-file .env.local flag123:1.1.0
+
+$ docker stats
+CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     BLOCK I/O   PIDS
+8de21b110d7f   f110      0.00%     28.91MiB / 9.717GiB   0.29%     876B / 0B   0B / 0B     11
+```
 
 ### 🔖 Ref
 - https://medium.com/@alexandre.penombre/file-upload-with-next-js-14-app-router-6cb0e594e778
@@ -88,4 +102,3 @@ const getDbData = unstable_cache(
 - https://medium.com/@aleksej.gudkov/how-to-disable-cache-in-next-js-a-comprehensive-guide-a1603559483e
 - https://nextjs.org/docs/pages/building-your-application/configuring/debugging
 - https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields
-
