@@ -86,7 +86,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
 
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Label className="mt-2 text-lg font-medium hover:underline hover:text-blue-500">{flag.name}</Label>
+                    <Label className="mt-2 text-pretty font-medium hover:underline text-blue-600">🔲 {flag.name}</Label>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
