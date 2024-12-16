@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Copy } from "lucide-react"
+import { Copy, MapPinned, ShieldOff } from "lucide-react"
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -113,11 +113,14 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                       </Button>
                     </div>
                     <DialogFooter className="sm:justify-start">
+                      <Button variant="destructive"><ShieldOff />신고</Button>
+                      <Button variant="outline"><MapPinned />상세</Button>
                       <DialogClose asChild>
                         <Button type="button" variant="secondary">
-                          Close
+                          닫기
                         </Button>
                       </DialogClose>
+
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
