@@ -1,14 +1,15 @@
 import { sql } from '@vercel/postgres';
 import { Flag } from '@/app/lib/definitions';
 import { unstable_cache } from 'next/cache';
-// import { getCacheTimeout } from '@/lib/utils';
+import { getCacheTimeout } from '@/lib/utils';
 
-// const CACHE_TIMEOUT = getCacheTimeout();
+const CACHE_TIMEOUT = getCacheTimeout();
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
   async () => {
 
+    // TODO DISABLE
     await sql`
         UPDATE select_count
         SET count = count + 1, last_updated = now()
@@ -20,7 +21,7 @@ const getDbData = unstable_cache(
   },
   ['msi'],
   {
-    revalidate: 60,
+    revalidate: CACHE_TIMEOUT,
     tags: ['ism']
   }
 )
@@ -37,11 +38,6 @@ export async function fetchFlags() {
     throw new Error('데이터베이스 조회 실패');
   }
 }
-
-// async function getFlagsFromDb() {
-//   const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
-//   return data.rows;
-// }
 
 /**
  * 깃발 데이터를 데이터베이스에 삽입하는 함수
