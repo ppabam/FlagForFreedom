@@ -28,13 +28,23 @@ SELECT id,name,img_url FROM flags ORDER BY id DESC;
 
 \dt;
 ```
+### Env
+- Rename env.dummy to .env.local. Make sure the file is not pushed to the public GitHub repository.
+- To avoid using analytics and statistics by connecting to Google Firebase, delete analytics.ts.
+- Refer to the [Vercel  CLI](https://vercel.com/docs/cli/env) to sync variables for database connection.
 
-### Run
-- node : v20.17.0
-- nextjs : 14.2.19
+### Local Run
+- ested on WSL Ubuntu 22.04.4 LTS and macOS. ( node : v20.17.0 ||  v22.12.0, nextjs : 14.2.19)
 ```
+$ npm install
 $ npm run dev
 ```
+
+### Deploy & Connect DB
+- https://vercel.com/docs/deployments/overview
+- https://vercel.com/docs/storage/vercel-postgres#vercel-postgres
+- https://vercel.com/docs/cli/env
+
 
 ### Ref
 - https://medium.com/@alexandre.penombre/file-upload-with-next-js-14-app-router-6cb0e594e778

@@ -16,7 +16,7 @@ export const Form = () => {
             method: "POST",
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${process.env.F123_API_KEY}`, // 헤더에 API_KEY 추가
+              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_F123_API_KEY}`, // 헤더에 API_KEY 추가
             },
             body: formData,
           });
