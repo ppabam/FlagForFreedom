@@ -9,6 +9,7 @@ import { ButtonUpload } from '@/components/my/button-upload';
 import { AvatarSadness } from '@/components/my/avatar-sadness';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,9 +17,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Copy } from "lucide-react"
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -71,54 +73,54 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
           <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredFlags.map((flag) => (
               <li key={flag.id} className="text-center">
-                <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Image
-                        src={flag.img_url}
-                        alt={flag.name}
-                        width={300}
-                        height={300}
-                        className="w-full h-full object-cover transition-transform duration-300"
-                        loading='lazy'
-                      />
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Edit profile</DialogTitle>
-                        <DialogDescription>
-                          Make changes to your profile here. Click save when you&apos;re done.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            defaultValue="Pedro Duarte"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="username" className="text-right">
-                            Username
-                          </Label>
-                          <Input
-                            id="username"
-                            defaultValue="@peduarte"
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square bottom-1">
+                  <Image
+                    src={flag.img_url}
+                    alt={flag.name}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover transition-transform duration-300"
+                    loading='lazy'
+                  />
                 </div>
-                <p className="mt-2 text-lg font-medium">{flag.name}</p>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Label className="mt-2 text-lg font-medium hover:underline hover:text-blue-500">{flag.name}</Label>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Share link</DialogTitle>
+                      <DialogDescription>
+                        {flag.name}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex items-center space-x-2">
+                      <div className="grid flex-1 gap-2">
+                        <Label htmlFor="link" className="sr-only">
+                          Link
+                        </Label>
+                        <Input
+                          id="link"
+                          defaultValue="https://ui.shadcn.com/docs/installation"
+                          value={flag.img_url}
+                          readOnly
+                        />
+                      </div>
+                      <Button type="submit" size="sm" className="px-3">
+                        <span className="sr-only">Copy</span>
+                        <Copy />
+                      </Button>
+                    </div>
+                    <DialogFooter className="sm:justify-start">
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </li>
             ))}
           </ul>
