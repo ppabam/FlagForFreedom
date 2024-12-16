@@ -3,10 +3,22 @@
 import { useState } from 'react';
 import { Flag } from '@/app/lib/definitions'; // Flag 타입을 가져옵니다.
 import Image from 'next/image';
+
 import { InputFlagSearch } from '@/components/my/input-flag-search';
 import { ButtonUpload } from '@/components/my/button-upload';
 import { AvatarSadness } from '@/components/my/avatar-sadness';
-// import Link from 'next/link';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -60,13 +72,58 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
             {filteredFlags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square">
-                  <Image
-                    src={flag.img_url}
-                    alt={flag.name}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
+
+
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      {/* <Button variant="outline">Edit Profile</Button> */}
+                      <Image
+                        src={flag.img_url}
+                        alt={flag.name}
+                        width={300}
+                        height={300}
+                        className="w-full h-full object-cover transition-transform duration-300"
+                        loading='lazy' // lazy // https://nextjs.org/docs/14/app/api-reference/components/image#loading
+                      />
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Edit profile</DialogTitle>
+                        <DialogDescription>
+                          Make changes to your profile here. Click save when you're done.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Name
+                          </Label>
+                          <Input
+                            id="name"
+                            defaultValue="Pedro Duarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Username
+                          </Label>
+                          <Input
+                            id="username"
+                            defaultValue="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit">Save changes</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+
+
                 </div>
                 <p className="mt-2 text-lg font-medium">{flag.name}</p>
               </li>
