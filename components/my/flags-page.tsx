@@ -72,26 +72,22 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
             {filteredFlags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square">
-
-
-
                   <Dialog>
                     <DialogTrigger asChild>
-                      {/* <Button variant="outline">Edit Profile</Button> */}
                       <Image
                         src={flag.img_url}
                         alt={flag.name}
                         width={300}
                         height={300}
                         className="w-full h-full object-cover transition-transform duration-300"
-                        loading='lazy' // lazy // https://nextjs.org/docs/14/app/api-reference/components/image#loading
+                        loading='lazy'
                       />
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
                         <DialogTitle>Edit profile</DialogTitle>
                         <DialogDescription>
-                          Make changes to your profile here. Click save when you're done.
+                          Make changes to your profile here. Click save when you&apos;re done.
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
@@ -121,9 +117,6 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-
-
-
                 </div>
                 <p className="mt-2 text-lg font-medium">{flag.name}</p>
               </li>
