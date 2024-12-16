@@ -1,34 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flag123
+- Martial law was declared in the Republic of Korea on Dec. 3, 2025, but lightly marched through the country, armed with cheerful energy. Awesome
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-## Table
+## Initial Data 
+- [use vercel-postgres](https://vercel.com/docs/storage/vercel-postgres)
 ```sql
 CREATE TABLE flags (
     id SERIAL PRIMARY KEY,               -- 자동 증가 ID
     name TEXT NOT NULL,                  -- 위치 이름
-    img BYTEA NOT NULL,                  -- 이미지 데이터 (바이너리 형태)
+    img_url TEXT NOT NULL,                  -- 이미지 데이터 (바이너리 형태)
     latitude DOUBLE PRECISION NOT NULL,  -- 위도
     longitude DOUBLE PRECISION NOT NULL  -- 경도
 );
-
-\dt;
-
-ALTER TABLE flags
-    DROP COLUMN img,              -- img 컬럼 삭제
-    ADD COLUMN img_url TEXT NOT NULL; -- img_url 컬럼 추가
 
 \dt;
 
@@ -36,13 +18,6 @@ ALTER TABLE flags
 
 
 INSERT INTO flags (name, latitude, longitude, img_url) VALUES
-('불꽃남자 정대만 팬클럽', 37.5138849677504, 126.92862984221085, 'https://i.ibb.co/hHBwh4d/f1.png'),
-('전국 뒤로 미루기 연합', 37.500938038893295, 126.92989513099549, '/img/flags/f2.png'),
-('전국 깃발 준비 못한 사람 동호회', 37.50804823876406, 126.931138930737, 'https://i.ibb.co/QHd3RHK/f3.png'),
-('K-승질머리 연맹 칷!', 37.50891616122715, 126.93517726087975, 'https://i.ibb.co/R6rXvW6/f4.png'),
-('전국고양이집사노동조합', 37.50882472507087, 126.93512023797165, 'https://i.ibb.co/S0F7S69/f5.png'),
-('전국 이선좌 피해자 연합', 37.50648599362162, 126.92973830942933, 'https://i.ibb.co/nnHgh7J/f6.png'),
-('돈없고 병든 예술인 연합', 37.49655848552289, 126.92713592409058, 'https://i.ibb.co/1XjDyct/f7.png'),
 ('피크민 꽃심기 모임', 37.507819640384525, 126.92922708085301, '/img/flags/f8.png'),
 ('혼자 나온 시민', 37.49705515157919, 126.92794478477025, '/img/flags/f9.png'),
 ('전국수족낸증연합', 37.50177390585746, 126.92556883276758, '/img/flags/f10.png'),
@@ -76,26 +51,5 @@ VALUES ('국제 연합우주 고양이 위원회','https://i.ibb.co/BKjNSRL/spac
 - https://nextjs.org/docs/app/api-reference/config/next-config-js/headers
 - https://medium.com/@aleksej.gudkov/how-to-disable-cache-in-next-js-a-comprehensive-guide-a1603559483e
 - https://nextjs.org/docs/pages/building-your-application/configuring/debugging
-- 
+- https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields
 
----
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -18,8 +18,23 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  generator: 'Next.js',
+  applicationName: 'flag123',
+  referrer: 'origin-when-cross-origin',
+  keywords: ['martial law', '2024 South Korean martial law crisis', '계엄', '천하제일깃발대회', '깃없총', '나만깃발없엉'],
+  authors: [{ name: 'TomSawyer' }, { name: 'Josh', url: 'https://flag123.diginori.com' }],
+  creator: 'Tom Sawyer',
+  publisher: 'diginori',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   title: "깃없총",
   description: "나만 깃발 없엉 총연맹",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "깃없총",
     siteName: "나만 깃발 없엉",
