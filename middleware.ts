@@ -23,10 +23,10 @@ export async function middleware(request: NextRequest) {
     const referer = request.headers.get("referer");
     //const host = request.headers.get('host');
 
-    console.log("Request Headers:");
-    request.headers.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
+    // console.log("Request Headers:");
+    // request.headers.forEach((value, key) => {
+    //   console.log(`${key}: ${value}`);
+    // });
 
     const isValidOrigin =
       ALLOWED_DOMAINS.includes(origin || "") ||

@@ -10,7 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  output: 'standalone', // docker
+  output: "standalone", // docker
 
   // async headers() {
   //   return [
@@ -27,6 +27,19 @@ const nextConfig = {
   //     },
   //   ];
   // },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable", // 365일 캐시 설정
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
