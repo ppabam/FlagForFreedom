@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Flag } from '@/app/lib/definitions'; // Flag 타입을 가져옵니다.
 import Image from 'next/image';
+import { parseCookies, setCookie } from 'nookies'; // nookies 사용
 
 import { InputFlagSearch } from '@/components/my/input-flag-search';
 import { ButtonUpload } from '@/components/my/button-upload';
@@ -16,11 +17,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Copy, MapPinned, ShieldOff } from "lucide-react"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Copy, MapPinned, ShieldOff, Heart } from "lucide-react";
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -29,6 +30,29 @@ interface FlagsProps {
 export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFlags, setFilteredFlags] = useState<Flag[]>(initialFlags);
+  const [likedFlags, setLikedFlags] = useState<string[]>([]); // 좋아요된 플래그 ID 배열
+
+  // 초기 쿠키 로드
+  useEffect(() => {
+    const cookies = parseCookies();
+    const liked = cookies.likedFlags ? JSON.parse(cookies.likedFlags) : [];
+    setLikedFlags(liked);
+  }, []);
+
+  // 좋아요 버튼 클릭 핸들러
+  const toggleLike = (flagId: string) => {
+    let updatedLikes = [...likedFlags];
+    if (likedFlags.includes(flagId)) {
+      updatedLikes = updatedLikes.filter(id => id !== flagId);
+    } else {
+      updatedLikes.push(flagId);
+    }
+    setLikedFlags(updatedLikes);
+    setCookie(null, 'likedFlags', JSON.stringify(updatedLikes), {
+      path: '/',
+      maxAge: 30 * 24 * 60 * 60, // 30일
+    });
+  };
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -45,17 +69,13 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            {/* <Link href="/" className="flex items-center space-x-2"> */}
-            <a href='/' className="flex items-center space-x-2">
+            <a href="/" className="flex items-center space-x-2">
               <AvatarSadness />
-              {/* <h1 className="text-xl font-bold text-green-300 hidden md:flex">12.3 계엄배 천하제일 깃발대회</h1> */}
-
               <h1 className="text-xl font-bold text-green-300 hidden md:flex space-x-1">
                 <span className="text-indigo-400">12.3 계엄배</span>
                 <span className="text-indigo-200">천하제일 깃발대회</span>
               </h1>
             </a>
-            {/* </Link> */}
           </div>
 
           {/* Search Field */}
@@ -85,50 +105,22 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                     width={300}
                     height={300}
                     className="w-full h-full object-cover transition-transform duration-300"
-                    loading='lazy'
+                    loading="lazy"
                   />
                 </div>
 
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Label className="mt-2 text-pretty font-medium hover:underline text-blue-600">🔲 {flag.name}</Label>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Share link</DialogTitle>
-                      <DialogDescription>
-                        {flag.name}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="flex items-center space-x-2">
-                      <div className="grid flex-1 gap-2">
-                        <Label htmlFor="link" className="sr-only">
-                          Link
-                        </Label>
-                        <Input
-                          id="link"
-                          defaultValue="https://ui.shadcn.com/docs/installation"
-                          value={flag.img_url}
-                          readOnly
-                        />
-                      </div>
-                      <Button type="submit" size="sm" className="px-3">
-                        <span className="sr-only">Copy</span>
-                        <Copy />
-                      </Button>
-                    </div>
-                    <DialogFooter className="sm:justify-start">
-                      <Button variant="destructive"><ShieldOff />신고</Button>
-                      <Button variant="outline"><MapPinned />상세</Button>
-                      <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                          닫기
-                        </Button>
-                      </DialogClose>
+                <Label className="mt-2 text-pretty font-medium text-blue-600">{flag.name}</Label>
 
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                {/* 좋아요 버튼 */}
+                <button
+                  onClick={() => toggleLike(flag.id)}
+                  className={`mt-2 text-lg flex items-center justify-center gap-1 ${
+                    likedFlags.includes(flag.id) ? 'text-red-500' : 'text-gray-400'
+                  }`}
+                >
+                  <Heart />
+                  {likedFlags.includes(flag.id) ? '좋아요 취소' : '좋아요'}
+                </button>
               </li>
             ))}
           </ul>
