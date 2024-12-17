@@ -5,6 +5,7 @@ import { GoogleTagManager } from '@next/third-parties/google'
 import TriggerAnalytics from './TriggerAnalytics'
 import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "@/components/ui/toaster"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -77,6 +78,7 @@ export default function RootLayout({
 
         <TriggerAnalytics />
         <Analytics />
+	<SpeedInsights />
       </body>
     </html>
   );
