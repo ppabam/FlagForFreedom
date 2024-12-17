@@ -48,7 +48,12 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
             {/* <Link href="/" className="flex items-center space-x-2"> */}
             <a href='/' className="flex items-center space-x-2">
               <AvatarSadness />
-              <h1 className="text-xl font-bold hidden md:flex">flag123</h1>
+              {/* <h1 className="text-xl font-bold text-green-300 hidden md:flex">12.3 계엄배 천하제일 깃발대회</h1> */}
+
+              <h1 className="text-xl font-bold text-green-300 hidden md:flex space-x-1">
+                <span className="text-indigo-400">12.3 계엄배</span>
+                <span className="text-indigo-200">천하제일 깃발대회</span>
+              </h1>
             </a>
             {/* </Link> */}
           </div>
@@ -70,7 +75,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
 
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <section className="container mx-auto px-1 py-1">
-          <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
             {filteredFlags.map((flag) => (
               <li key={flag.id} className="text-center">
                 <div className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gray-800 aspect-square bottom-1">

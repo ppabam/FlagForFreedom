@@ -19,7 +19,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const DESCRIPTION = "민주주의 해방전선 '나만 깃발 없엉 총연맹' 제기발랄 천하제일 깃발대회 🚩 겔러리 🖼️ 저장소 🗃️ 검색 🔎";
+const DESCRIPTION = "12.3 계엄배 천하제일 깃발대회 by 민주주의 해방전선 나만 깃발 없엉 총연맹, 재기발랄 천하제일 깃발대회 🚩 겔러리 🖼️ 저장소 🗃️ 검색 🔎";
 
 export const metadata: Metadata = {
   generator: 'Next.js',
@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     '천하제일깃발대회',
     '깃없총',
     '나만깃발없엉',
-    '제기발랄',
-    '제기발랄',
+    '재기발랄',
     '탄핵',
     '윤석열',
     '윤건희',
     '천하제일깃발대회',
     '민주주의 해방전선 나만 깃발 없엉 총연맹',
+    '나만 깃발 없엉 총연맹',
 
   ],
   authors: [{ name: 'TomSawyer' }, { name: 'Josh', url: 'https://flag123.diginori.com' }],

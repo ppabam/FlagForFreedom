@@ -12,7 +12,7 @@ export function FooterFlags({ copyrightHref = "/" }) {
   return (
     <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
       <div className="max-w-3xl p-6 mt-3">
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center justify-center">
           {copyrightHref === "/" && (
             <Link href={"/"} className="text-blue-500 hover:text-blue-800">
               <Flag size={24} />
@@ -66,16 +66,20 @@ export function FooterFlags({ copyrightHref = "/" }) {
             집회 준비와 위기 시 행동 요령
           </Link>
         </p>
-        
+
         <p className="text-sm text-gray-600 mt-3 text-center">
-          {/* &copy; 12.3, <a href={copyrightHref} className="text-blue-500 hover:underline">어디서 도대체 무얼</a> */}
-          &copy; 12.3,
           <Link href={copyrightHref} className="text-blue-500 hover:underline">
-            어디서 도대체 무얼
+            <span className="hidden lg:block">
+              &copy; 12.3 계엄배 천하제일 재기발랄 깃발대회 by 민주주의 해방전선 나만 깃발 없엉 총연맹
+            </span>
+            <span className="hidden sm:block lg:hidden">
+              &copy; 12.3 계엄배 천하제일 깃발대회 by 민주주의 해방전선 나만 깃발 없엉 총연맹
+            </span>
+            <span className="sm:hidden">
+              &copy; 12.3 계엄배 천하제일 깃발대회 by 깃없총
+            </span>
           </Link>
         </p>
-
-        
       </div>
     </footer>
   );
