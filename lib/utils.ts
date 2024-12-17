@@ -13,3 +13,17 @@ export function getCacheTimeout(): number {
   // 유효한 숫자일 경우 반환, 아니면 기본값 123
   return isNaN(parsedTimeout) ? 123 : parsedTimeout;
 }
+
+
+export function getAuthHeaders(): Record<string, string> {
+  const apiKey = process.env.NEXT_PUBLIC_F123_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('API key is missing');
+  }
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
+}

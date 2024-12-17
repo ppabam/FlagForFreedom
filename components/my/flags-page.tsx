@@ -12,6 +12,8 @@ import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 
+import { getAuthHeaders } from "@/lib/utils"
+
 interface FlagsProps {
   initialFlags: Flag[];
 }
@@ -70,9 +72,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
       // API 호출
       const response = await fetch("/api/flags/likes", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           flagId: Number(flagId),
           likeStatus,

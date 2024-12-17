@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { getCacheTimeout } from "@/lib/utils";
+import { getAuthHeaders, getCacheTimeout } from "@/lib/utils";
 import { uploadFlagImg } from "@/app/lib/uploadFlagImg";
 
 interface ButtonUploadProps {
@@ -33,7 +33,6 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
     if (e.target.files && e.target.files[0]) {
       try {
         const file = e.target.files[0];
-        const K123 = process.env.NEXT_PUBLIC_F123_API_KEY;
         setLoading(true);
         const imgUrl = await uploadFlagImg(file);
 
@@ -42,10 +41,7 @@ export function ButtonUpload({ searchTerm }: ButtonUploadProps) {
         console.debug(`insert bodyData:${bodyData}`);
         const dbResponse = await fetch("/api/flags/insert", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${K123}`, // 헤더에 API_KEY 추가
-          },
+          headers: getAuthHeaders(),
           body: bodyData,
         });
 

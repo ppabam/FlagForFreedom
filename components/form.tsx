@@ -1,5 +1,7 @@
 "use client";
 
+import { getAuthHeaders } from '@/lib/utils'
+
 export const Form = () => {
   return (
     <input
@@ -14,10 +16,7 @@ export const Form = () => {
 
           const response = await fetch("/api/flags/upload", {
             method: "POST",
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${process.env.NEXT_PUBLIC_F123_API_KEY}`, // 헤더에 API_KEY 추가
-            },
+            headers: getAuthHeaders(),
             body: formData,
           });
 
