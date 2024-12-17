@@ -11,8 +11,7 @@ export function InputFlagSearch({ value, onChange }: InputFlagSearchProps) {
       value={value}
       onChange={onChange}
       placeholder="야발라바하야 야발라바탄핵"
-      // className="data-[placeholder]:text-red-700"
-      className="placeholder-red-300"
+      className="!placeholder-red-300"
     />
   )
 }
