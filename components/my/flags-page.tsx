@@ -8,20 +8,22 @@ import { parseCookies, setCookie } from 'nookies'; // nookies 사용
 import { InputFlagSearch } from '@/components/my/input-flag-search';
 import { ButtonUpload } from '@/components/my/button-upload';
 import { AvatarSadness } from '@/components/my/avatar-sadness';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+// import {
+//   Dialog,
+//   DialogClose,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog";
+// import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Copy, MapPinned, ShieldOff, Heart } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+import { 
+  // Copy, MapPinned, ShieldOff, 
+  Heart } from "lucide-react";
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -109,17 +111,18 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   />
                 </div>
 
-                <Label className="mt-2 text-pretty font-medium text-blue-600">{flag.name}</Label>
+                {/* <Label className="mt-2 text-pretty font-medium text-blue-600">{flag.name}</Label> */}
 
                 {/* 좋아요 버튼 */}
                 <button
-                  onClick={() => toggleLike(flag.id)}
+                  onClick={() => toggleLike(String(flag.id))}
                   className={`mt-2 text-lg flex items-center justify-center gap-1 ${
-                    likedFlags.includes(flag.id) ? 'text-red-500' : 'text-gray-400'
+                    likedFlags.includes(String(flag.id)) ? 'text-red-500' : 'text-gray-400'
                   }`}
                 >
                   <Heart />
-                  {likedFlags.includes(flag.id) ? '좋아요 취소' : '좋아요'}
+                  {flag.name}
+                  {/* {likedFlags.includes(String(flag.id)) ? '좋아요 취소' : '좋아요'} */}
                 </button>
               </li>
             ))}
