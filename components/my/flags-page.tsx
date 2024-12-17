@@ -16,6 +16,8 @@ interface FlagsProps {
   initialFlags: Flag[];
 }
 
+const LIKED_FLAGS_COOKIE_NAME = "likedFlagsV241218.3";
+
 export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFlags, setFilteredFlags] = useState<Flag[]>(initialFlags);
@@ -24,15 +26,32 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
   // 초기 쿠키 로드
   useEffect(() => {
     const cookies = parseCookies();
-    const liked = cookies.likedFlags ? JSON.parse(cookies.likedFlags) : [];
+    // const liked = cookies.likedFlags ? JSON.parse(cookies.likedFlags) : [];
+    const liked = cookies[LIKED_FLAGS_COOKIE_NAME]
+      ? JSON.parse(cookies[LIKED_FLAGS_COOKIE_NAME])
+      : [];
     setLikedFlags(liked);
   }, []);
 
   // 좋아요 버튼 클릭 핸들러
   const toggleLike = async (flagId: string) => {
+    // 로컬에서 바로 like_count 값을 업데이트
+    const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
+    const updatedLikeCount = filteredFlags.map((flag) => {
+      if (flag.id === Number(flagId)) {
+        return {
+          ...flag,
+          like_count:
+            likeStatus === 1 ? Number(flag.like_count) + 1 : Number(flag.like_count) - 1,
+        };
+      }
+      return flag;
+    });
+    setFilteredFlags(updatedLikeCount); // UI에서 바로 like_count 반영
+    
     // 쿠키
     let updatedLikes = [...likedFlags];
-    const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
+    // const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
 
     if (likeStatus === -1) {
       updatedLikes = updatedLikes.filter((id) => id !== flagId);
@@ -40,7 +59,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
       updatedLikes.push(flagId);
     }
     setLikedFlags(updatedLikes);
-    setCookie(null, "likedFlagsV241218.1", JSON.stringify(updatedLikes), {
+    setCookie(null, LIKED_FLAGS_COOKIE_NAME, JSON.stringify(updatedLikes), {
       path: "/",
       maxAge: 30 * 24 * 60 * 60, // 30일
     });
