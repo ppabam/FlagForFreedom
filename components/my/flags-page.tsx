@@ -7,11 +7,11 @@ import { InputFlagSearch } from "@/components/my/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import { AvatarSadness } from "@/components/my/avatar-sadness";
 
-import { Heart, MapPinned } from "lucide-react";
+import { Heart, Info } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
-import { randomBytes } from "crypto";
+
 interface FlagsProps {
   initialFlags: Flag[];
 }
@@ -29,18 +29,43 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
   }, []);
 
   // 좋아요 버튼 클릭 핸들러
-  const toggleLike = (flagId: string) => {
+  const toggleLike = async (flagId: string) => {
+    // 쿠키
     let updatedLikes = [...likedFlags];
-    if (likedFlags.includes(flagId)) {
+    const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
+
+    if (likeStatus === -1) {
       updatedLikes = updatedLikes.filter((id) => id !== flagId);
     } else {
       updatedLikes.push(flagId);
     }
     setLikedFlags(updatedLikes);
-    setCookie(null, "likedFlags", JSON.stringify(updatedLikes), {
+    setCookie(null, "likedFlagsV241218.1", JSON.stringify(updatedLikes), {
       path: "/",
       maxAge: 30 * 24 * 60 * 60, // 30일
     });
+
+    // 디비
+    try {
+      // 클라이언트 정보 수집
+      // API 호출
+      const response = await fetch("/api/flags/likes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          flagId: Number(flagId),
+          likeStatus,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update like on the server.");
+      }
+    } catch (error) {
+      console.error("Error during toggleLike API call:", error);
+    }
   };
 
   const handleSearchChange = (value: string) => {
@@ -98,24 +123,26 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   />
 
                   {/* 좋아요 버튼과 숫자 (이미지 좌측 하단) */}
-                  {flag.like_count > -1 && (process.env.NEXT_PUBLIC_LIKE_BUTTON_ENABLED || "OFF") === "ON" && (
-                    <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                      <button
-                        onClick={() => toggleLike(String(flag.id))}
-                        className={`flex items-center justify-center w-7 h-7 rounded-full ${
-                          likedFlags.includes(String(flag.id))
-                            ? "bg-red-500 text-white"
-                            : "bg-gray-700 text-gray-300"
-                        }`}
-                      >
-                        <Heart className="w-5 h-5" />
-                      </button>
-                      <span className="text-white text-sm">
-                        {/* {Math.floor(Math.random() * 10000) + 1} */}
-                        {flag.like_count}
-                      </span>
-                    </div>
-                  )}
+                  {flag.like_count > -1 &&
+                    (process.env.NEXT_PUBLIC_LIKE_BUTTON_ENABLED || "OFF") ===
+                      "ON" && (
+                      <div className="absolute bottom-2 left-2 flex items-center gap-1">
+                        <button
+                          onClick={() => toggleLike(String(flag.id))}
+                          className={`flex items-center justify-center w-7 h-7 rounded-full ${
+                            likedFlags.includes(String(flag.id))
+                              ? "bg-red-500 text-white"
+                              : "bg-gray-700 text-gray-300"
+                          }`}
+                        >
+                          <Heart className="w-5 h-5" />
+                        </button>
+                        <span className="text-white text-sm">
+                          {/* {Math.floor(Math.random() * 10000) + 1} */}
+                          {flag.like_count}
+                        </span>
+                      </div>
+                    )}
 
                   {/* MapPinned 버튼 (환경 변수로 ON/OFF) */}
                   {(process.env.NEXT_PUBLIC_MAP_PINNED_ENABLED || "OFF") ===
@@ -126,7 +153,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                       }
                       className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
                     >
-                      <MapPinned className="w-5 h-5" />
+                      <Info className="w-5 h-5" />
                     </button>
                   )}
                 </div>

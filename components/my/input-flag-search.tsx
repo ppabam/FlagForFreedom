@@ -12,7 +12,7 @@ export function InputFlagSearch({ value, onChange }: InputFlagSearchProps) {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      console.log(`window.innerWidth:${width}`);
+      // console.log(`window.innerWidth:${width}`);
       if (width >= 768) {
         setPlaceholder("🔍 검색 or 📤 업로드 이미지 🚩 이름 입력 ✍️");
       } else if (width >= 400) {

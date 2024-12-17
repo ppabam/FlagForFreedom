@@ -35,7 +35,37 @@ INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 SELECT id,name,img_url FROM flags ORDER BY id DESC;
 );
 
-\dt;
+-- 천하제일깃발대회 좋아요 테이블
+CREATE TABLE flag_likes (
+    id SERIAL PRIMARY KEY,                -- 자동 증가 ID
+    flag_id INTEGER NOT NULL,              -- flags 테이블의 ID와 외래키 관계
+    like_status INTEGER CHECK (like_status IN (1, -1)) DEFAULT 0, -- 좋아요 상태 (1: 좋아요, -1: 좋아요 취소, 0: 기본값 또는 초기 상태)
+    ip_address TEXT,                       -- 클라이언트 IP 주소 (TEXT로 변경)
+    browser TEXT,                          -- 클라이언트 브라우저 (TEXT로 변경)
+    device TEXT,                           -- 클라이언트 디바이스 (TEXT로 변경)
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, -- 생성 시 자동으로 현재 시간
+    CONSTRAINT fk_flag
+        FOREIGN KEY (flag_id)             -- flags 테이블과 외래키 관계
+        REFERENCES flags (id)            -- flags 테이블의 id와 참조
+        ON DELETE CASCADE                 -- flags가 삭제되면 관련된 flag_likes도 삭제
+);
+
+-- 쪼인
+SELECT 
+    f.id,
+    f.name,
+    f.img_url,
+    COALESCE(SUM(fl.like_status), 0) AS like_count
+FROM 
+    flags f
+LEFT JOIN 
+    flag_likes fl
+ON 
+    f.id = fl.flag_id
+GROUP BY 
+    f.id, f.name, f.img_url
+ORDER BY 
+    f.id DESC
 ```
 ### 🌱 Env
 - Rename env.dummy to .env.local. Make sure the file is not pushed to the public GitHub repository.
