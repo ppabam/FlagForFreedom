@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       const pathname = req.nextUrl.pathname || "unknown";
   
       // 데이터베이스 삽입
-      await insertFlagLikeInDatabase(flagId, likeStatus, ipAddress, browser, device, domain);
+      await insertFlagLikeInDatabase(flagId, likeStatus, ipAddress, browser, device, domain, language, pathname);
   
       return NextResponse.json({
         success: true,
