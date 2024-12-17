@@ -4,4 +4,5 @@ export type Flag = {
   // latitude: number;
   // longitude: number;
   img_url: string;
+  like_count: number;
 };

@@ -1,33 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 import Image from "next/image";
-import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { InputFlagSearch } from "@/components/my/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import { AvatarSadness } from "@/components/my/avatar-sadness";
-// import {
-//   Dialog,
-//   DialogClose,
-//   DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { Button } from "@/components/ui/button";
-import {
-  // Copy,
-  MapPinned,
-  // ShieldOff,
-  Heart,
-} from "lucide-react";
 
+import { Heart, MapPinned } from "lucide-react";
+import { parseCookies, setCookie } from "nookies"; // nookies 사용
+
+import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
+import { randomBytes } from "crypto";
 interface FlagsProps {
   initialFlags: Flag[];
 }
@@ -112,32 +96,42 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                     className="w-full h-full object-cover transition-transform duration-300"
                     loading="lazy"
                   />
-                  {/* 좋아요 버튼 */}
-                  <button
-                    onClick={() => toggleLike(String(flag.id))}
-                    className={`absolute bottom-2 left-2 flex items-center justify-center w-7 h-7 rounded-full ${
-                      likedFlags.includes(String(flag.id))
-                        ? "bg-red-500 text-white"
-                        : "bg-gray-700 text-gray-300"
-                    }`}
-                  >
-                    <Heart className="w-5 h-5" />
-                  </button>
 
-                  {/* MapPinned 버튼 (우측 하단) */}
-                  <button
-                    onClick={() =>
-                      console.log(`MapPinned clicked for ${flag.id}`)
-                    } // 버튼 클릭 핸들러
-                    className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
-                  >
-                    <MapPinned className="w-5 h-5" />
-                  </button>
+                  {/* 좋아요 버튼과 숫자 (이미지 좌측 하단) */}
+                  {flag.like_count > -1 && (process.env.NEXT_PUBLIC_LIKE_BUTTON_ENABLED || "OFF") === "ON" && (
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1">
+                      <button
+                        onClick={() => toggleLike(String(flag.id))}
+                        className={`flex items-center justify-center w-7 h-7 rounded-full ${
+                          likedFlags.includes(String(flag.id))
+                            ? "bg-red-500 text-white"
+                            : "bg-gray-700 text-gray-300"
+                        }`}
+                      >
+                        <Heart className="w-5 h-5" />
+                      </button>
+                      <span className="text-white text-sm">
+                        {/* {Math.floor(Math.random() * 10000) + 1} */}
+                        {flag.like_count}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* MapPinned 버튼 (환경 변수로 ON/OFF) */}
+                  {(process.env.NEXT_PUBLIC_MAP_PINNED_ENABLED || "OFF") ===
+                    "ON" && (
+                    <button
+                      onClick={() =>
+                        console.log(`MapPinned clicked for ${flag.id}`)
+                      }
+                      className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
+                    >
+                      <MapPinned className="w-5 h-5" />
+                    </button>
+                  )}
                 </div>
                 {/* 플래그 이름 */}
-                <p className="mt-2 text-pretty font-bold">
-                  {flag.name}
-                </p>
+                <p className="mt-2 text-pretty font-bold">{flag.name}</p>
               </li>
             ))}
           </ul>

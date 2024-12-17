@@ -16,7 +16,14 @@ const getDbData = unstable_cache(
         WHERE id = 1;
       `;
 
-    const data = await sql<Flag>`SELECT id, name, img_url FROM flags ORDER BY id DESC`;
+    const data = await sql<Flag>`
+    SELECT id, 
+      name, 
+      img_url,
+      FLOOR(RANDOM() * 10001) AS like_count
+    FROM 
+      flags 
+    ORDER BY id DESC`;
     return data.rows;
   },
   ['msi'],
