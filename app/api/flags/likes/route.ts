@@ -27,9 +27,14 @@ export async function POST(req: NextRequest) {
         ? "mobile"
         : "desktop";
       const language = req.headers.get("accept-language") || "en-US";
+
+      // 도메인 정보 추출
+      const domain = req.headers.get("host") || "unknown";
+
+      const pathname = req.nextUrl.pathname || "unknown";
   
       // 데이터베이스 삽입
-      await insertFlagLikeInDatabase(flagId, likeStatus, ipAddress, browser, device);
+      await insertFlagLikeInDatabase(flagId, likeStatus, ipAddress, browser, device, domain);
   
       return NextResponse.json({
         success: true,

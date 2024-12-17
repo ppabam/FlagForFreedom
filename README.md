@@ -50,6 +50,13 @@ CREATE TABLE flag_likes (
         ON DELETE CASCADE                 -- flags가 삭제되면 관련된 flag_likes도 삭제
 );
 
+ALTER TABLE flag_likes
+ADD COLUMN language TEXT,       -- 클라이언트 언어
+ADD COLUMN domain TEXT;
+
+ALTER TABLE flag_likes
+ADD COLUMN pathname TEXT;
+
 -- 쪼인
 SELECT 
     f.id,

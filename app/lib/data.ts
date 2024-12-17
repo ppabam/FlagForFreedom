@@ -89,12 +89,15 @@ export async function insertFlagLikeInDatabase(
   likeStatus: number,
   ipAddress: string,
   browser: string,
-  device: string
+  device: string,
+  domain: string,
+  language: string,
+  pathname: string,
 ): Promise<void> {
   try {
     await sql`
-      INSERT INTO flag_likes (flag_id, like_status, ip_address, browser, device)
-      VALUES (${flagId}, ${likeStatus}, ${ipAddress}, ${browser}, ${device})`;
+      INSERT INTO flag_likes (flag_id, like_status, ip_address, browser, device, domain, language, pathname)
+      VALUES (${flagId}, ${likeStatus}, ${ipAddress}, ${browser}, ${device}, ${domain}, ${language}, ${pathname})`;
     console.log(`Successfully inserted like for flag_id: ${flagId}`);
   } catch (error) {
     console.error("Error inserting flag like into the database:", error);
