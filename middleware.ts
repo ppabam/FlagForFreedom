@@ -17,15 +17,16 @@ const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS?.split(",") || [];
 const STG = process.env.IS_STG;
 
 export async function middleware(request: NextRequest) {
-  if (STG === "LOCAL") {
+  if (STG !== "LOCAL") {
     // STEP 1
     const origin = request.headers.get("origin");
     const referer = request.headers.get("referer");
+    //const host = request.headers.get('host');
 
-    //console.log("Request Headers:");
-    //request.headers.forEach((value, key) => {
-    //  console.log(`${key}: ${value}`);
-    //});
+    console.log("Request Headers:");
+    request.headers.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
 
     const isValidOrigin =
       ALLOWED_DOMAINS.includes(origin || "") ||
