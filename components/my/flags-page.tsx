@@ -68,16 +68,16 @@ import {
   Info,
   Menu,
   // Barcode,
-  LogOut,
-  SortAsc,
-  SortDesc,
-  HeartOff,
-  HeartHandshake,
-  CalendarHeart,
-  Images,
-  MapPinned,
-  Github,
-  Shuffle,
+  // LogOut,
+  // SortAsc,
+  // SortDesc,
+  // HeartOff,
+  // HeartHandshake,
+  // CalendarHeart,
+  // Images,
+  // MapPinned,
+  // Github,
+  // Shuffle,
 } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
@@ -85,15 +85,15 @@ import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 
 import { getAuthHeaders } from "@/lib/utils";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuGroup,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
 interface FlagsProps {
   initialFlags: Flag[];
