@@ -6,7 +6,7 @@ import Image from "next/image";
 import { InputFlagSearch } from "@/components/my/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import * as React from "react";
-import { Minus, Plus } from "lucide-react";
+
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
 
 import { Button } from "@/components/ui/button";
@@ -63,7 +63,16 @@ const data = [
   },
 ];
 
-import { Heart, Info, Menu } from "lucide-react";
+import {
+  CalendarArrowDown,
+  CalendarArrowUp,
+  Heart,
+  Info,
+  Menu,
+  ArrowDownWideNarrow,
+  ArrowDownNarrowWide,
+  Shuffle,
+} from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
@@ -212,11 +221,6 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
     setFilteredFlags(filtered);
   };
 
-  const [goal, setGoal] = React.useState(350);
-
-  function onClick(adjustment: number) {
-    setGoal(Math.max(200, Math.min(400, goal + adjustment)));
-  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -232,43 +236,39 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
               <DrawerContent className="bg-indigo-600 bg-opacity-70">
                 <div className="mx-auto w-full max-w-sm">
                   <DrawerHeader>
-                    <DrawerTitle>
+                    <DrawerTitle className="text-center">
                       12.3 계엄배 천하제일 재기발랄 깃발대회
                     </DrawerTitle>
-                    <DrawerDescription>
+                    <DrawerDescription className="text-border text-center">
                       민주주의 해방전선 나만 깃발 없엉 총연맹
                     </DrawerDescription>
                   </DrawerHeader>
                   <div className="p-4 pb-0">
                     <div className="flex items-center justify-center space-x-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-full"
-                        onClick={() => onClick(-10)}
-                        disabled={goal <= 200}
-                      >
-                        <Minus />
-                        <span className="sr-only">Decrease</span>
-                      </Button>
                       <div className="flex-1 text-center">
-                        <div className="text-7xl font-bold tracking-tighter">
-                          {goal}
+                        <div className="text-6xl font-bold tracking-tighter">
+                          {1717}
                         </div>
-                        <div className="text-[0.70rem] uppercase text-muted-foreground">
-                          Calories/day
+                        <div className="text-[0.70rem] uppercase text-muted-foreground items-center">
+                          Heart
                         </div>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-full"
-                        onClick={() => onClick(10)}
-                        disabled={goal >= 400}
-                      >
-                        <Plus />
-                        <span className="sr-only">Increase</span>
-                      </Button>
+                      <div className="flex-1 text-center">
+                        <div className="text-6xl font-bold tracking-tighter">
+                          {22}
+                        </div>
+                        <div className="text-[0.70rem] uppercase text-muted-foreground">
+                          User
+                        </div>
+                      </div>
+                      <div className="flex-1 text-center">
+                        <div className="text-6xl font-bold tracking-tighter">
+                          {376}
+                        </div>
+                        <div className="text-[0.70rem] uppercase text-muted-foreground">
+                          Flags
+                        </div>
+                      </div>
                     </div>
                     <div className="mt-3 h-[120px]">
                       <ResponsiveContainer width="100%" height="100%">
@@ -296,22 +296,8 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                       ) => setSortOrder(value)}
                     >
                       {/* 데스크탑: 2열 레이아웃 (등록일, 좋아요) */}
-                      <div className="grid grid-cols-5 sm:grid-cols-1 gap-4">
+                      <div className="grid grid-cols-5 sm:grid-cols-2 gap-4">
                         {/* 첫 번째 그룹: 등록일 최신, 과거 */}
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="idAsc"
-                            id="sort-idAsc"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-idAsc"
-                            className="text-lg font-medium"
-                          >
-                            등록순 최신
-                          </label>
-                        </div>
-
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem
                             value="idDesc"
@@ -322,7 +308,21 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                             htmlFor="sort-idDesc"
                             className="text-lg font-medium"
                           >
-                            등록순 과거
+                            <CalendarArrowDown />
+                          </label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="idAsc"
+                            id="sort-idAsc"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-idAsc"
+                            className="text-lg font-medium"
+                          >
+                            <CalendarArrowUp />
                           </label>
                         </div>
 
@@ -337,7 +337,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                             htmlFor="sort-desc"
                             className="text-lg font-medium"
                           >
-                            좋아요 내림차순
+                            <ArrowDownWideNarrow />
                           </label>
                         </div>
 
@@ -351,7 +351,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                             htmlFor="sort-asc"
                             className="text-lg font-medium"
                           >
-                            좋아요 오름차순
+                            <ArrowDownNarrowWide />
                           </label>
                         </div>
 
@@ -365,7 +365,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                             htmlFor="sort-shuffle"
                             className="text-lg font-medium"
                           >
-                            무작위
+                            <Shuffle />
                           </label>
                         </div>
                       </div>
