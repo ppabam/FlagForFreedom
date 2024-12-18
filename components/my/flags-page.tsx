@@ -287,7 +287,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                     )}
                 </div>
                 {/* 플래그 이름 */}
-                <p p className="mt-2 text-pretty font-bold" > {flag.name}</p>
+                <p className="mt-2 text-pretty font-bold" > {flag.name}</p>
               </li>
             ))}
           </ul>
