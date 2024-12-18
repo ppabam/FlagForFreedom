@@ -8,10 +8,10 @@ import { ButtonUpload } from "@/components/my/button-upload";
 import { AvatarSadness } from "@/components/my/avatar-sadness";
 
 import {
-  Heart, Info,
-  // Menu,
+  Heart, 
+  Info,
+  Menu,
   // Barcode,
-  Logs,
   LogOut,
   SortAsc,
   SortDesc,
@@ -159,16 +159,11 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <a href="/" className="flex items-center space-x-2">
-              <AvatarSadness />
-            </a>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild >
-                {/* 회전하는 아이콘 */}
-                <Logs
+                <Menu
                   size={33}
-                  className="text-red-500"
+                  // className="text-red-500"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
