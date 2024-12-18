@@ -1,6 +1,11 @@
 # 🚩 Flag123
 ### 12.3 계엄배 천하제일 재기발랄 깃발대회 by 민주주의 해방전선 나만 깃발 없엉 총연맹
-
+```
+"12.3 계엄배 천하제일깃발대회" 운영자입니다.
+올려주신 사진을 아래 대회 싸이트(https://f.diginori.com)에 업로드했습니다.
+혹시 문제가 될 경우 말씀해(x:samdulshop) 주시면 즉시 삭제하도록 하겠습니다.
+감사합니다.
+```
 - Martial law was declared in the Republic of Korea on Dec. 3, 2025, but lightly marched through the country, armed with cheerful energy. Awesome
 - [for her intense poetic prose that confronts historical traumas and exposes the fragility of human life](https://www.nobelprize.org/prizes/literature/2024/press-release/)
 - [I would like to share the meaning of this award, which is for literature, with you – standing here in opposition to violence together](https://www.nobelprize.org/prizes/literature/2024/han/speech/)
@@ -8,6 +13,7 @@
     <img src="https://github.com/user-attachments/assets/b3f29422-60b7-436d-b3eb-70035c1fdacb" width="777">
     
     <img src="https://github.com/user-attachments/assets/b1b16e3f-f7ea-4d6c-a5b6-9d4e7f38225d" width="777">
+
 
 
 ## 📝 Initial Dummy Data 
