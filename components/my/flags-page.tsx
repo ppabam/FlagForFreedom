@@ -289,7 +289,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                         </button>
                         {/* 말풍선 부분 */}
                         <div className="relative flex items-center ml-2"> {/* ml-2로 말풍선 위치 조정 */}
-                          <span className="text-white bg-blue-500 text-sm px-3 py-1 rounded-lg relative z-10">
+                          <span className="text-white bg-blue-500 text-sm px-3 py-1 rounded-lg relative z-0">
                             {flag.like_count}
                           </span>
 
