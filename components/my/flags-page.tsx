@@ -21,7 +21,6 @@ import {
   Images,
   MapPinned,
   Cloud,
-  Dices,
   Shuffle
 } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
@@ -193,17 +192,17 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem disabled>
                     <Heart />
                     <span>좋아요 선택 보기</span>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem>
+                  <DropdownMenuItem disabled>
                     <HeartOff />
                     <span>좋아요 뺴고 보기</span>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem>
+                  <DropdownMenuItem disabled>
                     <HeartHandshake />
                     <span>좋아요 모두 보기</span>
                   </DropdownMenuItem>
