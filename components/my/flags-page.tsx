@@ -375,12 +375,12 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   <DrawerFooter>
                     <Button
                       variant="destructive"
-                      onClick={() => sortFlags("shuffle")}
+                      onClick={() => window.location.href = '/123'}
                     >
                       포고령
                     </Button>
                     <DrawerClose asChild>
-                      <Button variant="outline">Cancel</Button>
+                      <Button variant="outline">대통령 윤석열을 파면한다</Button>
                     </DrawerClose>
                   </DrawerFooter>
                 </div>
