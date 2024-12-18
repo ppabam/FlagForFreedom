@@ -10,6 +10,8 @@ import { AvatarSadness } from "@/components/my/avatar-sadness";
 import {
   Heart, Info,
   // Menu,
+  // Barcode,
+  Logs,
   LogOut,
   SortAsc,
   SortDesc,
@@ -18,7 +20,7 @@ import {
   CalendarHeart,
   Images,
   MapPinned,
-  Barcode,
+
   Cloud,
 
 
@@ -134,9 +136,9 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
             <DropdownMenu >
               <DropdownMenuTrigger asChild >
                 {/* 회전하는 아이콘 */}
-                <Barcode
+                <Logs
                   size={33}
-                  className="animate-spin-slow text-red-500"
+                  className="text-red-500 hover:animate-ping duration-1000"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
@@ -200,36 +202,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
               <span className="text-indigo-400 hidden lg:inline">12.3 계엄배</span>
               <span className="text-indigo-200 hidden md:inline">천하제일 깃발대회</span>
             </h1>
-
           </div>
-
-          {/* <Menubar className="flex items-center justify-center bg-gradient-to-r to-indigo-600 from-blue-500 text-white py-2 px-1 rounded-md">
-            <MenubarMenu>
-              <MenubarTrigger><Menu /></MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>
-                  New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem>
-                  New Window <MenubarShortcut>⌘N</MenubarShortcut>
-                </MenubarItem>
-                <MenubarItem disabled>New Incognito Window</MenubarItem>
-                <MenubarSeparator />
-                <MenubarSub>
-                  <MenubarSubTrigger>Share</MenubarSubTrigger>
-                  <MenubarSubContent>
-                    <MenubarItem>Email link</MenubarItem>
-                    <MenubarItem>Messages</MenubarItem>
-                    <MenubarItem>Notes</MenubarItem>
-                  </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSeparator />
-                <MenubarItem>
-                  Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                </MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar> */}
 
           {/* Search Field */}
           <div className="flex-1">
@@ -259,6 +232,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                     height={300}
                     className="w-full h-full object-cover transition-transform duration-300"
                     loading="lazy"
+                    onClick={() => toggleLike(String(flag.id))}
                   />
 
                   {/* 좋아요 버튼과 숫자 (이미지 좌측 하단) */}
