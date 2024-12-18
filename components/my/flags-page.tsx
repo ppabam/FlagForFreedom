@@ -7,12 +7,25 @@ import { InputFlagSearch } from "@/components/my/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import { AvatarSadness } from "@/components/my/avatar-sadness";
 
-import { Heart, Info } from "lucide-react";
+import { Heart, Info, Menu } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 
 import { getAuthHeaders } from "@/lib/utils"
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "@/components/ui/menubar"
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -104,12 +117,70 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
           <div className="flex items-center space-x-2">
             <a href="/" className="flex items-center space-x-2">
               <AvatarSadness />
-              <h1 className="text-xl font-bold text-green-300 hidden md:flex space-x-1">
-                <span className="text-indigo-400">12.3 계엄배</span>
-                <span className="text-indigo-200">천하제일 깃발대회</span>
-              </h1>
             </a>
+
+            <Menubar className="flex items-center justify-center bg-gradient-to-r to-indigo-600 from-blue-500 text-white py-2 px-1 rounded-md">
+              <MenubarMenu>
+                <MenubarTrigger><Menu /></MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>
+                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem>
+                    New Window <MenubarShortcut>⌘N</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem disabled>New Incognito Window</MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarSub>
+                    <MenubarSubTrigger>Share</MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem>Email link</MenubarItem>
+                      <MenubarItem>Messages</MenubarItem>
+                      <MenubarItem>Notes</MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    Print... <MenubarShortcut>⌘P</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+
+            <h1 className="text-xl font-bold text-green-300 flex space-x-1">
+              <span className="text-indigo-400 hidden lg:inline">12.3 계엄배</span>
+              <span className="text-indigo-200 hidden md:inline">천하제일 깃발대회</span>
+            </h1>
+
           </div>
+
+          {/* <Menubar className="flex items-center justify-center bg-gradient-to-r to-indigo-600 from-blue-500 text-white py-2 px-1 rounded-md">
+            <MenubarMenu>
+              <MenubarTrigger><Menu /></MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>
+                  New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                </MenubarItem>
+                <MenubarItem>
+                  New Window <MenubarShortcut>⌘N</MenubarShortcut>
+                </MenubarItem>
+                <MenubarItem disabled>New Incognito Window</MenubarItem>
+                <MenubarSeparator />
+                <MenubarSub>
+                  <MenubarSubTrigger>Share</MenubarSubTrigger>
+                  <MenubarSubContent>
+                    <MenubarItem>Email link</MenubarItem>
+                    <MenubarItem>Messages</MenubarItem>
+                    <MenubarItem>Notes</MenubarItem>
+                  </MenubarSubContent>
+                </MenubarSub>
+                <MenubarSeparator />
+                <MenubarItem>
+                  Print... <MenubarShortcut>⌘P</MenubarShortcut>
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar> */}
 
           {/* Search Field */}
           <div className="flex-1">
