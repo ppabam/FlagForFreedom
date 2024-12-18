@@ -20,10 +20,9 @@ import {
   CalendarHeart,
   Images,
   MapPinned,
-
   Cloud,
-
-
+  Dices,
+  Shuffle
 } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
@@ -53,6 +52,29 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [likedFlags, setLikedFlags] = useState<string[]>([]); // 좋아요된 플래그 ID 배열
   const [animatingFlags, setAnimatingFlags] = useState<{ [key: string]: boolean }>({}); // 개별 플래그 애니메이션 상태
 
+  const shuffleFlags = () => {
+    const shuffledFlags = [...filteredFlags];
+    for (let i = shuffledFlags.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledFlags[i], shuffledFlags[j]] = [shuffledFlags[j], shuffledFlags[i]];
+    }
+    setFilteredFlags(shuffledFlags);
+  };
+
+  const sortFlags = (order: "asc" | "desc" | "shuffle") => {
+    if (order === "shuffle") {
+      shuffleFlags();
+      return;
+    }
+
+    const sortedFlags = [...filteredFlags].sort((a, b) => {
+      if (order === "desc") {
+        return b.like_count - a.like_count; // 내림차순
+      }
+      return a.like_count - b.like_count; // 오름차순
+    });
+    setFilteredFlags(sortedFlags);
+  };
 
   // 초기 쿠키 로드
   useEffect(() => {
@@ -142,7 +164,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
               <AvatarSadness />
             </a>
 
-            <DropdownMenu >
+            <DropdownMenu>
               <DropdownMenuTrigger asChild >
                 {/* 회전하는 아이콘 */}
                 <Logs
@@ -154,13 +176,18 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                 <DropdownMenuLabel>MENU</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => sortFlags("desc")}>
                     <SortDesc />
-                    <span>좋아요 내림차순 정열</span>
+                    <span>좋아요 내림차순</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => sortFlags("asc")}>
                     <SortAsc />
-                    <span>좋아요 오름차순 정열</span>
+                    <span>좋아요 오름차순</span>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem onClick={() => sortFlags("shuffle")}>
+                    <Shuffle />
+                    <span>좋아요 뒤죽박죽</span>
                   </DropdownMenuItem>
 
                 </DropdownMenuGroup>
