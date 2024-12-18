@@ -20,7 +20,7 @@ import {
   CalendarHeart,
   Images,
   MapPinned,
-  Cloud,
+  Github,
   Shuffle
 } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
@@ -168,7 +168,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                 {/* 회전하는 아이콘 */}
                 <Logs
                   size={33}
-                  className="text-red-500 hover:animate-ping duration-1000"
+                  className="text-red-500"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
@@ -220,9 +220,9 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   <Images />
                   <span>깃발 모아 보기</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <Cloud />
-                  <span>API</span>
+                <DropdownMenuItem onClick={() => window.location.href = 'https://github.com/dMario24/flag123?tab=readme-ov-file#-contribution'}>
+                  <Github />
+                  <span>Contribution</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
