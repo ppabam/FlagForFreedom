@@ -7,7 +7,22 @@ import { InputFlagSearch } from "@/components/my/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import { AvatarSadness } from "@/components/my/avatar-sadness";
 
-import { Heart, Info, Menu } from "lucide-react";
+import {
+  Heart, Info,
+  // Menu,
+  LogOut,
+  SortAsc,
+  SortDesc,
+  HeartOff,
+  HeartHandshake,
+  CalendarHeart,
+  Images,
+  MapPinned,
+  Barcode,
+  Cloud,
+
+
+} from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
@@ -15,17 +30,14 @@ import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 import { getAuthHeaders } from "@/lib/utils"
 
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from "@/components/ui/menubar"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -119,33 +131,70 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
               <AvatarSadness />
             </a>
 
-            <Menubar className="flex items-center justify-center bg-gradient-to-r to-indigo-600 from-blue-500 text-white py-2 px-1 rounded-md">
-              <MenubarMenu>
-                <MenubarTrigger><Menu /></MenubarTrigger>
-                <MenubarContent>
-                  <MenubarItem>
-                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem>
-                    New Window <MenubarShortcut>⌘N</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem disabled>New Incognito Window</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarSub>
-                    <MenubarSubTrigger>Share</MenubarSubTrigger>
-                    <MenubarSubContent>
-                      <MenubarItem>Email link</MenubarItem>
-                      <MenubarItem>Messages</MenubarItem>
-                      <MenubarItem>Notes</MenubarItem>
-                    </MenubarSubContent>
-                  </MenubarSub>
-                  <MenubarSeparator />
-                  <MenubarItem>
-                    Print... <MenubarShortcut>⌘P</MenubarShortcut>
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+            <DropdownMenu >
+              <DropdownMenuTrigger asChild >
+                {/* 회전하는 아이콘 */}
+                <Barcode
+                  size={33}
+                  className="animate-spin-slow text-red-500"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>MENU</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <SortDesc />
+                    <span>좋아요 내림차순 정열</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <SortAsc />
+                    <span>좋아요 오름차순 정열</span>
+                  </DropdownMenuItem>
+
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Heart />
+                    <span>좋아요 선택 보기</span>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem>
+                    <HeartOff />
+                    <span>좋아요 뺴고 보기</span>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem>
+                    <HeartHandshake />
+                    <span>좋아요 모두 보기</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem disabled>
+                  <CalendarHeart />
+                  <span>기간 좋아 순위</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <MapPinned />
+                  <span>깃발 위치 정보</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <Images />
+                  <span>깃발 모아 보기</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <Cloud />
+                  <span>API</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut />
+                  <span>나가기</span>
+                  {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <h1 className="text-xl font-bold text-green-300 flex space-x-1">
               <span className="text-indigo-400 hidden lg:inline">12.3 계엄배</span>
