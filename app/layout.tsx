@@ -23,7 +23,7 @@ const DESCRIPTION = "12.3 계엄배 천하제일 깃발대회 by 민주주의 �
 
 export const metadata: Metadata = {
   generator: 'Next.js',
-  applicationName: 'flag123',
+  applicationName: '천하제일깃발대회',
   referrer: 'origin-when-cross-origin',
   keywords: ['martial law',
     '2024 South Korean martial law crisis',
@@ -41,21 +41,21 @@ export const metadata: Metadata = {
 
   ],
   authors: [{ name: 'TomSawyer' }, { name: 'Josh', url: 'https://flag123.diginori.com' }],
-  creator: 'Tom Sawyer',
-  publisher: 'diginori',
+  creator: '민주주의 해방전선 나만 깃발 없엉 총연맹',
+  publisher: '깃없총',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  title: "깃없총",
+  title: "천하제일깃발대회 by 깃없총",
   description: DESCRIPTION,
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "깃없총",
-    siteName: "나만 깃발 없엉",
+    title: "천하제일깃발대회",
+    siteName: "12.3 계엄배 천하제일 깃발 대회",
     description: DESCRIPTION,
     locale: 'ko_KR',
     type: 'website',
@@ -67,10 +67,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '깃없총',
+    title: '12.3 계엄배 천하제일깃발대회',
     description: DESCRIPTION,
     siteId: 'samdulshop',
-    creator: '@나만깃발없엉',
+    creator: '민주주의 해방전선 나만 깃발 없엉 총연맹',
     creatorId: 'samdulshop',
     images: ['https://flag123.diginori.com/twitter-image.png'], // Must be an absolute URL
   },
