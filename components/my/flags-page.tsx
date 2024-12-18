@@ -51,6 +51,8 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFlags, setFilteredFlags] = useState<Flag[]>(initialFlags);
   const [likedFlags, setLikedFlags] = useState<string[]>([]); // 좋아요된 플래그 ID 배열
+  const [animatingFlags, setAnimatingFlags] = useState<{ [key: string]: boolean }>({}); // 개별 플래그 애니메이션 상태
+
 
   // 초기 쿠키 로드
   useEffect(() => {
@@ -77,6 +79,12 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
       return flag;
     });
     setFilteredFlags(updatedLikeCount); // UI에서 바로 like_count 반영
+
+    // 애니메이션 상태 업데이트
+    setAnimatingFlags((prev) => ({ ...prev, [flagId]: true }));
+    setTimeout(() => {
+      setAnimatingFlags((prev) => ({ ...prev, [flagId]: false }));
+    }, 500); // 애니메이션 지속 시간
 
     // 쿠키
     let updatedLikes = [...likedFlags];
@@ -121,6 +129,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
     );
     setFilteredFlags(filtered);
   };
+
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -247,7 +256,10 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                             : "bg-gray-700 text-gray-300"
                             }`}
                         >
-                          <Heart className="w-5 h-5" />
+                          <Heart
+                            className={`w-5 h-5 transition-transform duration-500 ${animatingFlags[flag.id] ? "animate-heartbeat" : "scale-100"
+                              }`}
+                          />
                         </button>
                         {/* 말풍선 부분 */}
                         <div className="relative flex items-center ml-2"> {/* ml-2로 말풍선 위치 조정 */}
@@ -275,12 +287,12 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                     )}
                 </div>
                 {/* 플래그 이름 */}
-                <p className="mt-2 text-pretty font-bold">{flag.name}</p>
+                <p p className="mt-2 text-pretty font-bold" > {flag.name}</p>
               </li>
             ))}
           </ul>
         </section>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }

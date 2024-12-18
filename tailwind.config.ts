@@ -9,8 +9,25 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			scale: {
+				'200': '3', // scale-200 추가 (2배 크기)
+			},
 			animation: {
 				"spin-slow": "spin 60s linear infinite", // N초 주기로 회전
+				"heartbeat": "heartbeat 1s ease-in-out infinite",  // heartbeat 애니메이션 추가
+			},
+			keyframes: {
+				heartbeat: {
+					"0%": {
+						transform: "scale(1)",
+					},
+					"50%": {
+						transform: "scale(30)", // 심장이 커짐
+					},
+					"100%": {
+						transform: "scale(1)", // 원래 크기로 돌아옴
+					},
+				},
 			},
 			colors: {
 				background: 'hsl(var(--background))',
