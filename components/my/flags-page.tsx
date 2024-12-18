@@ -63,43 +63,20 @@ const data = [
   },
 ];
 
-import {
-  Heart,
-  Info,
-  Menu,
-  // Barcode,
-  // LogOut,
-  // SortAsc,
-  // SortDesc,
-  // HeartOff,
-  // HeartHandshake,
-  // CalendarHeart,
-  // Images,
-  // MapPinned,
-  // Github,
-  // Shuffle,
-} from "lucide-react";
+import { Heart, Info, Menu } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 
 import { getAuthHeaders } from "@/lib/utils";
-
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuGroup,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface FlagsProps {
   initialFlags: Flag[];
 }
 
 const LIKED_FLAGS_COOKIE_NAME = "likedFlagsV241218.3";
+type SortOrder = "shuffle" | "asc" | "desc" | "idDesc" | "idAsc";
 
 export default function FlagsPage({ initialFlags }: FlagsProps) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,37 +86,59 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
     [key: string]: boolean;
   }>({}); // 개별 플래그 애니메이션 상태
 
-  const shuffleFlags = () => {
-    const shuffledFlags = [...filteredFlags];
-    for (let i = shuffledFlags.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledFlags[i], shuffledFlags[j]] = [
-        shuffledFlags[j],
-        shuffledFlags[i],
-      ];
+  const [sortOrder, setSortOrder] = useState<SortOrder>("idDesc");
+
+  const sortFlags = (order: SortOrder) => {
+    switch (order) {
+      case "asc":
+        console.log("Sorting flags in ascending order");
+        setFilteredFlags((prev) =>
+          [...prev].sort((a, b) => a.like_count - b.like_count)
+        );
+        break;
+      case "desc":
+        console.log("Sorting flags in descending order");
+        setFilteredFlags((prev) =>
+          [...prev].sort((a, b) => b.like_count - a.like_count)
+        );
+        break;
+      case "shuffle":
+        console.log("Shuffling flags");
+        setFilteredFlags((prev) => {
+          const shuffled = [...prev];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+          return shuffled;
+        });
+        break;
+      case "idDesc":
+        console.log("Sorting flags by id in descending order");
+        setFilteredFlags((prev) => [...prev].sort((a, b) => b.id - a.id));
+        break;
+      case "idAsc":
+        console.log("Sorting flags by id in ascending order");
+        setFilteredFlags((prev) => [...prev].sort((a, b) => a.id - b.id));
+        break;
+      default:
+        console.log("Unknown sort order");
     }
-    setFilteredFlags(shuffledFlags);
   };
 
-  const sortFlags = (order: "asc" | "desc" | "shuffle") => {
-    if (order === "shuffle") {
-      shuffleFlags();
-      return;
-    }
+  useEffect(() => {
+    // 컴포넌트 로드 시 기본 정렬 "idDesc" 적용
+    sortFlags("idDesc");
+  }, []);
 
-    const sortedFlags = [...filteredFlags].sort((a, b) => {
-      if (order === "desc") {
-        return b.like_count - a.like_count; // 내림차순
-      }
-      return a.like_count - b.like_count; // 오름차순
-    });
-    setFilteredFlags(sortedFlags);
-  };
+  useEffect(() => {
+    // sortOrder가 변경될 때 정렬 수행
+    sortFlags(sortOrder);
+  }, [sortOrder]);
 
   // 초기 쿠키 로드
   useEffect(() => {
     const cookies = parseCookies();
-    // const liked = cookies.likedFlags ? JSON.parse(cookies.likedFlags) : [];
     const liked = cookies[LIKED_FLAGS_COOKIE_NAME]
       ? JSON.parse(cookies[LIKED_FLAGS_COOKIE_NAME])
       : [];
@@ -172,7 +171,6 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
 
     // 쿠키
     let updatedLikes = [...likedFlags];
-    // const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
 
     if (likeStatus === -1) {
       updatedLikes = updatedLikes.filter((id) => id !== flagId);
@@ -225,87 +223,13 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
       {/* Top bar */}
       <header className="fixed top-0 left-0 w-full bg-gradient-to-r to-indigo-600 from-blue-500 text-white shadow-md z-10">
         <div className="container mx-auto flex items-center px-4 py-3 space-x-4">
-          {/* Logo */}
+          {/* MENU */}
           <div className="flex items-center space-x-2">
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Menu
-                  size={33}
-                />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>MENU</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => sortFlags("desc")}>
-                    <SortDesc />
-                    <span>좋아요 내림차순</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => sortFlags("asc")}>
-                    <SortAsc />
-                    <span>좋아요 오름차순</span>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem onClick={() => sortFlags("shuffle")}>
-                    <Shuffle />
-                    <span>좋아요 뒤죽박죽</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem disabled>
-                    <Heart />
-                    <span>좋아요 선택 보기</span>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem disabled>
-                    <HeartOff />
-                    <span>좋아요 뺴고 보기</span>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem disabled>
-                    <HeartHandshake />
-                    <span>좋아요 모두 보기</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem disabled>
-                  <CalendarHeart />
-                  <span>기간 좋아 순위</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <MapPinned />
-                  <span>깃발 위치 정보</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <Images />
-                  <span>깃발 모아 보기</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() =>
-                    (window.location.href =
-                      "https://github.com/dMario24/flag123?tab=readme-ov-file#-contribution")
-                  }
-                >
-                  <Github />
-                  <span>Contribution</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut />
-                  <span>나가기</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
-
             <Drawer>
               <DrawerTrigger asChild>
-                <Menu
-                  size={33}
-                  // className="text-red-500"
-                />
+                <Menu size={33} />
               </DrawerTrigger>
-              <DrawerContent>
+              <DrawerContent className="bg-indigo-600 bg-opacity-70">
                 <div className="mx-auto w-full max-w-sm">
                   <DrawerHeader>
                     <DrawerTitle>
@@ -362,10 +286,99 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                       </ResponsiveContainer>
                     </div>
                   </div>
+
+                  <div className="p-4">
+                    <RadioGroup
+                      className="space-y-4"
+                      value={sortOrder}
+                      onValueChange={(
+                        value: "shuffle" | "asc" | "desc" | "idDesc" | "idAsc"
+                      ) => setSortOrder(value)}
+                    >
+                      {/* 데스크탑: 2열 레이아웃 (등록일, 좋아요) */}
+                      <div className="grid grid-cols-5 sm:grid-cols-1 gap-4">
+                        {/* 첫 번째 그룹: 등록일 최신, 과거 */}
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="idAsc"
+                            id="sort-idAsc"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-idAsc"
+                            className="text-lg font-medium"
+                          >
+                            등록순 최신
+                          </label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="idDesc"
+                            id="sort-idDesc"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-idDesc"
+                            className="text-lg font-medium"
+                          >
+                            등록순 과거
+                          </label>
+                        </div>
+
+                        {/* 두 번째 그룹: 좋아요 내림차순, 오름차순, 무작위 */}
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="desc"
+                            id="sort-desc"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-desc"
+                            className="text-lg font-medium"
+                          >
+                            좋아요 내림차순
+                          </label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="asc"
+                            id="sort-asc"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-asc"
+                            className="text-lg font-medium"
+                          >
+                            좋아요 오름차순
+                          </label>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value="shuffle"
+                            id="sort-shuffle"
+                            className="w-8 h-8"
+                          />
+                          <label
+                            htmlFor="sort-shuffle"
+                            className="text-lg font-medium"
+                          >
+                            무작위
+                          </label>
+                        </div>
+                      </div>
+                    </RadioGroup>
+                  </div>
+
                   <DrawerFooter>
-                    <Button onClick={() => sortFlags("desc")}>DESC</Button>
-                    <Button onClick={() => sortFlags("asc")}>ASC</Button>
-                    <Button onClick={() => sortFlags("shuffle")}>SHUFFLE</Button>
+                    <Button
+                      variant="destructive"
+                      onClick={() => sortFlags("shuffle")}
+                    >
+                      포고령
+                    </Button>
                     <DrawerClose asChild>
                       <Button variant="outline">Cancel</Button>
                     </DrawerClose>
