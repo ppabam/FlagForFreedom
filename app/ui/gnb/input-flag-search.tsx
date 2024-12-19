@@ -1,5 +1,8 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useDebouncedCallback } from 'use-debounce';
 
 interface InputFlagSearchProps {
   value: string;
@@ -8,6 +11,10 @@ interface InputFlagSearchProps {
 
 export function InputFlagSearch({ value, onChange }: InputFlagSearchProps) {
   const [placeholder, setPlaceholder] = useState("🔍");
+
+  function handleSearch(term: string) {
+    console.log(term);
+  }
 
   useEffect(() => {
     const handleResize = () => {

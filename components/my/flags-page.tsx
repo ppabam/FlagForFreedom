@@ -3,82 +3,32 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-import { InputFlagSearch } from "@/components/my/input-flag-search";
+import { InputFlagSearch } from "@/app/ui/gnb/input-flag-search";
 import { ButtonUpload } from "@/components/my/button-upload";
 import * as React from "react";
 
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
+
 
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 
-const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
-];
+
 
 import {
-  CalendarArrowDown,
-  CalendarArrowUp,
   Heart,
   Info,
   Menu,
-  ArrowDownWideNarrow,
-  ArrowDownNarrowWide,
-  Shuffle,
 } from "lucide-react";
 import { parseCookies, setCookie } from "nookies"; // nookies 사용
 
 import { Flag } from "@/app/lib/definitions"; // Flag 타입을 가져옵니다.
 
 import { getAuthHeaders } from "@/lib/utils";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import { Search } from "@/app/ui/gnb/search";
+
+import { useSearchParams } from 'next/navigation';
+import { MenuDrawerContent } from "@/app/ui/gnb/menu-drawer-content";
 
 interface FlagsProps {
   initialFlags: Flag[];
@@ -88,7 +38,9 @@ const LIKED_FLAGS_COOKIE_NAME = "likedFlagsV241218.3";
 type SortOrder = "shuffle" | "asc" | "desc" | "idDesc" | "idAsc";
 
 export default function FlagsPage({ initialFlags }: FlagsProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const searchParams = useSearchParams();
+  const sortParam = searchParams.get("sort") as SortOrder | null;  // 타입 단언을 사용하여 SortOrder로 변환;
+
   const [filteredFlags, setFilteredFlags] = useState<Flag[]>(initialFlags);
   const [likedFlags, setLikedFlags] = useState<string[]>([]); // 좋아요된 플래그 ID 배열
   const [animatingFlags, setAnimatingFlags] = useState<{
@@ -135,15 +87,30 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
     }
   };
 
+
+  // sort 값이 변경될 때마다 실행되는 useEffect
   useEffect(() => {
-    // 컴포넌트 로드 시 기본 정렬 "idDesc" 적용
-    sortFlags("idDesc");
-  }, []);
+    if (sortParam) {
+      sortFlags(sortParam);
+      console.log(`Sort parameter changed to: ${sortParam}`);
+    }
+  }, [sortParam]);
+
+  // useEffect(() => {
+  //   // sortOrder가 변경될 때 정렬 수행
+  //   sortFlags(sortOrder);
+  // }, [sortOrder]);
 
   useEffect(() => {
-    // sortOrder가 변경될 때 정렬 수행
-    sortFlags(sortOrder);
-  }, [sortOrder]);
+    setFilteredFlags(initialFlags);
+  }, [initialFlags]);
+
+  // useEffect(() => {
+  //   // 컴포넌트 로드 시 기본 정렬 "idDesc" 적용
+  //   sortFlags("idDesc");
+  // }, []);
+
+
 
   // 초기 쿠키 로드
   useEffect(() => {
@@ -158,6 +125,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
   const toggleLike = async (flagId: string) => {
     // 로컬에서 바로 like_count 값을 업데이트
     const likeStatus = likedFlags.includes(flagId) ? -1 : 1;
+
     const updatedLikeCount = filteredFlags.map((flag) => {
       if (flag.id === Number(flagId)) {
         return {
@@ -213,13 +181,6 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
     }
   };
 
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-    const filtered = initialFlags.filter((flag) =>
-      flag.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredFlags(filtered);
-  };
 
 
   return (
@@ -233,158 +194,7 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
               <DrawerTrigger asChild>
                 <Menu size={33} />
               </DrawerTrigger>
-              <DrawerContent className="bg-indigo-600 bg-opacity-70">
-                <div className="mx-auto w-full max-w-sm">
-                  <DrawerHeader>
-                    <DrawerTitle className="text-center">
-                      12.3 계엄배 천하제일 재기발랄 깃발대회
-                    </DrawerTitle>
-                    <DrawerDescription className="text-border text-center">
-                      민주주의 해방전선 나만 깃발 없엉 총연맹
-                    </DrawerDescription>
-                  </DrawerHeader>
-                  <div className="p-4 pb-0">
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="flex-1 text-center">
-                        <div className="text-6xl font-bold tracking-tighter">
-                          {1717}
-                        </div>
-                        <div className="text-[0.70rem] uppercase text-muted-foreground items-center">
-                          Heart
-                        </div>
-                      </div>
-                      <div className="flex-1 text-center">
-                        <div className="text-6xl font-bold tracking-tighter">
-                          {22}
-                        </div>
-                        <div className="text-[0.70rem] uppercase text-muted-foreground">
-                          User
-                        </div>
-                      </div>
-                      <div className="flex-1 text-center">
-                        <div className="text-6xl font-bold tracking-tighter">
-                          {376}
-                        </div>
-                        <div className="text-[0.70rem] uppercase text-muted-foreground">
-                          Flags
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-3 h-[120px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={data}>
-                          <Bar
-                            dataKey="goal"
-                            style={
-                              {
-                                fill: "hsl(var(--foreground))",
-                                opacity: 0.9,
-                              } as React.CSSProperties
-                            }
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-
-                  <div className="p-4">
-                    <RadioGroup
-                      className="space-y-4"
-                      value={sortOrder}
-                      onValueChange={(
-                        value: "shuffle" | "asc" | "desc" | "idDesc" | "idAsc"
-                      ) => setSortOrder(value)}
-                    >
-                      {/* 데스크탑: 2열 레이아웃 (등록일, 좋아요) */}
-                      <div className="grid grid-cols-5 sm:grid-cols-2 gap-4">
-                        {/* 첫 번째 그룹: 등록일 최신, 과거 */}
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="idDesc"
-                            id="sort-idDesc"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-idDesc"
-                            className="text-lg font-medium"
-                          >
-                            <CalendarArrowDown />
-                          </label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="idAsc"
-                            id="sort-idAsc"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-idAsc"
-                            className="text-lg font-medium"
-                          >
-                            <CalendarArrowUp />
-                          </label>
-                        </div>
-
-                        {/* 두 번째 그룹: 좋아요 내림차순, 오름차순, 무작위 */}
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="desc"
-                            id="sort-desc"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-desc"
-                            className="text-lg font-medium"
-                          >
-                            <ArrowDownWideNarrow />
-                          </label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="asc"
-                            id="sort-asc"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-asc"
-                            className="text-lg font-medium"
-                          >
-                            <ArrowDownNarrowWide />
-                          </label>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="shuffle"
-                            id="sort-shuffle"
-                            className="w-8 h-8"
-                          />
-                          <label
-                            htmlFor="sort-shuffle"
-                            className="text-lg font-medium"
-                          >
-                            <Shuffle />
-                          </label>
-                        </div>
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  <DrawerFooter>
-                    <Button
-                      variant="destructive"
-                      onClick={() => window.location.href = '/123'}
-                    >
-                      포고령
-                    </Button>
-                    <DrawerClose asChild>
-                      <Button variant="outline">대통령 윤석열을 파면한다</Button>
-                    </DrawerClose>
-                  </DrawerFooter>
-                </div>
-              </DrawerContent>
+              <MenuDrawerContent />
             </Drawer>
 
             <h1 className="text-xl font-bold text-green-300 flex space-x-1">
@@ -399,15 +209,12 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
 
           {/* Search Field */}
           <div className="flex-1">
-            <InputFlagSearch
-              value={searchTerm}
-              onChange={(e) => handleSearchChange(e.target.value)}
-            />
+            <Search />
           </div>
 
           {/* Buttons */}
           <div className="flex-shrink-0 w-11">
-            <ButtonUpload searchTerm={searchTerm} />
+            <ButtonUpload searchTerm={searchParams.get('query')?.toString() || ''} />
           </div>
         </div>
       </header>
@@ -431,22 +238,20 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   {/* 좋아요 버튼과 숫자 (이미지 좌측 하단) */}
                   {flag.like_count > -1 &&
                     (process.env.NEXT_PUBLIC_LIKE_BUTTON_ENABLED || "OFF") ===
-                      "ON" && (
+                    "ON" && (
                       <div className="absolute bottom-2 left-2 flex items-center gap-1">
                         <button
                           onClick={() => toggleLike(String(flag.id))}
-                          className={`flex items-center justify-center w-7 h-7 rounded-full ${
-                            likedFlags.includes(String(flag.id))
-                              ? "bg-red-500 text-white"
-                              : "bg-gray-700 text-gray-300"
-                          }`}
+                          className={`flex items-center justify-center w-7 h-7 rounded-full ${likedFlags.includes(String(flag.id))
+                            ? "bg-red-500 text-white"
+                            : "bg-gray-700 text-gray-300"
+                            }`}
                         >
                           <Heart
-                            className={`w-5 h-5 transition-transform duration-500 ${
-                              animatingFlags[flag.id]
-                                ? "animate-heartbeat"
-                                : "scale-100"
-                            }`}
+                            className={`w-5 h-5 transition-transform duration-500 ${animatingFlags[flag.id]
+                              ? "animate-heartbeat"
+                              : "scale-100"
+                              }`}
                           />
                         </button>
                         {/* 말풍선 부분 */}
@@ -465,15 +270,15 @@ export default function FlagsPage({ initialFlags }: FlagsProps) {
                   {/* MapPinned 버튼 (환경 변수로 ON/OFF) */}
                   {(process.env.NEXT_PUBLIC_MAP_PINNED_ENABLED || "OFF") ===
                     "ON" && (
-                    <button
-                      onClick={() =>
-                        console.log(`MapPinned clicked for ${flag.id}`)
-                      }
-                      className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
-                    >
-                      <Info className="w-5 h-5" />
-                    </button>
-                  )}
+                      <button
+                        onClick={() =>
+                          console.log(`MapPinned clicked for ${flag.id}`)
+                        }
+                        className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
+                      >
+                        <Info className="w-5 h-5" />
+                      </button>
+                    )}
                 </div>
                 {/* 플래그 이름 */}
                 <p className="mt-2 text-pretty font-bold"> {flag.name}</p>
