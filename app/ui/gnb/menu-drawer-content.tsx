@@ -16,7 +16,6 @@ import {
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
 
-import { useState, useEffect } from "react";
 
 const data = [
   {
