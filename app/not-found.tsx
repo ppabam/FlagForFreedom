@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link'
-import { FooterFlags } from '@/app/ui/footer/footer-flags';
 import React from "react";
 
 export default function NotFound() {
@@ -57,9 +56,6 @@ export default function NotFound() {
           계엄사령관 육군대장 박안수
         </p>
       </div>
-
-
-      <FooterFlags />
     </div>
 
   )

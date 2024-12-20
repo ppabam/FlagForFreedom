@@ -3,11 +3,11 @@
 import { MenuDrawerContent } from "@/app/ui/gnb/menu-drawer-content";
 import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { Menu } from "lucide-react";
-import { Search } from "./search";
-import { ButtonUpload } from "@/app/ui/gnb/button-upload";
+import Search from "@/app/ui/gnb/search";
+import ButtonUpload from "@/app/ui/gnb/button-upload";
 import { useSearchParams } from 'next/navigation';
 
-export function Gnb() {
+export default function Gnb() {
   const searchParams = useSearchParams();
   return (
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r to-indigo-600 from-blue-500 text-white shadow-md z-10">

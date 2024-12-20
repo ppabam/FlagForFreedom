@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useDebouncedCallback } from 'use-debounce';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
-export function Search() {
+export default function Search() {
   const [placeholder, setPlaceholder] = useState("🔍");
 
   const searchParams = useSearchParams();

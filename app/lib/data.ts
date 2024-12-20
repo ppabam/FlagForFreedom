@@ -2,7 +2,6 @@ import { sql } from "@vercel/postgres";
 import { Flag } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
-import { StringifyOptions } from "node:querystring";
 
 const CACHE_TIMEOUT = getCacheTimeout();
 

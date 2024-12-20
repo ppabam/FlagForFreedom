@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "@/components/ui/toaster"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { NextThemeProvider } from '@/components/theme-provider';
+import { FooterFlags } from "@/app/ui/footer/footer-flags";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -83,7 +84,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    return (
+  return (
     <html lang="ko" >
       <GoogleTagManager gtmId="GTM-KNF3TMFJ" />
       <body
@@ -91,8 +92,8 @@ export default function RootLayout({
       >
         <NextThemeProvider>
           {children}
-
           <Toaster />
+          <FooterFlags copyrightHref="/123" />
 
           <TriggerAnalytics />
           <Analytics />
