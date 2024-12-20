@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link'
-import { FooterFlags } from '@/components/my/footer-flags';
+import { FooterFlags } from '@/app/ui/footer/footer-flags';
 import React from "react";
 
 export default function NotFound() {

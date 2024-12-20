@@ -4,7 +4,7 @@ import { MenuDrawerContent } from "@/app/ui/gnb/menu-drawer-content";
 import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { Menu } from "lucide-react";
 import { Search } from "./search";
-import { ButtonUpload } from "@/components/my/button-upload";
+import { ButtonUpload } from "@/app/ui/gnb/button-upload";
 import { useSearchParams } from 'next/navigation';
 
 export function Gnb() {

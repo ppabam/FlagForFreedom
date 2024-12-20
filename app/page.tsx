@@ -1,7 +1,7 @@
 import { getFlags } from "@/app/lib/getFlags";
 import { fetchFlags, fetchFilteredFlags } from "@/app/lib/data";
 import FlagsPage from "@/components/my/flags-page";
-import { FooterFlags } from "@/components/my/footer-flags";
+import { FooterFlags } from "@/app/ui/footer/footer-flags";
 
 export const fetchCache = 'force-no-store';
 
