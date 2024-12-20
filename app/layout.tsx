@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { Toaster } from "@/components/ui/toaster"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { NextThemeProvider } from '@/components/theme-provider';
-import { FooterFlags } from "@/app/ui/footer/footer-flags";
+import { Footer } from "@/app/ui/footer/footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -93,7 +93,7 @@ export default function RootLayout({
         <NextThemeProvider>
           {children}
           <Toaster />
-          <FooterFlags copyrightHref="/123" />
+          <Footer />
 
           <TriggerAnalytics />
           <Analytics />

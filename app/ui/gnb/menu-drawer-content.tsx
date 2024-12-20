@@ -5,6 +5,8 @@ import {
   CalendarArrowDown, CalendarArrowUp,
   ArrowDownWideNarrow, ArrowDownNarrowWide,
   Shuffle,
+  Moon, Sun,
+  Heart, SquareCheckBig, Square
 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -15,6 +17,7 @@ import {
 
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
+import { useTheme } from 'next-themes';
 
 
 const data = [
@@ -71,6 +74,26 @@ export function MenuDrawerContent() {
     replace(useRouterReplacePath);
   }
 
+  const { theme, setTheme } = useTheme(); // Destructure theme and setTheme
+  // Toggle theme between 'light' and 'dark'
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const toggleHeart = () => {
+    const params = new URLSearchParams(searchParams);
+
+    // If the 'heart' parameter exists, remove it; otherwise, add it with 'only' value
+    if (params.has('heart')) {
+      params.delete('heart');
+    } else {
+      params.set('heart', 'only');
+    }
+
+    const useRouterReplacePath = `${pathname}?${params.toString()}`;
+    replace(useRouterReplacePath);
+  };
+
   return (
     <DrawerContent className="bg-indigo-600 bg-opacity-70">
       <div className="mx-auto w-full max-w-sm">
@@ -82,6 +105,17 @@ export function MenuDrawerContent() {
             민주주의 해방전선 나만 깃발 없엉 총연맹
           </DrawerDescription>
         </DrawerHeader>
+
+        {/* Toggle Buttons */}
+        <div className="p-4 flex justify-center space-x-4">
+          <Button onClick={toggleTheme} className="text-4xlg font-medium" variant="outline">
+            {theme === 'light' ? <Sun size={29} /> : <Moon size={29} />}
+          </Button>
+
+          <Button onClick={toggleHeart} className="text-2xlg font-medium rounded-full" variant="outline">
+            {searchParams.get('heart') !== 'only' ? <Square /> : <SquareCheckBig />} <Heart />
+          </Button>
+        </div>
 
         {/* DATA VIEW */}
         <div className="p-4 pb-0">
@@ -128,6 +162,8 @@ export function MenuDrawerContent() {
           </div>
         </div>
 
+
+
         <div className="p-4">
           <RadioGroup
             className="space-y-4"
@@ -149,7 +185,7 @@ export function MenuDrawerContent() {
                   htmlFor="sort-idDesc"
                   className="text-lg font-medium"
                 >
-                  <CalendarArrowDown />
+                  <CalendarArrowDown size={29} />
                 </label>
               </div>
 
@@ -163,7 +199,7 @@ export function MenuDrawerContent() {
                   htmlFor="sort-idAsc"
                   className="text-lg font-medium"
                 >
-                  <CalendarArrowUp />
+                  <CalendarArrowUp size={29} />
                 </label>
               </div>
 
@@ -178,7 +214,7 @@ export function MenuDrawerContent() {
                   htmlFor="sort-desc"
                   className="text-lg font-medium"
                 >
-                  <ArrowDownWideNarrow />
+                  <ArrowDownWideNarrow size={29} />
                 </label>
               </div>
 
@@ -192,7 +228,7 @@ export function MenuDrawerContent() {
                   htmlFor="sort-asc"
                   className="text-lg font-medium"
                 >
-                  <ArrowDownNarrowWide />
+                  <ArrowDownNarrowWide size={29} />
                 </label>
               </div>
 
@@ -206,7 +242,7 @@ export function MenuDrawerContent() {
                   htmlFor="sort-shuffle"
                   className="text-lg font-medium"
                 >
-                  <Shuffle />
+                  <Shuffle size={29} />
                 </label>
               </div>
             </div>
