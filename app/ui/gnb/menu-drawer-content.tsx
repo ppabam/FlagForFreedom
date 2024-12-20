@@ -79,7 +79,7 @@ export function MenuDrawerContent() {
           <DrawerTitle className="text-center">
             12.3 계엄배 천하제일 재기발랄 깃발대회
           </DrawerTitle>
-          <DrawerDescription className="text-border text-center">
+          <DrawerDescription className="text-border text-center text-gray-400">
             민주주의 해방전선 나만 깃발 없엉 총연맹
           </DrawerDescription>
         </DrawerHeader>
