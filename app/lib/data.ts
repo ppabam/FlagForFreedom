@@ -9,11 +9,11 @@ const CACHE_TIMEOUT = getCacheTimeout();
 const getDbData = unstable_cache(
   async (query?: string) => {
     // TODO DISABLE
-    await sql`
-      UPDATE select_count
-      SET count = count + 1, last_updated = now()
-      WHERE id = 1;
-    `;
+    // await sql`
+    //   UPDATE select_count
+    //   SET count = count + 1, last_updated = now()
+    //   WHERE id = 1;
+    // `;
 
     const data = await sql<Flag>`
       SELECT 
