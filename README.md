@@ -164,3 +164,4 @@ CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     B
 - https://medium.com/@aleksej.gudkov/how-to-disable-cache-in-next-js-a-comprehensive-guide-a1603559483e
 - https://nextjs.org/docs/pages/building-your-application/configuring/debugging
 - https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadata-fields
+- [로컬 데이터베이스가 있는 Next.js 튜토리얼: 빠른 시작 가이드](https://medium.com/@dekadekadeka/next-js-tutorial-with-local-database-quick-start-guide-394d48a0aada)
