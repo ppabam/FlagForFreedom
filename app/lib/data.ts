@@ -66,7 +66,7 @@ export async function fetchFilteredFlags(query: string) {
     FROM 
         flags f
     LEFT JOIN 
-        flag_likes fl
+        flag_like_history fl
     ON 
         f.id = fl.flag_id
     WHERE 
@@ -138,3 +138,28 @@ export async function insertFlagLikeInDatabase(
     throw new Error("Failed to insert flag like into the database.");
   }
 }
+
+// localStorage
+// https://stackoverflow.com/questions/77093626/vercel-postgres-bulk-insert-building-sql-query-dynamically-from-array
+async function saveLikeDeltasToDatabase(insertData: { flag_id: number; delta_cnt: number }[]) {
+  if (insertData.length === 0) {
+    console.log("No like deltas to save.");
+    return;
+  }
+
+  try {
+    // JSON 데이터를 json_populate_recordset으로 변환하여 삽입
+    await sql.query(
+      `INSERT INTO flag_like_history (flag_id, delta_cnt)
+       SELECT flag_id, delta_cnt
+       FROM json_populate_recordset(NULL::flag_like_history, $1)`,
+      [JSON.stringify(insertData)]
+    );
+
+    console.log("Like deltas saved successfully!");
+    localStorage.removeItem("like_deltas"); // 데이터 저장 후 로컬스토리지 초기화
+  } catch (error) {
+    console.error("Failed to save like deltas:", error);
+  }
+}
+

@@ -47,14 +47,10 @@ INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 
 SELECT id,name,img_url FROM flags ORDER BY id DESC;
 
--- 천하제일깃발대회 좋아요 테이블
-CREATE TABLE flag_likes (
+CREATE TABLE flag_like_history (
     id SERIAL PRIMARY KEY,
     flag_id INTEGER NOT NULL,
-    like_status INTEGER CHECK (like_status IN (1, -1)) DEFAULT 0,
-    ip_address TEXT,
-    browser TEXT,
-    device TEXT,
+    delta_cnt INTEGER NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_flag
         FOREIGN KEY (flag_id)
@@ -62,24 +58,8 @@ CREATE TABLE flag_likes (
         ON DELETE CASCADE
 );
 
-COMMENT ON TABLE flag_likes IS 'Table storing flag like information';
-
-COMMENT ON COLUMN flag_likes.id IS '자동 증가 ID';
-COMMENT ON COLUMN flag_likes.flag_id IS 'flags 테이블의 ID와 외래키 관계';
-COMMENT ON COLUMN flag_likes.like_status IS '좋아요 상태 (1: 좋아요, -1: 좋아요 취소, 0: 기본값 또는 초기 상태)';
-COMMENT ON COLUMN flag_likes.ip_address IS '클라이언트 IP 주소';
-COMMENT ON COLUMN flag_likes.browser IS '클라이언트 브라우저';
-COMMENT ON COLUMN flag_likes.device IS '클라이언트 디바이스';
-COMMENT ON COLUMN flag_likes.created_at IS '생성 시 자동으로 현재 시간';
-
-ALTER TABLE flag_likes
-ADD COLUMN language TEXT,       -- 클라이언트 언어
-ADD COLUMN domain TEXT;
-
-ALTER TABLE flag_likes
-ADD COLUMN pathname TEXT;
-
-
+COMMENT ON TABLE flag_like_history IS '깃발 좋아요/취소 기록 테이블';
+COMMENT ON COLUMN flag_like_history.delta_cnt IS '좋아요(1), 좋아요 취소(-1), 마이그래이션에 따른 정수(n)';
 
 -- 쪼인
 SELECT 
@@ -90,7 +70,7 @@ SELECT
 FROM 
     flags f
 LEFT JOIN 
-    flag_likes fl
+    flag_like_history fl
 ON 
     f.id = fl.flag_id
 GROUP BY 
