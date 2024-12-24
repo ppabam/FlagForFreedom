@@ -146,6 +146,6 @@ function updateLocalStorage(flag_id: number, updatedLiked: boolean) {
   const likeDelta = updatedLiked ? 1 : -1;
   const storedData = JSON.parse(localStorage.getItem("like_deltas") || "{}");
 
-  storedData[flag_id] = likeDelta;
+  storedData[flag_id] = (storedData[flag_id] || 0) + likeDelta;
   localStorage.setItem("like_deltas", JSON.stringify(storedData));
 }

@@ -20,10 +20,12 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       }
 
       // 데이터 생성
-      const insertData = Object.entries(likeDeltas).map(([flag_id, delta_cnt]) => ({
-        flag_id: parseInt(flag_id, 10),
-        delta_cnt: parseInt(delta_cnt as string, 10),
-      }));
+      const insertData = Object.entries(likeDeltas)
+        .filter(([__NEXT_HTTPS_AGENT, delta_cnt]) => parseInt(delta_cnt as string, 10) !== 0)
+        .map(([flag_id, delta_cnt]) => ({
+          flag_id: parseInt(flag_id, 10),
+          delta_cnt: parseInt(delta_cnt as string, 10),
+        }));
 
       try {
         // Server Action 호출
@@ -36,11 +38,24 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    // 공통 핸들러에 이벤트 등록
+    const events = ["visibilitychange", "beforeunload", "blur", "pagehide"];
+
+    const handleEvent = () => {
+      if (document.visibilityState === "hidden" || typeof window !== "undefined") {
+        handleBeforeUnload();
+      }
+    };
+
+    events.forEach((event) => {
+      window.addEventListener(event, handleEvent);
+    });
 
     // Cleanup 함수: 이벤트 리스너 제거
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      events.forEach((event) => {
+        window.removeEventListener(event, handleEvent);
+      });
     };
   }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
 
