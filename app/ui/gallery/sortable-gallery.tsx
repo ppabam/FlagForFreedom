@@ -10,8 +10,14 @@ interface FlagsProps {
 }
 
 export default function SortableGallery({ filteredFlags }: FlagsProps) {
+
   useEffect(() => {
-    const handleBeforeUnload = async () => {
+    let isSaving = false; // 중복 방지 플래그
+
+    const saveLikes = async () => {
+      if (isSaving) return; // 이미 저장 중이면 실행하지 않음
+      isSaving = true;
+
       const likeDeltas = JSON.parse(localStorage.getItem("like_deltas") || "{}");
 
       if (Object.keys(likeDeltas).length === 0) {
@@ -21,11 +27,16 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
       // 데이터 생성
       const insertData = Object.entries(likeDeltas)
-        .filter(([__NEXT_HTTPS_AGENT, delta_cnt]) => parseInt(delta_cnt as string, 10) !== 0)
+        .filter(([, delta_cnt]) => parseInt(delta_cnt as string, 10) !== 0) // delta_cnt가 0이 아닌 항목만 포함
         .map(([flag_id, delta_cnt]) => ({
           flag_id: parseInt(flag_id, 10),
           delta_cnt: parseInt(delta_cnt as string, 10),
         }));
+
+      if (insertData.length === 0) {
+        console.log("No valid like deltas to save.");
+        return; // 추가 작업 없이 함수 종료
+      }
 
       try {
         // Server Action 호출
@@ -35,27 +46,26 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         localStorage.removeItem("like_deltas");
       } catch (error) {
         console.error("Failed to save likes on unload:", error);
+      } finally {
+        isSaving = false; // 저장 완료 후 플래그 리셋
       }
     };
 
-    // 공통 핸들러에 이벤트 등록
-    const events = ["visibilitychange", "beforeunload", "blur", "pagehide"];
-
-    const handleEvent = () => {
-      if (document.visibilityState === "hidden" || typeof window !== "undefined") {
-        handleBeforeUnload();
+    const handleBeforeUnload = saveLikes;
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        saveLikes();
       }
     };
+    // 필수 이벤트만 등록
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    events.forEach((event) => {
-      window.addEventListener(event, handleEvent);
-    });
 
     // Cleanup 함수: 이벤트 리스너 제거
     return () => {
-      events.forEach((event) => {
-        window.removeEventListener(event, handleEvent);
-      });
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
 
