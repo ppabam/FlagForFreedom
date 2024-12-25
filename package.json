@@ -1,6 +1,6 @@
 {
   "name": "fff",
-  "version": "24.12.24",
+  "version": "24.1224.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
