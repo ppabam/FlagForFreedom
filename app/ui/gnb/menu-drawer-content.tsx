@@ -6,7 +6,8 @@ import {
   ArrowDownWideNarrow, ArrowDownNarrowWide,
   Shuffle,
   Moon, Sun,
-  Heart, SquareCheckBig, Square
+  Heart, HeartOff,
+  SquareCheckBig, Square
 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -18,6 +19,7 @@ import {
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 
 const data = [
@@ -66,6 +68,29 @@ export function MenuDrawerContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [heartMode, setHeartMode] = useState<string>("all");
+
+  useEffect(() => {
+    // Initialize heart mode from URL params on mount
+    const initialHeart = searchParams.get("heart") || "all";
+    setHeartMode(initialHeart);
+  }, [searchParams]);
+
+  const toggleHeart = () => {
+    const nextHeartMode = heartMode === "all" ? "only" : heartMode === "only" ? "none" : "all";
+    setHeartMode(nextHeartMode);
+
+    const params = new URLSearchParams(searchParams);
+
+    if (nextHeartMode === "all") {
+      params.delete("heart"); // Remove 'heart' param for default 'all'
+    } else {
+      params.set("heart", nextHeartMode);
+    }
+
+    const useRouterReplacePath = `${pathname}?${params.toString()}`;
+    replace(useRouterReplacePath);
+  };
 
   function setSortParams(checkValue: string): void {
     const params = new URLSearchParams(searchParams);
@@ -80,19 +105,7 @@ export function MenuDrawerContent() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  const toggleHeart = () => {
-    const params = new URLSearchParams(searchParams);
 
-    // If the 'heart' parameter exists, remove it; otherwise, add it with 'only' value
-    if (params.has('heart')) {
-      params.delete('heart');
-    } else {
-      params.set('heart', 'only');
-    }
-
-    const useRouterReplacePath = `${pathname}?${params.toString()}`;
-    replace(useRouterReplacePath);
-  };
 
   return (
     <DrawerContent className="bg-indigo-600 bg-opacity-70">
@@ -112,8 +125,24 @@ export function MenuDrawerContent() {
             {theme === 'light' ? <Sun size={29} /> : <Moon size={29} />}
           </Button>
 
+          {/* Heart Toggle Button */}
           <Button onClick={toggleHeart} className="text-2xlg font-medium rounded-full" variant="outline">
-            {searchParams.get('heart') !== 'only' ? <Square /> : <SquareCheckBig />} <Heart />
+            {heartMode === "only" ? (
+              <>
+                <SquareCheckBig />
+                <Heart className='text-red-600' /> 좋아요만
+              </>
+            ) : heartMode === "none" ? (
+              <>
+                <Square />
+                <HeartOff /> 좋아요뺌
+              </>
+            ) : (
+              <>
+                <HeartOff />
+                <Heart className='text-red-600' /> 모두보기
+              </>
+            )}
           </Button>
         </div>
 
