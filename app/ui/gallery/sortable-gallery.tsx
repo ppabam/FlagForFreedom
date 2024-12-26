@@ -2,9 +2,10 @@
 
 import { Flag } from "@/app/lib/definitions";
 import LikeableImage from "./likeable-image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { saveLikeDeltasToDatabase } from "@/app/lib/action"
 import { getEnv } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
 
@@ -13,7 +14,40 @@ interface FlagsProps {
 }
 
 export default function SortableGallery({ filteredFlags }: FlagsProps) {
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const [sortedFlags, setSortedFlags] = useState<Flag[]>(filteredFlags);
 
+  useEffect(() => {
+    const sortParam = searchParams.get("sort") || "idDesc";
+
+    const sorted = [...filteredFlags];
+    switch (sortParam) {
+      case "idDesc":
+        sorted.sort((a, b) => b.id - a.id);
+        break;
+      case "idAsc":
+        sorted.sort((a, b) => a.id - b.id);
+        break;
+      case "desc":
+        sorted.sort((a, b) => b.like_count - a.like_count);
+        break;
+      case "asc":
+        sorted.sort((a, b) => a.like_count - b.like_count);
+        break;
+      case "shuffle":
+        for (let i = sorted.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [sorted[i], sorted[j]] = [sorted[j], sorted[i]];
+        }
+        break;
+      default:
+        console.warn(`Unknown sort parameter: ${sortParam}`);
+    }
+    setSortedFlags(sorted);
+  }, [filteredFlags, searchParams]);
+
+  // 좋아요 저장
   useEffect(() => {
     let isSaving = false; // 중복 방지 플래그
 
@@ -77,7 +111,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
   return (
     <section className="container mx-auto px-1 py-1">
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-        {filteredFlags.map((flag) => (
+        {sortedFlags.map((flag) => (
           <li key={flag.id} className="text-center">
             <LikeableImage flag={flag} image_quality={IMAGE_QUALITY} />
             {/* 플래그 이름 */}
