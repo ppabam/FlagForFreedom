@@ -60,6 +60,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       const likeDeltas = JSON.parse(localStorage.getItem("like_deltas") || "{}");
 
       if (Object.keys(likeDeltas).length === 0) {
+        toast({ description: `Object.keys(likeDeltas).length === 0`, duration: 60000 });
         console.log("No like deltas to save.");
         return;
       }
@@ -73,6 +74,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         }));
 
       if (insertData.length === 0) {
+        toast({ description: `insertData.length`, duration: 60000 });
         console.log("No valid like deltas to save.");
         return; // 추가 작업 없이 함수 종료
       }
@@ -80,10 +82,10 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       try {
         // Server Action 호출
         await saveLikeDeltasToDatabase(insertData);
-        toast({ description: `saveLikeDeltasToDatabase` });
+        toast({ description: `saveLikeDeltasToDatabase`, duration: 60000 });
         // 저장 성공 시 로컬스토리지 초기화
         localStorage.removeItem("like_deltas");
-        toast({ description: `localStorage.removeItem` });
+        toast({ description: `localStorage.removeItem`, duration: 60000 });
       } catch (error) {
         console.error("Failed to save likes on unload:", error);
         toast({
@@ -100,18 +102,18 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
     // const handleBeforeUnload = saveLikes;
     const handleVisibilityChange = () => {
-      toast({ description: `callend handleVisibilityChange` });
+      toast({ description: `callend handleVisibilityChange`, duration: 60000 });
       if (document.visibilityState === "hidden") {
         saveLikes();
       }
     };
     const handlePagehide = () => {
-      toast({ description: `callend handlePagehide` });
+      toast({ description: `callend handlePagehide`, duration: 60000 });
       saveLikes();
     }
 
     const handleBeforeUnload = () => {
-      toast({ description: `callend handlePagehide` });
+      toast({ description: `callend handlePagehide`, duration: 60000 });
       saveLikes();
     }
 
