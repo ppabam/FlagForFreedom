@@ -18,33 +18,60 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
   const searchParams = useSearchParams();
   const [sortedFlags, setSortedFlags] = useState<Flag[]>(filteredFlags);
 
+  // Helper function: Parse cookies into an object
+  const parseCookies = (): Record<string, string> => {
+    return document.cookie
+      .split("; ")
+      .reduce((acc, cookie) => {
+        const [key, value] = cookie.split("=");
+        acc[key] = value;
+        return acc;
+      }, {} as Record<string, string>);
+  };
+
   useEffect(() => {
     const sortParam = searchParams.get("sort") || "idDesc";
+    const heartParam = searchParams.get("heart");
 
-    const sorted = [...filteredFlags];
+    const cookies = parseCookies();
+    const likedFlags = new Set(
+      Object.entries(cookies)
+        .filter(([key, value]) => key.startsWith("LikedStatusV1_") && value === "true")
+        .map(([key]) => parseInt(key.replace("LikedStatusV1_", ""), 10))
+    );
+    let filtered = [...filteredFlags];
+    if (heartParam === "only") {
+      // Show only liked flags
+      filtered = filtered.filter((flag) => likedFlags.has(flag.id));
+    } else if (heartParam === "none") {
+      // Show only unliked flags
+      filtered = filtered.filter((flag) => !likedFlags.has(flag.id));
+    }
+
+    // const filtered = [...filteredFlags];
     switch (sortParam) {
       case "idDesc":
-        sorted.sort((a, b) => b.id - a.id);
+        filtered.sort((a, b) => b.id - a.id);
         break;
       case "idAsc":
-        sorted.sort((a, b) => a.id - b.id);
+        filtered.sort((a, b) => a.id - b.id);
         break;
       case "desc":
-        sorted.sort((a, b) => b.like_count - a.like_count);
+        filtered.sort((a, b) => b.like_count - a.like_count);
         break;
       case "asc":
-        sorted.sort((a, b) => a.like_count - b.like_count);
+        filtered.sort((a, b) => a.like_count - b.like_count);
         break;
       case "shuffle":
-        for (let i = sorted.length - 1; i > 0; i--) {
+        for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
-          [sorted[i], sorted[j]] = [sorted[j], sorted[i]];
+          [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
         }
         break;
       default:
         console.warn(`Unknown sort parameter: ${sortParam}`);
     }
-    setSortedFlags(sorted);
+    setSortedFlags(filtered);
   }, [filteredFlags, searchParams]);
 
   // 좋아요 저장
@@ -115,8 +142,6 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       window.removeEventListener("pagehide", handlePagehide);
     };
   }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
-
-
 
   return (
     <section className="container mx-auto px-1 py-1">
