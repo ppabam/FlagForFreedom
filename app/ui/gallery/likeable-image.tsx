@@ -42,8 +42,9 @@ export default function LikeableImage({ flag }: { flag: Flag }) {
         width={300}
         height={300}
         className="w-full h-full object-cover transition-transform duration-300"
-        loading="lazy"
         onClick={toggleLike}
+        priority={true}
+        quality={1}
       />
 
 
