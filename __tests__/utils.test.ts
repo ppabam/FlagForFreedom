@@ -1,8 +1,8 @@
-import { getEnv } from "../utils";
+import { getEnv } from "../lib/utils";
 
 beforeEach(() => {
   jest.resetModules();
-  // process.env = { NODE_ENV: "test" } as NodeJS.ProcessEnv;
+  process.env = { NODE_ENV: "test" } as NodeJS.ProcessEnv;
 });
 
 test("returns the correct number from environment variable", () => {
