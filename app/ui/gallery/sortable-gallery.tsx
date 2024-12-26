@@ -5,7 +5,7 @@ import LikeableImage from "./likeable-image";
 import { useEffect, useState } from "react";
 import { saveLikeDeltasToDatabase } from "@/app/lib/action"
 import { getEnv } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
 
@@ -14,7 +14,6 @@ interface FlagsProps {
 }
 
 export default function SortableGallery({ filteredFlags }: FlagsProps) {
-  const { replace } = useRouter();
   const searchParams = useSearchParams();
   const [sortedFlags, setSortedFlags] = useState<Flag[]>(filteredFlags);
 

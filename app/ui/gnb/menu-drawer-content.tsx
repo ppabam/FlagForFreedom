@@ -6,8 +6,7 @@ import {
   ArrowDownWideNarrow, ArrowDownNarrowWide,
   Shuffle,
   Moon, Sun,
-  Heart, HeartOff,
-  SquareCheckBig, Square
+  Heart, HeartOff, Eye,
 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -23,45 +22,10 @@ import { useEffect, useState } from 'react';
 
 
 const data = [
-  {
-    goal: 400,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 239,
-  },
-  {
-    goal: 300,
-  },
-  {
-    goal: 200,
-  },
-  {
-    goal: 278,
-  },
-  {
-    goal: 189,
-  },
-  {
-    goal: 349,
-  },
+  { goal: 400 }, { goal: 300 }, { goal: 200 }, { goal: 300 },
+  { goal: 200 }, { goal: 278 }, { goal: 189 }, { goal: 239 },
+  { goal: 300 }, { goal: 200 }, { goal: 278 }, { goal: 189 },
+  { goal: 349 },
 ];
 
 export function MenuDrawerContent() {
@@ -69,6 +33,7 @@ export function MenuDrawerContent() {
   const pathname = usePathname();
   const { replace } = useRouter();
   const [heartMode, setHeartMode] = useState<string>("all");
+
 
   useEffect(() => {
     // Initialize heart mode from URL params on mount
@@ -99,12 +64,19 @@ export function MenuDrawerContent() {
     replace(useRouterReplacePath);
   }
 
-  const { theme, setTheme } = useTheme(); // Destructure theme and setTheme
-  // Toggle theme between 'light' and 'dark'
+
+  // toggleTheme
+  const { theme, setTheme, resolvedTheme } = useTheme(); // `resolvedTheme` 추가
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Mark as mounted to ensure `theme` is resolved
+    setMounted(true);
+  }, []);
+
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-
 
 
   return (
@@ -122,20 +94,20 @@ export function MenuDrawerContent() {
         {/* Toggle Buttons */}
         <div className="p-4 flex justify-center space-x-4">
           <Button onClick={toggleTheme} className="text-4xlg font-medium" variant="outline">
-            {theme === 'light' ? <Sun size={29} /> : <Moon size={29} />}
+            {mounted && (resolvedTheme === 'light' ? <Sun size={29} /> : <Moon size={29} />)}
           </Button>
 
           {/* Heart Toggle Button */}
           <Button onClick={toggleHeart} className="text-2xlg font-medium rounded-full" variant="outline">
             {heartMode === "only" ? (
               <>
-                <SquareCheckBig />
+                <Eye />
                 <Heart className='text-red-600' /> 좋아요만
               </>
             ) : heartMode === "none" ? (
               <>
-                <Square />
-                <HeartOff /> 좋아요뺌
+                <HeartOff />
+                <Eye /> 좋아요뺌
               </>
             ) : (
               <>
