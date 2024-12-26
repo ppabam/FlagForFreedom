@@ -61,6 +61,20 @@ CREATE TABLE flag_like_history (
 COMMENT ON TABLE flag_like_history IS '깃발 좋아요/취소 기록 테이블';
 COMMENT ON COLUMN flag_like_history.delta_cnt IS '좋아요(1), 좋아요 취소(-1), 마이그래이션에 따른 정수(n)';
 
+SELECT
+    id,
+    flag_id,
+    delta_cnt,
+    created_at AT TIME ZONE 'Asia/Seoul' AS created_at_kst
+FROM 
+    flag_like_history
+ORDER BY 
+    id DESC;
+
+SHOW TIME ZONE; -- GMT
+
+SELECT CURRENT_TIMESTAMP;
+
 -- 쪼인
 SELECT 
     f.id,
