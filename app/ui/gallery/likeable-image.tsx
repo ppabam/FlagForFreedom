@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { parseCookies, setCookie } from "nookies";
 import { Heart, Info } from "lucide-react";
 
-export default function LikeableImage({ flag }: { flag: Flag }) {
+export default function LikeableImage({ flag, image_quality }: { flag: Flag, image_quality: number }) {
 
   const [liked, setLiked] = useState<boolean | null>(null); // 초기값을 null로 설정하여 로딩 상태 표현
   const [likeCount, setLikeCount] = useState(flag.like_count);
@@ -44,7 +44,7 @@ export default function LikeableImage({ flag }: { flag: Flag }) {
         className="w-full h-full object-cover transition-transform duration-300"
         onClick={toggleLike}
         priority={true}
-        quality={1}
+        quality={image_quality}
       />
 
 
