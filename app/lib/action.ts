@@ -1,6 +1,7 @@
 'use server';
 
 import { sql } from "@vercel/postgres";
+import { headers } from "next/headers";
 
 /**
  * 좋아요 변환 데이터를 데이터베이스에 저장하는 Server Action
@@ -20,15 +21,33 @@ export async function saveLikeDeltasToDatabase(
   }
 
   try {
+    // Extract headers
+    const headerMap = headers();
+    const client_id = clientId;
+    const userAgent = headerMap.get("user-agent") || "unknown";
+    const countryCode = headerMap.get("x-country-code") || "na";
+    const languageCode = headerMap.get("accept-language")?.split(",")[0] || "na";
+
+    // Determine device, OS, and browser types
+    const deviceType = userAgent.includes("Mobile") ? "mobile" : "desktop";
+    const osType = extractOSType(userAgent);
+    const browserType = extractBrowserType(userAgent);
+
     // Check if client_id exists or insert it
     const clientResult = await sql.query(
       `
-      INSERT INTO clients (client_id)
-      VALUES ($1)
-      ON CONFLICT (client_id) DO NOTHING
+      INSERT INTO clients (client_id, device_type, os_type, browser_type, country_code, language_code)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      ON CONFLICT (client_id) DO UPDATE
+      SET 
+        device_type = EXCLUDED.device_type,
+        os_type = EXCLUDED.os_type,
+        browser_type = EXCLUDED.browser_type,
+        country_code = EXCLUDED.country_code,
+        language_code = EXCLUDED.language_code
       RETURNING id
       `,
-      [clientId]
+      [client_id, deviceType, osType, browserType, countryCode, languageCode]
     );
 
     const clientRef =
@@ -54,4 +73,30 @@ export async function saveLikeDeltasToDatabase(
   } catch (error) {
     console.error("Failed to save like deltas:", error);
   }
+}
+
+/**
+ * Extract OS type from User-Agent header
+ * @param userAgent - User-Agent string
+ */
+function extractOSType(userAgent: string): string {
+  if (userAgent.includes("Windows")) return "Windows";
+  if (userAgent.includes("Mac")) return "MacOS";
+  if (userAgent.includes("Linux")) return "Linux";
+  if (userAgent.includes("Android")) return "Android";
+  if (userAgent.includes("iPhone") || userAgent.includes("iPad")) return "iOS";
+  return "unknown";
+}
+
+/**
+ * Extract Browser type from User-Agent header
+ * @param userAgent - User-Agent string
+ */
+function extractBrowserType(userAgent: string): string {
+  if (userAgent.includes("Chrome")) return "Chrome";
+  if (userAgent.includes("Firefox")) return "Firefox";
+  if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+  if (userAgent.includes("Edge")) return "Edge";
+  if (userAgent.includes("Opera")) return "Opera";
+  return "unknown";
 }
