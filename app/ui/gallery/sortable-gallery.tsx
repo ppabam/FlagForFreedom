@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { saveLikeDeltasToDatabase } from "@/app/lib/action"
 import { getEnv } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
 
@@ -47,6 +49,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
   }, [filteredFlags, searchParams]);
 
   // 좋아요 저장
+  const { toast } = useToast();
   useEffect(() => {
     let isSaving = false; // 중복 방지 플래그
 
@@ -77,31 +80,52 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       try {
         // Server Action 호출
         await saveLikeDeltasToDatabase(insertData);
-
+        toast({ description: `saveLikeDeltasToDatabase` });
         // 저장 성공 시 로컬스토리지 초기화
         localStorage.removeItem("like_deltas");
+        toast({ description: `localStorage.removeItem` });
       } catch (error) {
         console.error("Failed to save likes on unload:", error);
+        toast({
+          variant: "destructive",
+          title: "좋아요 업데이트 오류",
+          description: `ERR:${error}`,
+          action: <ToastAction altText="OK">확인</ToastAction>,
+          duration: 30000,
+        });
       } finally {
         isSaving = false; // 저장 완료 후 플래그 리셋
       }
     };
 
-    const handleBeforeUnload = saveLikes;
+    // const handleBeforeUnload = saveLikes;
     const handleVisibilityChange = () => {
+      toast({ description: `callend handleVisibilityChange` });
       if (document.visibilityState === "hidden") {
         saveLikes();
       }
     };
+    const handlePagehide = () => {
+      toast({ description: `callend handlePagehide` });
+      saveLikes();
+    }
+
+    const handleBeforeUnload = () => {
+      toast({ description: `callend handlePagehide` });
+      saveLikes();
+    }
+
     // 필수 이벤트만 등록
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePagehide);
 
 
     // Cleanup 함수: 이벤트 리스너 제거
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePagehide);
     };
   }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
 
