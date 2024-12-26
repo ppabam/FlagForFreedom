@@ -47,19 +47,32 @@ INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 
 SELECT id,name,img_url FROM flags ORDER BY id DESC;
 
+CREATE TABLE clients (
+    id SERIAL PRIMARY KEY,
+    client_id CHAR(32) UNIQUE NOT NULL
+);
+
 CREATE TABLE flag_like_history (
     id SERIAL PRIMARY KEY,
     flag_id INTEGER NOT NULL,
     delta_cnt INTEGER NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    client_ref INTEGER NOT NULL,
     CONSTRAINT fk_flag
         FOREIGN KEY (flag_id)
         REFERENCES flags (id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_client 
+        FOREIGN KEY (client_ref) 
+        REFERENCES clients (id) 
         ON DELETE CASCADE
 );
 
 COMMENT ON TABLE flag_like_history IS '깃발 좋아요/취소 기록 테이블';
 COMMENT ON COLUMN flag_like_history.delta_cnt IS '좋아요(1), 좋아요 취소(-1), 마이그래이션에 따른 정수(n)';
+
+ALTER TABLE flag_like_history
+ADD COLUMN client_id CHAR(32);
 
 SELECT
     id,

@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { saveLikeDeltasToDatabase } from "@/app/lib/action"
 import { getEnv } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { getClientId } from "@/app/lib/getClientId";
 
 const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
 
@@ -49,7 +48,6 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
   }, [filteredFlags, searchParams]);
 
   // 좋아요 저장
-  const { toast } = useToast();
   useEffect(() => {
     let isSaving = false; // 중복 방지 플래그
 
@@ -60,7 +58,6 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       const likeDeltas = JSON.parse(localStorage.getItem("like_deltas") || "{}");
 
       if (Object.keys(likeDeltas).length === 0) {
-        toast({ description: `Object.keys(likeDeltas).length === 0`, duration: 60000 });
         console.log("No like deltas to save.");
         return;
       }
@@ -74,27 +71,18 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         }));
 
       if (insertData.length === 0) {
-        toast({ description: `insertData.length`, duration: 60000 });
         console.log("No valid like deltas to save.");
         return; // 추가 작업 없이 함수 종료
       }
 
       try {
+        const clinet_id = await getClientId();
         // Server Action 호출
-        await saveLikeDeltasToDatabase(insertData);
-        toast({ description: `saveLikeDeltasToDatabase`, duration: 60000 });
+        await saveLikeDeltasToDatabase(insertData, clinet_id);
         // 저장 성공 시 로컬스토리지 초기화
         localStorage.removeItem("like_deltas");
-        toast({ description: `localStorage.removeItem`, duration: 60000 });
       } catch (error) {
         console.error("Failed to save likes on unload:", error);
-        toast({
-          variant: "destructive",
-          title: "좋아요 업데이트 오류",
-          description: `ERR:${error}`,
-          action: <ToastAction altText="OK">확인</ToastAction>,
-          duration: 30000,
-        });
       } finally {
         isSaving = false; // 저장 완료 후 플래그 리셋
       }
@@ -102,18 +90,15 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
     // const handleBeforeUnload = saveLikes;
     const handleVisibilityChange = () => {
-      toast({ description: `callend handleVisibilityChange`, duration: 60000 });
       if (document.visibilityState === "hidden") {
         saveLikes();
       }
     };
     const handlePagehide = () => {
-      toast({ description: `callend handlePagehide`, duration: 60000 });
       saveLikes();
     }
 
     const handleBeforeUnload = () => {
-      toast({ description: `callend handlePagehide`, duration: 60000 });
       saveLikes();
     }
 

@@ -97,6 +97,8 @@ export default function LikeableImage({ flag, image_quality }: { flag: Flag, ima
   );
 }
 
+const COOKIEKEY_PREFIX = 'LikedStatusV1_';
+
 /**
  * 특정 플래그의 좋아요 상태를 브라우저 쿠키에 저장합니다.
  * 
@@ -108,7 +110,7 @@ export default function LikeableImage({ flag, image_quality }: { flag: Flag, ima
 function saveLikedStatusToCookies(
   flag_id: number,
   updatedLiked: boolean,
-  cookieKeyPrefix = "LikedStatus_",
+  cookieKeyPrefix = COOKIEKEY_PREFIX,
   cookieMaxAge = 31536000 // 365 * 24 * 60 * 60
 ) {
   setCookie(null, `${cookieKeyPrefix}${flag_id}`, String(updatedLiked), {
@@ -123,10 +125,10 @@ function saveLikedStatusToCookies(
  * @param {number} flag_id - 플래그의 고유 식별자.
  * @returns {string | undefined} - 쿠키에서 가져온 좋아요 상태. 상태가 없으면 `undefined`를 반환합니다.
  *
- * 이 함수는 쿠키에서 `LikedStatus_<flag_id>` 형식의 키를 확인하고, 
+ * 이 함수는 쿠키에서 `${COOKIEKEY_PREFIX}<flag_id>` 형식의 키를 확인하고, 
  * 해당 키에 연결된 값을 반환합니다. 이 값은 플래그가 좋아요 상태인지 여부를 나타냅니다.
  */
-function getLikedStatusFromCookies(flag_id: number, cookieKeyPrefix = "LikedStatus_") {
+function getLikedStatusFromCookies(flag_id: number, cookieKeyPrefix = COOKIEKEY_PREFIX) {
   const cookies = parseCookies();
   const isLiked = cookies[`${cookieKeyPrefix}${flag_id}`];
   return isLiked;

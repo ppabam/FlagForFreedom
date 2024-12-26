@@ -16,23 +16,23 @@ const getDbData = unstable_cache(
     // `;
 
     const data = await sql<Flag>`
-      SELECT 
-          f.id,
-          f.name,
-          f.img_url,
-          COALESCE(SUM(fl.like_status), 0) AS like_count
-      FROM 
-          flags f
-      LEFT JOIN 
-          flag_likes fl
-      ON 
-          f.id = fl.flag_id
-      WHERE 
-          f.name ILIKE ${`%${query}%`}
-      GROUP BY 
-          f.id, f.name, f.img_url
-      ORDER BY 
-          f.id DESC
+    SELECT 
+      f.id,
+      f.name,
+      f.img_url,
+      COALESCE(SUM(fl.delta_cnt), 0) AS like_count
+    FROM 
+        flags f
+    LEFT JOIN 
+        flag_like_history fl
+    ON 
+        f.id = fl.flag_id
+    WHERE 
+        f.name ILIKE ${`%${query}%`}
+    GROUP BY 
+        f.id, f.name, f.img_url
+    ORDER BY 
+        f.id DESC
     `;
     return data.rows;
   },
