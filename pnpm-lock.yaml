@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fingerprintjs/fingerprintjs':
+        specifier: ^4.5.1
+        version: 4.5.1
       '@neondatabase/serverless':
         specifier: ^0.10.4
         version: 0.10.4
@@ -350,6 +353,9 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@fingerprintjs/fingerprintjs@4.5.1':
+    resolution: {integrity: sha512-hKJaRoLHNeUUPhb+Md3pTlY/Js2YR4aXjroaDHpxrjoM8kGnEFyZVZxXo6l3gRyKnQN52Uoqsycd3M73eCdMzw==}
 
   '@firebase/analytics-compat@0.2.16':
     resolution: {integrity: sha512-Q/s+u/TEMSb2EDJFQMGsOzpSosybBl8HuoSEMyGZ99+0Pu7SIR9MPDGUjc8PKiCFQWDJ3QXxgqh1d/rujyAMbA==}
@@ -4292,6 +4298,10 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.1': {}
+
+  '@fingerprintjs/fingerprintjs@4.5.1':
+    dependencies:
+      tslib: 2.8.1
 
   '@firebase/analytics-compat@0.2.16(@firebase/app-compat@0.2.47)(@firebase/app@0.10.17)':
     dependencies:
