@@ -7,7 +7,7 @@ import Search from "@/app/ui/gnb/search";
 import ButtonUpload from "@/app/ui/gnb/button-upload";
 import { useSearchParams } from 'next/navigation';
 
-export default function Gnb() {
+export default function Gnb({ total_flags, total_likes }: { total_flags: number, total_likes: number }) {
   const searchParams = useSearchParams();
   return (
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r to-indigo-600 from-blue-500 text-white shadow-md z-10">
@@ -18,7 +18,7 @@ export default function Gnb() {
             <DrawerTrigger asChild>
               <Menu size={33} />
             </DrawerTrigger>
-            <MenuDrawerContent />
+            <MenuDrawerContent total_flags={total_flags} total_likes={total_likes} />
           </Drawer>
 
           <h1 className="text-xl font-bold text-green-300 flex space-x-1">
