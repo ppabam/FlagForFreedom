@@ -21,19 +21,18 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 
-const data = [
-  { goal: 400 }, { goal: 300 }, { goal: 200 }, { goal: 300 },
-  { goal: 200 }, { goal: 278 }, { goal: 189 }, { goal: 239 },
-  { goal: 300 }, { goal: 200 }, { goal: 278 }, { goal: 189 },
-  { goal: 349 },
-];
 
-export function MenuDrawerContent() {
+
+export function MenuDrawerContent({ total_flags, total_likes }: { total_flags: number, total_likes: number }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const [heartMode, setHeartMode] = useState<string>("all");
 
+  const data = [
+    { goal: total_flags }, { goal: total_likes },
+  ];
+  const barChartData = Array(5).fill(data).flat();
 
   useEffect(() => {
     // Initialize heart mode from URL params on mount
@@ -123,32 +122,33 @@ export function MenuDrawerContent() {
           <div className="flex items-center justify-center space-x-2">
             <div className="flex-1 text-center">
               <div className="text-6xl font-bold tracking-tighter">
-                {1717}
+                {total_flags}
+              </div>
+              <div className="text-[0.70rem] uppercase text-muted-foreground">
+                Flags
+              </div>
+            </div>
+            <div className="flex-1 text-center">
+              <div className="text-6xl font-bold tracking-tighter">
+                {total_likes}
               </div>
               <div className="text-[0.70rem] uppercase text-muted-foreground items-center">
                 Heart
               </div>
             </div>
-            <div className="flex-1 text-center">
+            {/* <div className="flex-1 text-center">
               <div className="text-6xl font-bold tracking-tighter">
                 {22}
               </div>
               <div className="text-[0.70rem] uppercase text-muted-foreground">
                 User
               </div>
-            </div>
-            <div className="flex-1 text-center">
-              <div className="text-6xl font-bold tracking-tighter">
-                {376}
-              </div>
-              <div className="text-[0.70rem] uppercase text-muted-foreground">
-                Flags
-              </div>
-            </div>
+            </div> */}
+
           </div>
           <div className="mt-3 h-[120px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data}>
+              <BarChart data={barChartData}>
                 <Bar
                   dataKey="goal"
                   style={

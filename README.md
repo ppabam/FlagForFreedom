@@ -53,7 +53,6 @@ CREATE TABLE clients (
     device_type VARCHAR(50),
     os_type VARCHAR(50),
     browser_type VARCHAR(50),
-    country_code CHAR(2),
     language_code CHAR(5),
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
