@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { Flag } from "@/app/lib/definitions";
+import { Flag, FlagFrom } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
 
@@ -7,7 +7,7 @@ const CACHE_TIMEOUT = getCacheTimeout();
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
-  async (query?: string) => {
+  async () => {
     // TODO DISABLE
     // await sql`
     //   UPDATE select_count
@@ -27,8 +27,6 @@ const getDbData = unstable_cache(
         flag_like_history fl
     ON 
         f.id = fl.flag_id
-    WHERE 
-        f.name ILIKE ${`%${query}%`}
     GROUP BY 
         f.id, f.name, f.img_url
     ORDER BY 
@@ -43,11 +41,11 @@ const getDbData = unstable_cache(
   }
 );
 
-export async function fetchFlags(query?: string) {
+export async function fetchFlags() {
   try {
     // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
     // const flags = await getFlagsFromDb();
-    const flags = await getDbData(query);
+    const flags = await getDbData();
     return flags;
   } catch (dbError) {
     console.error("🎅-dbError Try Fallback", dbError);
@@ -137,5 +135,29 @@ export async function insertFlagLikeInDatabase(
   }
 }
 
-
+export async function fetchFlagById(id: string) {
+  try {
+    const data = await sql<FlagFrom>`
+    SELECT 
+      f.id,
+      f.name,
+      f.img_url,
+      COALESCE(SUM(fl.delta_cnt), 0) AS like_count
+    FROM 
+        flags f
+    LEFT JOIN 
+        flag_like_history fl
+    ON 
+        f.id = fl.flag_id
+    WHERE 
+        f.id = ${id}
+    GROUP BY 
+        f.id
+  `;
+    return data.rows[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to FilteredFlags.');
+  }
+}
 

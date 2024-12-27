@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { parseCookies, setCookie } from "nookies";
 import { Heart, Info } from "lucide-react";
+import Link from "next/link";
 
 export default function LikeableImage({ flag, image_quality }: { flag: Flag, image_quality: number }) {
 
@@ -85,12 +86,17 @@ export default function LikeableImage({ flag, image_quality }: { flag: Flag, ima
       {(process.env.NEXT_PUBLIC_MAP_PINNED_ENABLED || "OFF") ===
         "ON" && (
           <button
-            onClick={() =>
-              console.log(`MapPinned clicked for ${flag.id}`)
-            }
+            // onClick={() =>
+            //   console.log(`MapPinned clicked for ${flag.id}`)
+            // }
             className="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-gray-700 text-white hover:bg-blue-600"
           >
-            <Info className="w-5 h-5" />
+            <Link
+              href={`/flags/${flag.id}/detail`}
+              className="w-full h-full flex items-center justify-center"
+            >
+              <Info className="w-5 h-5" />
+            </Link>
           </button>
         )}
     </div>
