@@ -25,7 +25,6 @@ export async function saveLikeDeltasToDatabase(
     const headerMap = headers();
     const client_id = clientId;
     const userAgent = headerMap.get("user-agent") || "unknown";
-    const countryCode = headerMap.get("x-country-code") || "na";
     const languageCode = headerMap.get("accept-language")?.split(",")[0] || "na";
 
     // Determine device, OS, and browser types
@@ -36,18 +35,17 @@ export async function saveLikeDeltasToDatabase(
     // Check if client_id exists or insert it
     const clientResult = await sql.query(
       `
-      INSERT INTO clients (client_id, device_type, os_type, browser_type, country_code, language_code)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO clients (client_id, device_type, os_type, browser_type, language_code)
+      VALUES ($1, $2, $3, $4, $5)
       ON CONFLICT (client_id) DO UPDATE
       SET 
         device_type = EXCLUDED.device_type,
         os_type = EXCLUDED.os_type,
         browser_type = EXCLUDED.browser_type,
-        country_code = EXCLUDED.country_code,
         language_code = EXCLUDED.language_code
       RETURNING id
       `,
-      [client_id, deviceType, osType, browserType, countryCode, languageCode]
+      [client_id, deviceType, osType, browserType, languageCode]
     );
 
     const clientRef =
@@ -93,10 +91,12 @@ function extractOSType(userAgent: string): string {
  * @param userAgent - User-Agent string
  */
 function extractBrowserType(userAgent: string): string {
-  if (userAgent.includes("Chrome")) return "Chrome";
+
   if (userAgent.includes("Firefox")) return "Firefox";
-  if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) return "Safari";
+  if (userAgent.includes("Whale")) return "Whale";
+  if (userAgent.includes("Safari")) return "Safari";
   if (userAgent.includes("Edge")) return "Edge";
   if (userAgent.includes("Opera")) return "Opera";
+  if (userAgent.includes("Chrome")) return "Chrome";
   return "unknown";
 }
