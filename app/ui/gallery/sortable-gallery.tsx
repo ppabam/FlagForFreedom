@@ -7,8 +7,11 @@ import { saveLikeDeltasToDatabase } from "@/app/lib/action"
 import { getEnv } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { getClientId } from "@/app/lib/getClientId";
+import JSZip from "jszip"; // ZIP 파일 생성 라이브러리
+import { saveAs } from "file-saver"; // 파일 다운로드 라이브러리
 
 const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
+const ENABLE_IMAGE_ALL_DOWN_BUTTON = process.env.NEXT_PUBLIC_ENABLE_IMAGE_ALL_DOWN_BUTTON?.toLowerCase() === 'true';
 
 interface FlagsProps {
   filteredFlags: Flag[];
@@ -17,6 +20,48 @@ interface FlagsProps {
 export default function SortableGallery({ filteredFlags }: FlagsProps) {
   const searchParams = useSearchParams();
   const [sortedFlags, setSortedFlags] = useState<Flag[]>(filteredFlags);
+
+  const downloadAllImages = async () => {
+    const zip = new JSZip();
+    let completed = 0; // 진행 상황 추적
+    const total = sortedFlags.length;
+
+    // 알림: 다운로드 시작
+    alert("이미지 다운로드를 시작합니다. 완료될 때까지 기다려 주세요.");
+
+    for (const flag of sortedFlags) {
+      try {
+        const response = await fetch(flag.img_url); // 변환된 이미지 경로
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        zip.file(`${flag.id}.webp`, blob);
+        completed++;
+
+        // 진행 상황 로깅
+        console.log(`Downloaded ${completed}/${total}: ${flag.img_url}`);
+      } catch (error) {
+        console.error(`Failed to download image for flag ${flag.id}:`, error);
+      }
+    }
+
+    // ZIP 파일 생성 및 다운로드
+    zip.generateAsync({ type: "blob" }, (metadata) => {
+      console.log(
+        `ZIP progress: ${(metadata.percent).toFixed(2)}% complete.`
+      );
+    }).then((blob) => {
+      saveAs(blob, "images.zip");
+
+      // 알림: 다운로드 완료
+      alert("모든 이미지가 성공적으로 다운로드되었습니다.");
+    }).catch((error) => {
+      console.error("Error generating ZIP file:", error);
+      alert("ZIP 파일 생성 중 오류가 발생했습니다.");
+    });
+  };
 
   // Helper function: Parse cookies into an object
   const parseCookies = (): Record<string, string> => {
@@ -145,6 +190,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
   return (
     <section className="container mx-auto px-1 py-1">
+
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
         {sortedFlags.map((flag) => (
           <li key={flag.id} className="text-center">
@@ -154,6 +200,16 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
           </li>
         ))}
       </ul>
+      {ENABLE_IMAGE_ALL_DOWN_BUTTON && (
+        <div className="mb-4">
+          <button
+            onClick={downloadAllImages}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Download All Images
+          </button>
+        </div>
+      )}
     </section>
   );
 }
