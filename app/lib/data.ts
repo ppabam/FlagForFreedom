@@ -41,7 +41,7 @@ const getDbData = unstable_cache(
   }
 );
 
-export async function fetchFlags() {
+export async function fetchFlags(): Promise<Flag[]> {
   try {
     // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
     // const flags = await getFlagsFromDb();
