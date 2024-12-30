@@ -1,5 +1,7 @@
 import { getEnv } from "../lib/utils";
 
+// 정상 동작하지 않음 - https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
+
 beforeEach(() => {
   jest.resetModules();
   process.env = { NODE_ENV: "test" } as NodeJS.ProcessEnv;

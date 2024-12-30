@@ -4,14 +4,14 @@ import { Flag } from "@/app/lib/definitions";
 import LikeableImage from "./likeable-image";
 import { useEffect, useState } from "react";
 import { saveLikeDeltasToDatabase } from "@/app/lib/action"
-import { getEnv } from "@/lib/utils";
+import { getImageQuality, isImageAllDownButtonEnabled } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { getClientId } from "@/app/lib/getClientId";
 import JSZip from "jszip"; // ZIP 파일 생성 라이브러리
 import { saveAs } from "file-saver"; // 파일 다운로드 라이브러리
 
-const IMAGE_QUALITY = getEnv<number>("NEXT_PUBLIC_IMAGE_QUALITY", 75);
-const ENABLE_IMAGE_ALL_DOWN_BUTTON = process.env.NEXT_PUBLIC_ENABLE_IMAGE_ALL_DOWN_BUTTON?.toLowerCase() === 'true';
+const IMAGE_QUALITY = getImageQuality();
+const ENABLE_IMAGE_ALL_DOWN_BUTTON = isImageAllDownButtonEnabled();
 
 interface FlagsProps {
   filteredFlags: Flag[];
@@ -31,7 +31,10 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
     for (const flag of sortedFlags) {
       try {
-        const response = await fetch(flag.img_url); // 변환된 이미지 경로
+        // next/image 최적화된 이미지 경로 생성
+        const optimizedUrl = `/_next/image?url=${encodeURIComponent(flag.img_url)}&w=384&q=${IMAGE_QUALITY}`;
+
+        const response = await fetch(optimizedUrl); // 최적화된 이미지 경로 요청
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -49,9 +52,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
     // ZIP 파일 생성 및 다운로드
     zip.generateAsync({ type: "blob" }, (metadata) => {
-      console.log(
-        `ZIP progress: ${(metadata.percent).toFixed(2)}% complete.`
-      );
+      console.log(`ZIP progress: ${(metadata.percent).toFixed(2)}% complete.`);
     }).then((blob) => {
       saveAs(blob, "images.zip");
 
