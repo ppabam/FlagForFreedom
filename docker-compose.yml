@@ -14,7 +14,7 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: Xksgor1214
+      POSTGRES_PASSWORD: flag123
       POSTGRES_USER: flag123
       POSTGRES_DB: flag123
     volumes:

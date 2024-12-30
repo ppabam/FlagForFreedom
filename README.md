@@ -27,6 +27,13 @@ PostgreSQL 15.10 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.
 
 \d+ flags
 
+
+INSERT INTO flags (name, latitude, longitude, img_url) VALUES
+('#BRAT impeachment and it’s completely different but also still impeachment', 
+37.525307 + (37.530139 - 37.525307) * RANDOM(), 
+126.919467 + (126.922896 - 126.919467) * RANDOM(), 
+'/dummy/d1.webp')
+
 INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 ('#BRAT impeachment and it’s completely different but also still impeachment', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), '/dummy/d1.webp'),
 ('Korean branch of the Jedi Federation', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), '/dummy/d2.webp'),
@@ -125,6 +132,13 @@ $ docker run --name f110 -p 3110:3000 -d --env-file .env.local flag123:1.1.0
 $ docker stats
 CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     BLOCK I/O   PIDS
 8de21b110d7f   f110      0.00%     28.91MiB / 9.717GiB   0.29%     876B / 0B   0B / 0B     11
+```
+
+### Docker Compose
+```bash
+# docker compose down --volumes --remove-orphans
+# sudo rm -rf postgres_data
+$ docker compose up -d
 ```
 
 ### 🔖 Ref

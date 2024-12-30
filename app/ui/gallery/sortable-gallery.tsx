@@ -25,11 +25,14 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
     const zip = new JSZip();
     let completed = 0; // 진행 상황 추적
     const total = sortedFlags.length;
+    const sqlStatements: string[] = []; // SQL INSERT 문을 저장할 배열
 
     // 알림: 다운로드 시작
     alert("이미지 다운로드를 시작합니다. 완료될 때까지 기다려 주세요.");
 
-    for (const flag of sortedFlags) {
+    // 이미지 다운로드 및 SQL INSERT 문 생성
+    for (let i = 0; i < sortedFlags.length; i++) {
+      const flag = sortedFlags[i];
       try {
         // next/image 최적화된 이미지 경로 생성
         const optimizedUrl = `/_next/image?url=${encodeURIComponent(flag.img_url)}&w=384&q=${IMAGE_QUALITY}`;
@@ -40,7 +43,18 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         }
 
         const blob = await response.blob();
-        zip.file(`${flag.id}.webp`, blob);
+
+        // 이미지 이름을 4자리 형식으로 설정 (예: 0001.webp, 0002.webp)
+        const imageName = String(i + 1).padStart(4, "0") + ".webp";
+        zip.file(imageName, blob);
+
+
+        // SQL INSERT 문 생성
+        // flag.name에 포함된 싱글 퀘테이션을 이스케이프 처리
+        const safeName = flag.name.replace(/'/g, "''");
+        const insertSql = `INSERT INTO flags (name, latitude, longitude, img_url) VALUES ('${safeName}', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), 'images/flags/${imageName}');`;
+        sqlStatements.push(insertSql);
+
         completed++;
 
         // 진행 상황 로깅
@@ -49,6 +63,10 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         console.error(`Failed to download image for flag ${flag.id}:`, error);
       }
     }
+
+    // SQL 파일을 ZIP에 추가
+    const sqlContent = sqlStatements.join("\n");
+    zip.file("flags_insert.sql", sqlContent);
 
     // ZIP 파일 생성 및 다운로드
     zip.generateAsync({ type: "blob" }, (metadata) => {
