@@ -1,6 +1,7 @@
 'use server';
 
-import { sql } from "@vercel/postgres";
+// import { sql } from "@vercel/postgres";
+import sql from '@/app/lib/db'
 import { headers } from "next/headers";
 
 /**
@@ -33,10 +34,9 @@ export async function saveLikeDeltasToDatabase(
     const browserType = extractBrowserType(userAgent);
 
     // Check if client_id exists or insert it
-    const clientResult = await sql.query(
-      `
+    const clientResult = await sql`
       INSERT INTO clients (client_id, device_type, os_type, browser_type, language_code)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES (${client_id}, ${deviceType}, ${osType}, ${browserType}, ${languageCode})
       ON CONFLICT (client_id) DO UPDATE
       SET 
         device_type = EXCLUDED.device_type,
@@ -44,28 +44,22 @@ export async function saveLikeDeltasToDatabase(
         browser_type = EXCLUDED.browser_type,
         language_code = EXCLUDED.language_code
       RETURNING id
-      `,
-      [client_id, deviceType, osType, browserType, languageCode]
-    );
+      `;
 
-    const clientRef =
-      clientResult.rows.length > 0
-        ? clientResult.rows[0].id // Newly inserted client
-        : (
-          await sql.query(
-            `SELECT id FROM clients WHERE client_id = $1`,
-            [clientId]
-          )
-        ).rows[0].id; // Existing client
+    const clientRef = clientResult[0]?.id || (
+      await sql`SELECT id FROM clients WHERE client_id = ${client_id}`
+    )[0]?.id;
+
+    if (!clientRef) {
+      throw new Error('Failed to retrieve or insert client reference.');
+    }
 
 
     // JSON 데이터를 json_populate_recordset으로 변환하여 삽입
-    await sql.query(
-      `INSERT INTO flag_like_history (flag_id, delta_cnt, client_ref)
-       SELECT flag_id, delta_cnt, $2
-       FROM json_populate_recordset(NULL::flag_like_history, $1)`,
-      [JSON.stringify(insertData), clientRef]
-    );
+    await sql`
+    INSERT INTO flag_like_history (flag_id, delta_cnt, client_ref)
+    SELECT flag_id, delta_cnt, ${clientRef}
+    FROM json_populate_recordset(NULL::flag_like_history, ${sql.json(insertData)}::json)`;
 
     console.log("Like deltas saved successfully!");
   } catch (error) {

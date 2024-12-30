@@ -52,7 +52,7 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         // SQL INSERT 문 생성
         // flag.name에 포함된 싱글 퀘테이션을 이스케이프 처리
         const safeName = flag.name.replace(/'/g, "''");
-        const insertSql = `INSERT INTO flags (name, latitude, longitude, img_url) VALUES ('${safeName}', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), 'images/flags/${imageName}');`;
+        const insertSql = `INSERT INTO flags (name, latitude, longitude, img_url) VALUES ('${safeName}', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), '/images/flags/${imageName}');`;
         sqlStatements.push(insertSql);
 
         completed++;
