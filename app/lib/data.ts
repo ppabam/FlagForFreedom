@@ -1,4 +1,4 @@
-import { Flag, FlagFrom } from "@/app/lib/definitions";
+import { Flag } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
 import sql from '@/app/lib/db'
@@ -25,7 +25,14 @@ const getDbData = unstable_cache(
     ORDER BY 
         f.id DESC
     `;
-    return data;
+
+    // RowList<Row[]>를 Flag[]로 변환
+    return data.map(row => ({
+      id: row.id,
+      name: row.name,
+      img_url: row.img_url,
+      like_count: Number(row.like_count) // 숫자로 변환
+    })) as Flag[];
   },
   ["msi"], // 캐시 키에 query 포함
   {
