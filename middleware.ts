@@ -15,27 +15,6 @@ const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS?.split(",") || [];
 const STG = process.env.IS_STG;
 
 export async function middleware(request: NextRequest) {
-  // if (STG !== "LOCAL") {
-  //   // STEP 1
-  //   const origin = request.headers.get("origin");
-  //   const referer = request.headers.get("referer");
-  //   //const host = request.headers.get('host');
-
-  //   // console.log("Request Headers:");
-  //   // request.headers.forEach((value, key) => {
-  //   //   console.log(`${key}: ${value}`);
-  //   // });
-
-  //   const isValidOrigin =
-  //     ALLOWED_DOMAINS.includes(origin || "") ||
-  //     ALLOWED_DOMAINS.includes(referer || "");
-
-  //   if (!isValidOrigin) {
-  //     return new NextResponse("Forbidden", { status: 403 });
-  //   }
-  // }
-
-  // STEP 2
   const headerKey = request.headers.get("Authorization")?.split(" ")[1];
   const queryKey = request.nextUrl.searchParams.get("k123");
 
