@@ -25,9 +25,14 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8949:8080
+      - 8080:8080
 
   web:
     build: .
+    # image: datamario24/fff-web:24.12.30
     ports:
-      - 3333:3000
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://flag123:flag123@db:5432/flag123

@@ -138,7 +138,7 @@ CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     B
 ```bash
 # docker compose down --volumes --remove-orphans
 # sudo rm -rf postgres_data
-$ docker compose up -d
+$ docker compose up -d db adminer
 ```
 
 ### 🔖 Ref
