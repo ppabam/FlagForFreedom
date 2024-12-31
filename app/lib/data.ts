@@ -1,15 +1,17 @@
+import { createDbAdapter } from "./dbFactory";
 import { Flag } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
-import sql from '@/app/lib/db'
+
+const db = createDbAdapter();
 
 const CACHE_TIMEOUT = getCacheTimeout();
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 const getDbData = unstable_cache(
   async () => {
-    const data = await sql`
-    SELECT
+    const query = `
+    SELECT 
       f.id,
       f.name,
       f.img_url,
@@ -25,6 +27,8 @@ const getDbData = unstable_cache(
     ORDER BY 
         f.id DESC
     `;
+
+    const data = await db.query<Flag>(query);
 
     // RowList<Row[]>를 Flag[]로 변환
     return data.map(row => ({
