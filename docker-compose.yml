@@ -1,6 +1,8 @@
 name: fff
 services:
   db:
+    ports:
+      - 5432:5432
     image: postgres:15.10
     restart: always
     # set shared memory limit when using docker-compose
@@ -33,6 +35,6 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://flag123:flag123@db:5432/flag123
+      DATABASE_URL_USED_BY_POSTGRES_JS: postgres://flag123:flag123@db:5432/flag123
       BASE_URL: https://Replace with appropriate value
       IMGBB_API_KEY: Replace with appropriate value

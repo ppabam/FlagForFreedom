@@ -9,7 +9,7 @@ const CACHE_TIMEOUT = getCacheTimeout();
 const getDbData = unstable_cache(
   async () => {
     const data = await sql`
-    SELECT 
+    SELECT
       f.id,
       f.name,
       f.img_url,
