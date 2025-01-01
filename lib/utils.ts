@@ -1,3 +1,4 @@
+import { Deploy_Environment } from "@/app/lib/definitions";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -5,15 +6,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getCacheTimeout(): number {
+export function getCacheTimeout(defaultValue = 123): number {
   // 환경변수를 불러오고, 없으면 기본값 123을 사용하고, 숫자로 변환
   const timeout = process.env.NEXT_PUBLIC_CACHE_TIMEOUT_SECONDS;
-  const parsedTimeout = timeout ? parseInt(timeout, 10) : 123;
+  const parsedTimeout = timeout ? parseInt(timeout, 10) : defaultValue;
 
   // 유효한 숫자일 경우 반환, 아니면 기본값 123
-  return isNaN(parsedTimeout) ? 123 : parsedTimeout;
+  return isNaN(parsedTimeout) ? defaultValue : parsedTimeout;
 }
 
+export function getImageQuality(defaultValue = 75): number {
+  const imageQuality = process.env.NEXT_PUBLIC_IMAGE_QUALITY;
+  const parsedImageQuality = Number(imageQuality) || defaultValue;
+
+  return parsedImageQuality;
+}
+
+export function isImageAllDownButtonEnabled(): boolean {
+  return process.env.NEXT_PUBLIC_ENABLE_IMAGE_ALL_DOWN_BUTTON?.toLowerCase() === 'true';
+}
 
 export function getAuthHeaders(): Record<string, string> {
   const apiKey = process.env.NEXT_PUBLIC_F123_API_KEY;
@@ -28,11 +39,16 @@ export function getAuthHeaders(): Record<string, string> {
   };
 }
 
+// 동작하지 않음
+// https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
 export function getEnv<T extends string | number | boolean>(
   name: string,
   defaultValue?: T
 ): T {
+  console.log("Loaded environment variables:", process.env);
   const value = process.env[name];
+  console.log("name:", name);
+  console.log("eval:", value);
 
   if (value === undefined || value === null) {
     if (defaultValue !== undefined) {
@@ -53,4 +69,14 @@ export function getEnv<T extends string | number | boolean>(
   }
 
   return value as T;
+}
+
+export function getEnvironment(): Deploy_Environment {
+  const stg = process.env.IS_STG as Deploy_Environment;
+
+  if (!['VERCEL', 'LOCAL', 'DOCKER'].includes(stg)) {
+    throw new Error(`Invalid environment: ${stg}`);
+  }
+
+  return stg;
 }

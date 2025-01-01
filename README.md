@@ -19,23 +19,20 @@
 ## 📝 Initial Dummy Data 
 - [use vercel-postgres](https://vercel.com/docs/storage/vercel-postgres)
 ```sql
-CREATE TABLE flags (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    img_url TEXT NOT NULL,
-    latitude DOUBLE PRECISION NOT NULL,
-    longitude DOUBLE PRECISION NOT NULL
-);
+SELECT version();
+PostgreSQL 15.10 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+-- https://hub.docker.com/layers/library/postgres/15.10/images/sha256-6bd528fd9ed2ca50c0dd7c85c1bc20d0150c63418a04d8d3973cab95f63f9567
 
-COMMENT ON TABLE flags IS 'Flag table storing flag information';
-
-COMMENT ON COLUMN flags.id IS '자동 증가 ID';
-COMMENT ON COLUMN flags.name IS '위치 이름';
-COMMENT ON COLUMN flags.img_url IS '이미지 데이터 (바이너리 형태)';
-COMMENT ON COLUMN flags.latitude IS '위도';
-COMMENT ON COLUMN flags.longitude IS '경도';
+-- CREATE TABLE => postgres_init/1-create-table.sql
 
 \d+ flags
+
+
+INSERT INTO flags (name, latitude, longitude, img_url) VALUES
+('#BRAT impeachment and it’s completely different but also still impeachment', 
+37.525307 + (37.530139 - 37.525307) * RANDOM(), 
+126.919467 + (126.922896 - 126.919467) * RANDOM(), 
+'/dummy/d1.webp')
 
 INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 ('#BRAT impeachment and it’s completely different but also still impeachment', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), '/dummy/d1.webp'),
@@ -46,38 +43,6 @@ INSERT INTO flags (name, latitude, longitude, img_url) VALUES
 
 
 SELECT id,name,img_url FROM flags ORDER BY id DESC;
-
-CREATE TABLE clients (
-    id SERIAL PRIMARY KEY,
-    client_id CHAR(32) UNIQUE NOT NULL,
-    device_type VARCHAR(50),
-    os_type VARCHAR(50),
-    browser_type VARCHAR(50),
-    language_code CHAR(5),
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE flag_like_history (
-    id SERIAL PRIMARY KEY,
-    flag_id INTEGER NOT NULL,
-    delta_cnt INTEGER NOT NULL,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    client_ref INTEGER NOT NULL,
-    CONSTRAINT fk_flag
-        FOREIGN KEY (flag_id)
-        REFERENCES flags (id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_client 
-        FOREIGN KEY (client_ref) 
-        REFERENCES clients (id) 
-        ON DELETE CASCADE
-);
-
-COMMENT ON TABLE flag_like_history IS '깃발 좋아요/취소 기록 테이블';
-COMMENT ON COLUMN flag_like_history.delta_cnt IS '좋아요(1), 좋아요 취소(-1), 마이그래이션에 따른 정수(n)';
-
-ALTER TABLE flag_like_history
-ADD COLUMN client_id CHAR(32);
 
 SELECT
     id,
@@ -167,6 +132,15 @@ $ docker run --name f110 -p 3110:3000 -d --env-file .env.local flag123:1.1.0
 $ docker stats
 CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     BLOCK I/O   PIDS
 8de21b110d7f   f110      0.00%     28.91MiB / 9.717GiB   0.29%     876B / 0B   0B / 0B     11
+```
+
+### Docker Compose
+```bash
+# docker compose down --volumes --remove-orphans
+# sudo rm -rf postgres_data
+$ docker compose up -d db adminer
+$ docker compose build web
+$ docker compose up -d web
 ```
 
 ### 🔖 Ref
