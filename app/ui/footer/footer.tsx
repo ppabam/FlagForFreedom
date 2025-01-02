@@ -1,5 +1,6 @@
 'use client'
 
+import { getBaseCamp, getVersion, joinUrl } from "@/lib/utils";
 import {
   Toilet,
   Flag,
@@ -58,7 +59,7 @@ export function Footer() {
             <Smartphone size={24} />
           </a>
           <a
-            href="https://github.com/dMario24/flag123"
+            href={getBaseCamp()}
             target="_blank"
             rel="noopener noreferrer"
             className="text-yellow-500 hover:text-yellow-800"
@@ -86,6 +87,16 @@ export function Footer() {
               &copy; 12.3 계엄배 천하제일 깃발대회 by 깃없총
             </span>
           </Link>
+        </p>
+        <p className="text-center text-gray-400 mt-2">
+          <a
+            href={joinUrl(getBaseCamp(), "releases/tag", getVersion())}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-green-800"
+          >
+            🏷️{getVersion()}
+          </a>
         </p>
       </div>
     </footer>

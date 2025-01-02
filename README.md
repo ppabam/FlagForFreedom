@@ -88,6 +88,29 @@ $ npm install
 $ npm run dev
 ```
 
+### Test
+```bash
+$ npx jest -t "should correctly join URL parts into a complete URL"
+ PASS  __tests__/utils.test.ts (5.773 s)
+-----------------|---------|----------|---------|---------|----------------------------------------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                  
+-----------------|---------|----------|---------|---------|----------------------------------------------------
+All files        |   22.42 |      100 |    9.09 |   22.42 |                                                    
+ app/lib         |   54.54 |      100 |       0 |   54.54 |                                                    
+  getClientId.ts |   54.54 |      100 |       0 |   54.54 | 7-11                                               
+ lib             |   18.75 |      100 |      10 |   18.75 |                                                    
+  utils.ts       |   18.75 |      100 |      10 |   18.75 | 5-7,9-16,18-23,25-27,29-40,44-72,74-82,84-87,89-92 
+-----------------|---------|----------|---------|---------|----------------------------------------------------
+
+Test Suites: 1 skipped, 1 passed, 1 of 2 total
+Tests:       3 skipped, 1 passed, 4 total
+Snapshots:   0 total
+Time:        6.379 s, estimated 10 s
+Ran all test suites with tests matching "should correctly join URL parts into a complete URL"
+
+$ npm test
+```
+
 ### 🤝 Contribution
 - Contributions are open, though I don’t expect anyone to take an interest. I’ll gratefully accept any small advice or help. Thank you. Best regards. 😊👍
 - Data.ts has a UPDATA syntax to verify the caching of vercel. Most of the time, it's not necessary. If it's alive, you can delete it.

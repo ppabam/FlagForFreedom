@@ -1,4 +1,8 @@
-/** @type {import('next').NextConfig} */
+import { readFileSync } from "fs";
+import { join } from "path";
+
+const packageJson = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8'));
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -10,7 +14,13 @@ const nextConfig = {
       },
     ],
   },
+
   output: "standalone", // docker
+
+  env: {
+    APP_VERSION: packageJson.version,
+    BASE_CAMP: "https://github.com/dMario24/flag123"
+  },
 
   async headers() {
     return [

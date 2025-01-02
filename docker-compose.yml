@@ -1,6 +1,8 @@
 name: fff
 services:
   db:
+    ports:
+      - 5432:5432
     image: postgres:15.10
     restart: always
     # set shared memory limit when using docker-compose
