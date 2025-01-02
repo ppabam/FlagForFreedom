@@ -1,8 +1,9 @@
 import { readFileSync } from "fs";
 import { join } from "path";
+import { execSync } from "child_process";
 
+const commitHash = execSync('git rev-parse --short HEAD').toString().trim();
 const packageJson = JSON.parse(readFileSync(join(process.cwd(), 'package.json'), 'utf-8'));
-
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -19,7 +20,9 @@ const nextConfig = {
 
   env: {
     APP_VERSION: packageJson.version,
-    BASE_CAMP: "https://github.com/dMario24/flag123"
+    BASE_CAMP: "https://github.com/ppabam/FlagForFreedom",
+    // BASE_CAMP: "https://github.com/dMario24/flag123",
+    COMMIT_HASH: commitHash,
   },
 
   async headers() {

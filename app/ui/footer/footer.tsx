@@ -11,6 +11,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+import Href from "./href";
+import A from "./a";
+
+const BASE_CAMP = getBaseCamp();
+const VERSION = getVersion();
+const COMMIT_HASH = process.env.COMMIT_HASH || "𖢊 𖥣 𖣣 𖤣 𖤥 𖡡 𖧹";
 
 export function Footer() {
   const pathname = usePathname();
@@ -26,46 +32,11 @@ export function Footer() {
               <Flag size={24} />
             </Link>
           )}
-          <a
-            href="https://www.mapplerk3.com/minjumap"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-800"
-          >
-            <Toilet size={24} />
-          </a>
-          <a
-            href="https://candle.btsroad.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-pink-500 hover:text-pink-800"
-          >
-            <Flame size={24} />
-          </a>
-          <a
-            href="https://www.yna.co.kr/view/AKR20241212062700001?section=politics/all"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-500 hover:text-purple-800"
-          >
-            <Angry size={24} />
-          </a>
-          <a
-            href="https://nodong.org/notice/7872937"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-500 hover:text-green-800"
-          >
-            <Smartphone size={24} />
-          </a>
-          <a
-            href={getBaseCamp()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-yellow-500 hover:text-yellow-800"
-          >
-            <GitPullRequestCreateArrow size={24} />
-          </a>
+          <A url="https://www.mapplerk3.com/minjumap" color="blue" txt={<Toilet size={24} />} />
+          <A url="https://candle.btsroad.com" color="pink" txt={<Flame size={24} />} />
+          <A url="https://www.yna.co.kr/view/AKR20241212062700001?section=politics/all" color="purple" txt={<Angry size={24} />} />
+          <A url="https://nodong.org/notice/7872937" color="green" txt={<Smartphone size={24} />} />
+          <A url={BASE_CAMP} color="yellow" txt={<GitPullRequestCreateArrow size={24} />} />
         </div>
 
         <p className="text-sm text-gray-600 mt-3 text-center">
@@ -88,17 +59,12 @@ export function Footer() {
             </span>
           </Link>
         </p>
-        <p className="text-center text-gray-400 mt-2">
-          <a
-            href={joinUrl(getBaseCamp(), "releases/tag", getVersion())}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-green-800"
-          >
-            🏷️{getVersion()}
-          </a>
-        </p>
+
+        <Href url={joinUrl(BASE_CAMP, "tree", COMMIT_HASH)} txt={`📌${COMMIT_HASH}`} />
+        <Href url={joinUrl(BASE_CAMP, "releases/tag", VERSION)} txt={`🏷️${VERSION}`} />
+
       </div>
+
     </footer>
   );
 }
