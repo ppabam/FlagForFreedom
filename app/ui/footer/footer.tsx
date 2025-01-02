@@ -17,6 +17,7 @@ import A from "./a";
 const BASE_CAMP = getBaseCamp();
 const VERSION = getVersion();
 const COMMIT_HASH = process.env.COMMIT_HASH || "𖢊 𖥣 𖣣 𖤣 𖤥 𖡡 𖧹";
+const BUILD_TIME = process.env.BUILD_TIME || "▄︻デ══━一💥";
 
 export function Footer() {
   const pathname = usePathname();
@@ -60,6 +61,8 @@ export function Footer() {
           </Link>
         </p>
 
+
+        <Href url="https://www.heritage.go.kr/heri/cul/culSelectDetail.do?pageNo=1_1_2_0&ccbaCpno=1333302350000" txt={`🕒${BUILD_TIME}`} />
         <Href url={joinUrl(BASE_CAMP, "tree", COMMIT_HASH)} txt={`📌${COMMIT_HASH}`} />
         <Href url={joinUrl(BASE_CAMP, "releases/tag", VERSION)} txt={`🏷️${VERSION}`} />
 
