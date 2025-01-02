@@ -3,7 +3,8 @@ services:
   db:
     ports:
       - 5432:5432
-    image: postgres:15.10
+    # image: postgres:15.10
+    image: datamario24/postgresssl:15-alpine
     restart: always
     # set shared memory limit when using docker-compose
     shm_size: 64mb

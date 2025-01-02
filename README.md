@@ -161,7 +161,14 @@ CONTAINER ID   NAME      CPU %     MEM USAGE / LIMIT     MEM %     NET I/O     B
 ```bash
 # docker compose down --volumes --remove-orphans
 # sudo rm -rf postgres_data
+
+# Setup PostgreSQL with SSL inside a Docker Container
+$ docker pull datamario24/postgresssl:15-alpine
+# https://github.com/ppabam/FlagForFreedom/pull/15
+# $ cd postgres_ssl/;docker build --rm -f Dockerfile -t datamario24/postgresssl:15-alpine .;cd ../
+
 $ docker compose up -d db adminer
+$ docker exec -it fff-db-1 bash /usr/local/bin/ssl-conf.sh
 $ docker compose build web
 $ docker compose up -d web
 ```

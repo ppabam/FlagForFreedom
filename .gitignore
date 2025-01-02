@@ -39,3 +39,4 @@ next-env.d.ts
 # My
 public/img/uploads
 postgres_data/
+postgres_ssl/certs/certstrap
