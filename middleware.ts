@@ -7,7 +7,6 @@ export const config = {
     "/api/flags",
     "/api/flags/imgbb",
     "/api/flags/insert",
-    "/api/flags/likes",
   ], // 이 경로들에만 미들웨어가 적용됩니다.
 };
 

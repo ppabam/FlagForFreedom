@@ -53,34 +53,6 @@ export async function fetchFlags() {
   }
 }
 
-export async function fetchFilteredFlags(query: string) {
-  try {
-    const data = await sql<Flag>`
-    SELECT 
-        f.id,
-        f.name,
-        f.img_url,
-        COALESCE(SUM(fl.delta_cnt), 0) AS like_count
-    FROM 
-        flags f
-    LEFT JOIN 
-        flag_like_history fl
-    ON 
-        f.id = fl.flag_id
-    WHERE 
-        f.name ILIKE ${`%${query}%`}
-    GROUP BY 
-        f.id, f.name, f.img_url
-    ORDER BY 
-        f.id DESC
-  `;
-    return data.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to FilteredFlags.');
-  }
-}
-
 /**
  * 깃발 데이터를 데이터베이스에 삽입하는 함수
  * @param flag - 삽입할 깃발 데이터 (id 제외, 자동 생성)
