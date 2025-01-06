@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       {/* Flag Details Card */}
       <Card className="w-full max-w-2xl shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold">{flag.name}</CardTitle>
+          <CardTitle className="text-center text-xl font-bold">{flag.name}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center gap-4">
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               height={300}
               className="rounded-md w-full max-w-md"
             />
-            <div className="text-gray-600 text-center">
+            {/* <div className="text-gray-600 text-center">
               <p>
                 <strong>ID:</strong> {flag.id}
               </p>
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p>
                 <strong>Coordinates:</strong> {latitude}, {longitude}
               </p>
-            </div>
+            </div> */}
           </div>
         </CardContent>
       </Card>
