@@ -2,6 +2,7 @@ import { fetchFlagById } from "@/app/lib/data";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import MapSection from "@/app/ui/map/MapSection";
+import { Medal, Crown, Flag} from "lucide-react";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -24,17 +25,14 @@ export default async function Page({ params }: { params: { id: string } }) {
               height={300}
               className="rounded-md w-full max-w-md"
             />
-            {/* <div className="text-gray-600 text-center">
-              <p>
-                <strong>ID:</strong> {flag.id}
-              </p>
-              <p>
-                <strong>Likes:</strong> {flag.like_count}
-              </p>
-              <p>
-                <strong>Coordinates:</strong> {latitude}, {longitude}
-              </p>
-            </div> */}
+
+            {/* 아이콘을 가로로 배치 */}
+            <div className="flex gap-4">
+              <Medal size={55} className="text-yellow-500" />
+              <Crown size={55} className="text-emerald-500" />
+              <Flag size={55} className="text-indigo-500" />
+            </div>
+
           </div>
         </CardContent>
       </Card>

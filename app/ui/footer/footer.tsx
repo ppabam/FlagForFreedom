@@ -2,6 +2,7 @@
 
 import { getBaseCamp, getVersion, joinUrl } from "@/lib/utils";
 import {
+  CreditCard,
   Toilet,
   Flag,
   Flame,
@@ -33,6 +34,7 @@ export function Footer() {
               <Flag size={24} />
             </Link>
           )}
+          <A url="https://www.redcard.kr/flag-flex" color="red" txt={<CreditCard size={24} />} />
           <A url="https://www.mapplerk3.com/minjumap" color="blue" txt={<Toilet size={24} />} />
           <A url="https://candle.btsroad.com" color="pink" txt={<Flame size={24} />} />
           <A url="https://www.yna.co.kr/view/AKR20241212062700001?section=politics/all" color="purple" txt={<Angry size={24} />} />

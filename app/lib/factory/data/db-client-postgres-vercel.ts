@@ -94,7 +94,9 @@ export class DbClientPostgresVercel implements DbClientInterface {
       f.id,
       f.name,
       f.img_url,
-      COALESCE(SUM(fl.delta_cnt), 0) AS like_count
+      COALESCE(SUM(fl.delta_cnt), 0) AS like_count,
+      f.latitude,
+      f.longitude
     FROM 
         flags f
     LEFT JOIN 
