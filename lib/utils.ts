@@ -1,4 +1,3 @@
-import { Deploy_Environment } from "@/app/lib/definitions";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -69,16 +68,6 @@ export function getEnv<T extends string | number | boolean>(
   }
 
   return value as T;
-}
-
-export function getEnvironment(): Deploy_Environment {
-  const stg = process.env.IS_STG as Deploy_Environment;
-
-  if (!['VERCEL', 'LOCAL', 'DOCKER'].includes(stg)) {
-    throw new Error(`Invalid environment: ${stg}`);
-  }
-
-  return stg;
 }
 
 export function getVersion(): string {
