@@ -14,3 +14,5 @@ export type FlagFrom = {
   longitude: number;
 };
 
+export type Deploy_Environment = 'VERCEL' | 'LOCAL' | 'DOCKER';
+

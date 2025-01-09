@@ -44,7 +44,8 @@ export default function LikeableImage({ flag, image_quality }: { flag: Flag, ima
         height={300}
         className="w-full h-full object-cover transition-transform duration-300"
         onClick={toggleLike}
-        priority={true}
+        priority={false}
+        // placeholder='blur'
         quality={image_quality}
       />
 
