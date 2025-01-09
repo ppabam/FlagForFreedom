@@ -1,8 +1,9 @@
 import { DbClientInterface } from "./db-clinet-interface";
-import { sql } from "@vercel/postgres";
 import { Flag, FlagFrom } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
+
+import { sql } from "@vercel/postgres";
 
 const CACHE_TIMEOUT = getCacheTimeout();
 

@@ -150,12 +150,12 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
       if (Object.keys(likeDeltas).length === 0) {
         console.log("No like deltas to save.");
-        isSaving = false;
         return;
       }
 
+      // 데이터 생성
       const insertData = Object.entries(likeDeltas)
-        .filter(([, delta_cnt]) => parseInt(delta_cnt as string, 10) !== 0)
+        .filter(([, delta_cnt]) => parseInt(delta_cnt as string, 10) !== 0) // delta_cnt가 0이 아닌 항목만 포함
         .map(([flag_id, delta_cnt]) => ({
           flag_id: parseInt(flag_id, 10),
           delta_cnt: parseInt(delta_cnt as string, 10),
@@ -163,52 +163,49 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
       if (insertData.length === 0) {
         console.log("No valid like deltas to save.");
-        isSaving = false;
-        return;
+        return; // 추가 작업 없이 함수 종료
       }
 
       try {
         const clinet_id = await getClientId();
-
-        // 페이지가 닫히는 이벤트에 sendBeacon 사용
-        if (navigator.sendBeacon) {
-          const payload = JSON.stringify({ insertData, clinet_id });
-          const blob = new Blob([payload], { type: "application/json" });
-          navigator.sendBeacon("/api/save-likes", blob);
-          console.log("Likes sent via sendBeacon.");
-        } else {
-          // sendBeacon이 지원되지 않을 경우 기존 서버 액션 호출
-          await saveLikeDeltasToDatabase(insertData, clinet_id);
-          console.log("Likes saved via saveLikeDeltasToDatabase.");
-        }
-
+        // Server Action 호출
+        await saveLikeDeltasToDatabase(insertData, clinet_id);
         // 저장 성공 시 로컬스토리지 초기화
         localStorage.removeItem("like_deltas");
       } catch (error) {
         console.error("Failed to save likes on unload:", error);
       } finally {
-        isSaving = false;
+        isSaving = false; // 저장 완료 후 플래그 리셋
       }
     };
 
+    // const handleBeforeUnload = saveLikes;
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         saveLikes();
       }
     };
-
     const handlePagehide = () => {
       saveLikes();
-    };
+    }
 
-    window.addEventListener("pagehide", handlePagehide);
+    const handleBeforeUnload = () => {
+      saveLikes();
+    }
+
+    // 필수 이벤트만 등록
+    window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePagehide);
 
+
+    // Cleanup 함수: 이벤트 리스너 제거
     return () => {
-      window.removeEventListener("pagehide", handlePagehide);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePagehide);
     };
-  }, []);   // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
+  }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
 
   return (
     <section className="container mx-auto px-1 py-1">

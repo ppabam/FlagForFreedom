@@ -1,114 +1,67 @@
-import { DbClientInterface } from "./db-clinet-interface";
+import { ActionClientInterface } from "./action-clinet-interface";
+import { headers } from "next/headers";
+import { extractOSType } from './extractOSType';
+import { extractBrowserType } from './extractBrowserType';
+
 import { sql } from "@vercel/postgres";
-import { Flag, FlagFrom } from "@/app/lib/definitions";
-import { unstable_cache } from "next/cache";
-import { getCacheTimeout } from "@/lib/utils";
 
-const CACHE_TIMEOUT = getCacheTimeout();
-
-export class DbClientPostgresVercel implements DbClientInterface {
-  // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
-  getDbData = unstable_cache(
-    async () => {
-      // TODO DISABLE
-      // await sql`
-      //   UPDATE select_count
-      //   SET count = count + 1, last_updated = now()
-      //   WHERE id = 1;
-      // `;
-
-      const data = await sql<Flag>`
-      SELECT 
-        f.id,
-        f.name,
-        f.img_url,
-        COALESCE(SUM(fl.delta_cnt), 0) AS like_count
-      FROM 
-          flags f
-      LEFT JOIN 
-          flag_like_history fl
-      ON 
-          f.id = fl.flag_id
-      GROUP BY 
-          f.id, f.name, f.img_url
-      ORDER BY 
-          f.id DESC
-      `;
-      return data.rows;
-    },
-    ["msi"], // 캐시 키에 query 포함
-    {
-      revalidate: CACHE_TIMEOUT,
-      tags: ["ism"],
+export class ActionClientPostgresVercel implements ActionClientInterface {
+  async saveLikeDeltasToDatabase(insertData: { flag_id: number; delta_cnt: number; }[], clientId: string): Promise<void> {
+    if (insertData.length === 0) {
+      console.log("No like deltas to save.");
+      return;
     }
-  );
-
-  async fetchFlags(): Promise<Flag[]> {
+  
     try {
-      // 데이터를 캐싱하며 ISR (Incremental Static Regeneration) 사용
-      // const flags = await getFlagsFromDb();
-      const flags = await this.getDbData();
-      return flags;
-    } catch (dbError) {
-      console.error("🎅-dbError Try Fallback", dbError);
-      throw new Error("데이터베이스 조회 실패");
-    }
-  }
-
-  /**
-   * 깃발 데이터를 데이터베이스에 삽입하는 함수
-   * @param flag - 삽입할 깃발 데이터 (id 제외, 자동 생성)
-   * @returns 삽입된 깃발 데이터
-   */
-  async insertFlag(flag: Omit<Flag, "id" | "like_count">): Promise<Flag> {
-    try {
-      const result = await sql<Flag>`
-      INSERT INTO flags(name, img_url, latitude, longitude)
-      VALUES(
-    ${flag.name},
-    ${flag.img_url},
-    37.525307 + (37.530139 - 37.525307) * RANDOM(),
-    126.919467 + (126.922896 - 126.919467) * RANDOM()
-  )
-      RETURNING id, name, img_url
-  `;
-      console.log("✅ Data inserted successfully:", result.rows[0]);
-
-      console.log(
-        "revalidatePath allows you to purge cached data on-demand for a specific path."
+      // Extract headers
+      const headerMap = headers();
+      const client_id = clientId;
+      const userAgent = headerMap.get("user-agent") || "unknown";
+      const languageCode = headerMap.get("accept-language")?.split(",")[0] || "na";
+  
+      // Determine device, OS, and browser types
+      const deviceType = userAgent.includes("Mobile") ? "mobile" : "desktop";
+      const osType = extractOSType(userAgent);
+      const browserType = extractBrowserType(userAgent);
+  
+      // Check if client_id exists or insert it
+      const clientResult = await sql.query(
+        `
+        INSERT INTO clients (client_id, device_type, os_type, browser_type, language_code)
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT (client_id) DO UPDATE
+        SET 
+          device_type = EXCLUDED.device_type,
+          os_type = EXCLUDED.os_type,
+          browser_type = EXCLUDED.browser_type,
+          language_code = EXCLUDED.language_code
+        RETURNING id
+        `,
+        [client_id, deviceType, osType, browserType, languageCode]
       );
-      // revalidatePath('/')
-
-      return result.rows[0];
+  
+      const clientRef =
+        clientResult.rows.length > 0
+          ? clientResult.rows[0].id // Newly inserted client
+          : (
+            await sql.query(
+              `SELECT id FROM clients WHERE client_id = $1`,
+              [clientId]
+            )
+          ).rows[0].id; // Existing client
+  
+  
+      // JSON 데이터를 json_populate_recordset으로 변환하여 삽입
+      await sql.query(
+        `INSERT INTO flag_like_history (flag_id, delta_cnt, client_ref)
+         SELECT flag_id, delta_cnt, $2
+         FROM json_populate_recordset(NULL::flag_like_history, $1)`,
+        [JSON.stringify(insertData), clientRef]
+      );
+  
+      console.log("Like deltas saved successfully!");
     } catch (error) {
-      console.error("🎅-Error Inserting Data:", error);
-      throw new Error("데이터베이스 삽입 실패");
-    }
-  }
-
-  async fetchFlagById(id: string) {
-    try {
-      const data = await sql<FlagFrom>`
-    SELECT 
-      f.id,
-      f.name,
-      f.img_url,
-      COALESCE(SUM(fl.delta_cnt), 0) AS like_count
-    FROM 
-        flags f
-    LEFT JOIN 
-        flag_like_history fl
-    ON 
-        f.id = fl.flag_id
-    WHERE 
-        f.id = ${id}
-    GROUP BY 
-        f.id
-  `;
-      return data.rows[0];
-    } catch (error) {
-      console.error("Database Error:", error);
-      throw new Error("Failed to FilteredFlags.");
+      console.error("Failed to save like deltas:", error);
     }
   }
 }

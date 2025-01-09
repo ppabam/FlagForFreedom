@@ -1,8 +1,9 @@
 import { DbClientInterface } from './db-clinet-interface'
-import sql from "@/app/lib/factory/data/db";
 import { Flag, FlagFrom } from "@/app/lib/definitions";
 import { unstable_cache } from "next/cache";
 import { getCacheTimeout } from "@/lib/utils";
+
+import sql from "@/app/lib/postgresjs";
 
 const CACHE_TIMEOUT = getCacheTimeout();
 
