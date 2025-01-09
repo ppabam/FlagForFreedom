@@ -1,4 +1,4 @@
-import { DbClientFactory } from "./db-client-factory";
+import { DbClientFactory } from "./factory/data/db-client-factory";
 import { Flag, FlagFrom } from "@/app/lib/definitions";
 
 const dbClient = DbClientFactory.getClient();

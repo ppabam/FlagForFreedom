@@ -1,7 +1,7 @@
 'use server';
 
 // import { sql } from "@vercel/postgres";
-import sql from '@/app/lib/db'
+import sql from '@/app/lib/factory/data/db'
 import { headers } from "next/headers";
 
 /**
