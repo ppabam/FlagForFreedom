@@ -23,8 +23,8 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
 
   const downloadAllImages = async () => {
     const zip = new JSZip();
-    let completed = 0; // 진행 상황 추적
-    const total = sortedFlags.length;
+    // let completed = 0; // 진행 상황 추적
+    // const total = sortedFlags.length;
     const sqlStatements: string[] = []; // SQL INSERT 문을 저장할 배열
 
     // 알림: 다운로드 시작
@@ -55,10 +55,9 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
         const insertSql = `INSERT INTO flags (name, latitude, longitude, img_url) VALUES ('${safeName}', 37.525307 + (37.530139 - 37.525307) * RANDOM(), 126.919467 + (126.922896 - 126.919467) * RANDOM(), '/images/flags/${imageName}');`;
         sqlStatements.push(insertSql);
 
-        completed++;
-
         // 진행 상황 로깅
-        console.log(`Downloaded ${completed}/${total}: ${flag.img_url}`);
+        // completed++;
+        // console.log(`Downloaded ${completed}/${total}: ${flag.img_url}`);
       } catch (error) {
         console.error(`Failed to download image for flag ${flag.id}:`, error);
       }
@@ -179,24 +178,39 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       }
     };
 
-    // const handleBeforeUnload = saveLikes;
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
-        saveLikes();
+        // console.log("handleVisibilityChange");
+        setTimeout(saveLikes, 1000); // 비동기 저장 지연
       }
     };
     const handlePagehide = () => {
-      saveLikes();
-    }
+      // console.log("handlePagehide");
+      setTimeout(saveLikes, 1000); // 비동기 저장 지연
+    };
 
-    const handleBeforeUnload = () => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // console.log("handleBeforeUnload");
+      event.preventDefault();
+      setTimeout(saveLikes, 1000); // 비동기 저장 지연
+    };
+
+    const handleFocus = () => {
+      // console.log("Page is focused.");
       saveLikes();
-    }
+    };
+
+    const handleBlur = () => {
+      // console.log("Page is blurred.");
+      saveLikes();
+    };
 
     // 필수 이벤트만 등록
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("pagehide", handlePagehide);
+    document.addEventListener("handleFocus", handleFocus);
+    window.addEventListener("handleBlur", handleBlur);
 
 
     // Cleanup 함수: 이벤트 리스너 제거
@@ -204,6 +218,8 @@ export default function SortableGallery({ filteredFlags }: FlagsProps) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("pagehide", handlePagehide);
+      document.removeEventListener("handleFocus", handleFocus);
+      window.removeEventListener("handleBlur", handleBlur);
     };
   }, []); // 빈 의존성 배열: 컴포넌트 마운트/언마운트 시 실행
 
