@@ -2,7 +2,14 @@ import { fetchFlagById } from "@/app/lib/data";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import MapSection from "@/app/ui/map/MapSection";
-import { FaFacebookF, FaHome, FaTwitter } from "react-icons/fa";
+import {
+  // FaFlag as Home, 
+  FaTwitterSquare as Twitter,
+  FaFacebookSquare as Facebook
+} from "react-icons/fa";
+
+import { FiHome as Home } from "react-icons/fi";
+
 // https://react-icons.github.io/react-icons/icons/si/
 // import { SiKakaotalk } from "react-icons/si";
 import { headers } from "next/headers";
@@ -22,19 +29,19 @@ export async function generateMetadata({
   const host = headersList.get("host");
   const protocol = headersList.get("x-forwarded-proto") || "http";
   const fullUrl = `${protocol}://${host}/flags/${id}/detail`;
-
+  const description = "🔴🏳️‍🌈🟠🚩🟡⚑🟢🏁🔵⚐🟣 계엄배 천하제일 깃발대회 by 민주주의 해방전선 나만 깃발 없엉 총연맹"
   return {
     title: `${flag.name} - 상세 정보`,
-    description: flag.name,
+    description: description,
     openGraph: {
       title: flag.name,
-      description: flag.name,
+      description: description,
       url: fullUrl,
       images: [
         {
           url: flag.img_url,
-          width: 800,
-          height: 600,
+          width: 300,
+          height: 300,
           alt: flag.name,
         },
       ],
@@ -42,7 +49,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: flag.name,
-      description: flag.name,
+      description: description,
       images: [flag.img_url],
     },
   };
@@ -59,13 +66,14 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   // 전체 URL 구성
   const fullUrl = `${protocol}://${host}/flags/${params.id}/detail`;
-  console.log("fullUrl", fullUrl);
+
+  const snsBtnSize = 33
   return (
     <div className="flex flex-col items-center p-6">
       {/* Flag Details Card */}
       <Card className="w-full max-w-2xl shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-xl font-bold">
+          <CardTitle className="text-center text-lg font-bold">
             {flag.name}
           </CardTitle>
         </CardHeader>
@@ -74,17 +82,25 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Image
               src={flag.img_url}
               alt={flag.name}
-              width={500}
+              width={300}
               height={300}
               className="rounded-md w-full max-w-md"
             />
 
             {/* SNS 공유 버튼 */}
             <div className="flex gap-4">
+              <a
+                href={`https://twitter.com/intent/tweet?url=${fullUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Twitter"
+              >
+                <Twitter size={snsBtnSize} className="text-sky-400" />
+              </a>
               <Link href="/" aria-label="Go to Home">
-                <FaHome
-                  size={33}
-                  className="text-gray-600 hover:text-blue-500 transition-colors"
+                <Home
+                  size={snsBtnSize}
+                  className="text-fuchsia-600"
                 />
               </Link>
 
@@ -94,17 +110,10 @@ export default async function Page({ params }: { params: { id: string } }) {
                 rel="noopener noreferrer"
                 aria-label="Share on Facebook"
               >
-                <FaFacebookF size={33} className="text-blue-600" />
+                <Facebook size={snsBtnSize} className="text-blue-700" />
               </a>
 
-              <a
-                href={`https://twitter.com/intent/tweet?url=${fullUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Share on Twitter"
-              >
-                <FaTwitter size={33} className="text-sky-400" />
-              </a>
+
             </div>
           </div>
         </CardContent>
